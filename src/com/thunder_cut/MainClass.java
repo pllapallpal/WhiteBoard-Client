@@ -5,7 +5,7 @@
  */
 package com.thunder_cut;
 
-import GUI.WhiteBoardFrame;
+import com.thunder_cut.grapics.ui.WhiteBoardFrame;
 
 public class MainClass {
     public static void main(String[] args) {
