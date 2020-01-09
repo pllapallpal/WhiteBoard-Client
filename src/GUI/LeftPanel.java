@@ -14,10 +14,12 @@ public class LeftPanel {
     private MyCanvas canvas = new MyCanvas();
 
     public LeftPanel(){
-        leftPanel.setLayout(new BorderLayout());
-        leftPanel.setBackground(Color.BLACK);
-        leftPanel.add(toolPanel.getToolPanel());
-        leftPanel.add(canvas.getMyCanvas());
+        leftPanel.setLayout(new BorderLayout(20, 20));
+        leftPanel.setBackground(Color.GRAY);
+        leftPanel.add(toolPanel.getToolPanel(), BorderLayout.NORTH);
+        leftPanel.add(canvas.getMyCanvas(), BorderLayout.CENTER);
+        leftPanel.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+        leftPanel.setMinimumSize(new Dimension(1100, 900));
 
         leftPanel.setVisible(true);
     }

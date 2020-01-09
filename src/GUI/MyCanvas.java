@@ -10,7 +10,8 @@ import java.awt.*;
 public class MyCanvas {
     private Canvas myCanvas = new Canvas();
     public MyCanvas(){
-        myCanvas.setBackground(Color.DARK_GRAY);
+        myCanvas.setBackground(Color.LIGHT_GRAY);
+        myCanvas.setPreferredSize(new Dimension(1280, 600));
     }
 
     public Canvas getMyCanvas(){
