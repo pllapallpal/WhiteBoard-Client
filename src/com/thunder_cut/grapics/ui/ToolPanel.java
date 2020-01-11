@@ -26,7 +26,7 @@ public class ToolPanel {
 
         colorSelect.addActionListener(e->{
             JColorChooser chooser = new JColorChooser();
-            chooser.showDialog(null, "Color", Color.GRAY);
+            Color selectedColor = chooser.showDialog(null, "Color", Color.GRAY);
         });
     }
 
