@@ -17,7 +17,7 @@ public class RightPanel {
     public RightPanel(){
         rightPanel.setBackground(Color.GRAY);
         rightPanel.setBorder(BorderFactory.createEmptyBorder(15,15,20,20));
-        rightPanel.setLayout(new GridLayout(10,1,15,15));
+        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
 
         rightPanel.add(insert);
         rightPanel.add(delete);
@@ -32,7 +32,6 @@ public class RightPanel {
             deletePanel();
             rightPanel.updateUI();
         });
-
     }
 
     private JPanel makePanel(){
