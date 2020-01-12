@@ -6,6 +6,7 @@
 package com.thunder_cut.grapics.ui;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class WhiteBoardFrame {
     private JFrame mainFrame = new JFrame("화이트 보드");
@@ -14,14 +15,16 @@ public class WhiteBoardFrame {
     private LeftPanel leftPanel = new LeftPanel();
     private RightPanel rightPanel = new RightPanel();
     private JScrollPane scrollPane = new JScrollPane(rightPanel.getRightPanel(), JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+    private static final Dimension frameSize = new Dimension(1600, 900);
+    private static final int dividerX = (int)(frameSize.width*0.8);
 
     public WhiteBoardFrame(){
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setSize(1600,900);
+        mainFrame.setSize(frameSize);
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setJMenuBar(menuBar);
 
-        split.setDividerLocation((int)(mainFrame.getWidth()*0.8));
+        split.setDividerLocation(dividerX);
         split.setLeftComponent(leftPanel.getLeftPanel());
         split.setRightComponent(scrollPane);
 
