@@ -10,15 +10,29 @@ import java.awt.*;
 
 public class RightPanel {
     private JPanel rightPanel = new JPanel();
-    private JList<JPanel> panelList = new JList<>();
-    private JScrollPane scrollPane = new JScrollPane(panelList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+    private JButton insert = new JButton("넣기");
+    private JButton delete = new JButton("지우기");
+    private static int ID = 1;
 
     public RightPanel(){
         rightPanel.setBackground(Color.GRAY);
-        rightPanel.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
-        scrollPane.setPreferredSize(new Dimension(250,800));
+        rightPanel.setBorder(BorderFactory.createEmptyBorder(15,15,20,20));
+        rightPanel.setLayout(new GridLayout(10,1,15,15));
 
-        rightPanel.add(scrollPane);
+        rightPanel.add(insert);
+        rightPanel.add(delete);
+        rightPanel.add(makePanel());
+
+        insert.addActionListener(e->{
+            rightPanel.add(makePanel());
+            rightPanel.updateUI();
+        });
+
+        delete.addActionListener(e->{
+            deletePanel();
+            rightPanel.updateUI();
+        });
+
     }
 
     private JPanel makePanel(){
@@ -26,8 +40,14 @@ public class RightPanel {
         newPanel.setBackground(Color.LIGHT_GRAY);
         newPanel.setPreferredSize(new Dimension(250, 250));
         newPanel.setVisible(true);
+        ID++;
 
         return newPanel;
+    }
+
+    private void deletePanel(){
+        rightPanel.remove(ID);
+        ID--;
     }
 
     public JPanel getRightPanel(){

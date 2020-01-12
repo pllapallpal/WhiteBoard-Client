@@ -13,6 +13,7 @@ public class WhiteBoardFrame {
     private JSplitPane split = new JSplitPane();
     private LeftPanel leftPanel = new LeftPanel();
     private RightPanel rightPanel = new RightPanel();
+    private JScrollPane scrollPane = new JScrollPane(rightPanel.getRightPanel(), JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
     public WhiteBoardFrame(){
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -22,7 +23,7 @@ public class WhiteBoardFrame {
 
         split.setDividerLocation((int)(mainFrame.getWidth()*0.8));
         split.setLeftComponent(leftPanel.getLeftPanel());
-        split.setRightComponent(rightPanel.getRightPanel());
+        split.setRightComponent(scrollPane);
 
         mainFrame.add(split);
 
