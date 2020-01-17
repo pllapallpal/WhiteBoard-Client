@@ -5,9 +5,12 @@
  */
 package com.thunder_cut;
 
+import com.thunder_cut.grapics.ui.WhiteBoardFrame;
+
 public class MainClass {
     public static void main(String[] args) {
         //TODO : Prepare connection
         //TODO : Create UI Component
+        new WhiteBoardFrame();
     }
 }
