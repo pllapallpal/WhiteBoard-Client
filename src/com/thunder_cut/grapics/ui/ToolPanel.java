@@ -15,7 +15,6 @@ public class ToolPanel {
     private JButton colorSelect = new JButton("색상선택");
 
     public ToolPanel(){
-        //toolPanel.setLayout(new GridLayout(1, 4, 10, 10));
         toolPanel.setPreferredSize(new Dimension(1280, 180));
         toolPanel.setBackground(Color.LIGHT_GRAY);
 

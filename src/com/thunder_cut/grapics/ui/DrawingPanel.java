@@ -27,4 +27,8 @@ public class DrawingPanel {
     public JPanel getDrawingPanel(){
         return drawingPanel;
     }
+
+    public Canvas getCanvas() {
+        return canvas;
+    }
 }
