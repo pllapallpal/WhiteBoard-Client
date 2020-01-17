@@ -22,8 +22,6 @@ public class CanvasPanel {
         canvasPanel.setMinimumSize(new Dimension(1100, 900));
 
         canvas.setBackground(Color.LIGHT_GRAY);
-
-        canvasPanel.setVisible(true);
     }
 
     public JPanel getCanvasPanel(){

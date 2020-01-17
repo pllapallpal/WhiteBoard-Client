@@ -13,15 +13,14 @@ public class WhiteBoardFrame {
     private JMenuBar menuBar = makeMenu();
     private JSplitPane split = new JSplitPane();
     private CanvasPanel canvasPanel = new CanvasPanel();
-    private OthersPanel othersPanel = new OthersPanel();
-    private JScrollPane scrollPane = new JScrollPane(othersPanel.getOthersPanel(), JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+    private ParticipantsPanel participantsPanel = new ParticipantsPanel();
+    private JScrollPane scrollPane = new JScrollPane(participantsPanel.getParticipantsPanel(), JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     private static final Dimension frameSize = new Dimension(1600, 900);
     private static final int dividerX = (int)(frameSize.width*0.8);
 
     public WhiteBoardFrame(){
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setSize(frameSize);
-        mainFrame.setLocationRelativeTo(null);
         mainFrame.setJMenuBar(menuBar);
 
         split.setDividerLocation(dividerX);
