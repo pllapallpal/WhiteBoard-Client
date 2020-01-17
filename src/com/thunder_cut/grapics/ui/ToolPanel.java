@@ -24,12 +24,18 @@ public class ToolPanel {
         toolPanel.add(colorSelect);
 
         colorSelect.addActionListener(e->{
-            JColorChooser chooser = new JColorChooser();
-            Color selectedColor = chooser.showDialog(null, "Color", Color.GRAY);
+            selectColor();
         });
     }
 
     public JPanel getToolPanel(){
         return toolPanel;
+    }
+
+    public Color selectColor(){
+        JColorChooser chooser = new JColorChooser();
+        Color selectedColor = chooser.showDialog(null, "Color", Color.GRAY);
+
+        return selectedColor;
     }
 }
