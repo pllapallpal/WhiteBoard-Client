@@ -17,6 +17,7 @@ public class DrawingModeHandler {
 
     public DrawingModeHandler() {
         drawingFeatures = new EnumMap<>(DrawingMode.class);
+        drawingFeatures.put(DrawingMode.BRUSH, new Brush());
     }
 
     public void toolChanged(DrawingMode mode) {
