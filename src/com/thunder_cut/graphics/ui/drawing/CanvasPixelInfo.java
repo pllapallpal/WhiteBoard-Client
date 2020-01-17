@@ -1,4 +1,4 @@
-package com.thunder_cut.graphics.feature;
+package com.thunder_cut.graphics.ui.drawing;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

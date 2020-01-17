@@ -1,4 +1,4 @@
-package com.thunder_cut.graphics.ui;
+package com.thunder_cut.graphics.ui.drawing;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;

@@ -5,6 +5,8 @@
  */
 package com.thunder_cut.graphics.ui;
 
+import com.thunder_cut.graphics.ui.drawing.DrawingPanel;
+
 import javax.swing.*;
 import java.awt.*;
 
