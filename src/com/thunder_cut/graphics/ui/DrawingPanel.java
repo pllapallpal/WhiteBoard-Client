@@ -11,24 +11,19 @@ import java.awt.*;
 public class DrawingPanel {
     private JPanel drawingPanel = new JPanel();
     private ToolPanel toolPanel = new ToolPanel();
-    private Canvas canvas = new Canvas();
+    private DrawingCanvas drawingCanvas = new DrawingCanvas();
 
     public DrawingPanel(){
         drawingPanel.setLayout(new BorderLayout(20, 20));
         drawingPanel.setBackground(Color.GRAY);
         drawingPanel.add(toolPanel.getToolPanel(), BorderLayout.NORTH);
-        drawingPanel.add(canvas, BorderLayout.CENTER);
+        drawingPanel.add(drawingCanvas.getCanvas(), BorderLayout.CENTER);
         drawingPanel.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
         drawingPanel.setMinimumSize(new Dimension(1100, 900));
 
-        canvas.setBackground(Color.LIGHT_GRAY);
     }
 
     public JPanel getDrawingPanel(){
         return drawingPanel;
-    }
-
-    public Canvas getCanvas() {
-        return canvas;
     }
 }
