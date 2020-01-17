@@ -12,7 +12,6 @@ public class WhiteBoardFrame {
     private static final Dimension frameSize = new Dimension(1600, 900);
     private static final int dividerX = (int)(frameSize.width*0.8);
     private JFrame mainFrame = new JFrame("화이트 보드");
-    private JMenuBar menuBar = makeMenu();
     private JSplitPane split = new JSplitPane();
     private CanvasPanel canvasPanel = new CanvasPanel();
     private ParticipantsPanel participantsPanel = new ParticipantsPanel();
@@ -21,7 +20,7 @@ public class WhiteBoardFrame {
     public WhiteBoardFrame(){
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setSize(frameSize);
-        mainFrame.setJMenuBar(menuBar);
+        makeMenu();
 
         split.setDividerLocation(dividerX);
         split.setLeftComponent(canvasPanel.getCanvasPanel());
@@ -32,7 +31,7 @@ public class WhiteBoardFrame {
         mainFrame.setVisible(true);
     }
 
-    private JMenuBar makeMenu() {
+    private void makeMenu() {
         JMenuBar menuBar = new JMenuBar();
 
         JMenu fileMenu = new JMenu("파일");
@@ -63,6 +62,6 @@ public class WhiteBoardFrame {
         menuBar.add(fileMenu);
         menuBar.add(editMenu);
 
-        return menuBar;
+        mainFrame.setJMenuBar(menuBar);
     }
 }
