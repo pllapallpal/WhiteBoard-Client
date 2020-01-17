@@ -13,8 +13,8 @@ public class WhiteBoardFrame {
     private JMenuBar menuBar = makeMenu();
     private JSplitPane split = new JSplitPane();
     private CanvasPanel canvasPanel = new CanvasPanel();
-    private RightPanel rightPanel = new RightPanel();
-    private JScrollPane scrollPane = new JScrollPane(rightPanel.getRightPanel(), JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+    private OthersPanel othersPanel = new OthersPanel();
+    private JScrollPane scrollPane = new JScrollPane(othersPanel.getOthersPanel(), JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     private static final Dimension frameSize = new Dimension(1600, 900);
     private static final int dividerX = (int)(frameSize.width*0.8);
 

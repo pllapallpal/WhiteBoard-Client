@@ -8,14 +8,14 @@ package com.thunder_cut.grapics.ui;
 import javax.swing.*;
 import java.awt.*;
 
-public class RightPanel {
-    private JPanel rightPanel = new JPanel();
+public class OthersPanel {
+    private JPanel othersPanel = new JPanel();
     private static int ID = -1;
 
-    public RightPanel(){
-        rightPanel.setBackground(Color.GRAY);
-        rightPanel.setBorder(BorderFactory.createEmptyBorder(15,15,15,15));
-        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+    public OthersPanel(){
+        othersPanel.setBackground(Color.GRAY);
+        othersPanel.setBorder(BorderFactory.createEmptyBorder(15,15,15,15));
+        othersPanel.setLayout(new BoxLayout(othersPanel, BoxLayout.Y_AXIS));
 
         //FirstPanel is your canvas
         insertPanel();
@@ -33,18 +33,18 @@ public class RightPanel {
     }
 
     private void insertPanel(){
-        rightPanel.add(makePanel());
-        rightPanel.add(Box.createRigidArea(new Dimension(10,15)));
-        rightPanel.updateUI();
+        othersPanel.add(makePanel());
+        othersPanel.add(Box.createRigidArea(new Dimension(10,15)));
+        othersPanel.updateUI();
     }
 
     private void deletePanel(){
-        rightPanel.remove(ID--);
-        rightPanel.remove(ID--);
-        rightPanel.updateUI();
+        othersPanel.remove(ID--);
+        othersPanel.remove(ID--);
+        othersPanel.updateUI();
     }
 
-    public JPanel getRightPanel(){
-        return rightPanel;
+    public JPanel getOthersPanel(){
+        return othersPanel;
     }
 }
