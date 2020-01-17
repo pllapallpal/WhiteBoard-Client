@@ -5,8 +5,8 @@
  */
 package com.thunder_cut.graphics.ui.drawing;
 
-import com.thunder_cut.graphics.feature.MouseData;
-import com.thunder_cut.graphics.feature.MouseStatus;
+import com.thunder_cut.graphics.controller.MouseData;
+import com.thunder_cut.graphics.controller.MouseStatus;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -15,7 +15,6 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 public class DrawingCanvas {
     private Canvas canvas = new Canvas();

@@ -5,6 +5,8 @@
  */
 package com.thunder_cut.graphics.feature;
 
+import com.thunder_cut.graphics.controller.MouseData;
+import com.thunder_cut.graphics.controller.MouseStatus;
 import com.thunder_cut.graphics.ui.drawing.CanvasPixelInfo;
 
 import java.awt.*;

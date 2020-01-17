@@ -3,7 +3,7 @@
  * Author : susemeeee
  * Created Date : 2020-01-17
  */
-package com.thunder_cut.graphics.feature;
+package com.thunder_cut.graphics.controller;
 
 public class MouseData {
     public final MouseStatus status;

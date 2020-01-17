@@ -5,7 +5,7 @@
  */
 package com.thunder_cut.graphics.ui.drawing;
 
-import com.thunder_cut.graphics.feature.DrawingModeHandler;
+import com.thunder_cut.graphics.controller.DrawingModeHandler;
 
 import javax.swing.*;
 import java.awt.*;
