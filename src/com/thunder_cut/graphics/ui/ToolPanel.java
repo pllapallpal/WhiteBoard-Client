@@ -3,7 +3,7 @@
  * Author : 김태건
  * Created Date : 2020-01-08
  */
-package com.thunder_cut.grapics.ui;
+package com.thunder_cut.graphics.ui;
 
 import javax.swing.*;
 import java.awt.*;
