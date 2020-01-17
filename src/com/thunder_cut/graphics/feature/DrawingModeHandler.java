@@ -7,6 +7,7 @@ package com.thunder_cut.graphics.feature;
 
 import com.thunder_cut.graphics.ui.drawing.CanvasPixelInfo;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.EnumMap;
 
@@ -20,8 +21,13 @@ public class DrawingModeHandler {
         drawingFeatures.put(DrawingMode.BRUSH, new Brush());
     }
 
-    public void toolChanged(DrawingMode mode) {
-        selectedDrawingMode = mode;
+    public void drawingModeChanged(DrawingMode mode) {
+        if(mode == DrawingMode.COLOR_CHOOSER) {
+            color = JColorChooser.showDialog(null, "Color", Color.GRAY);
+        }
+        else {
+            selectedDrawingMode = mode;
+        }
     }
 
     public void handleMouseEvent(MouseData mouseData, CanvasPixelInfo canvasPixelInfo) {

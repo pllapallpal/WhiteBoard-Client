@@ -28,14 +28,13 @@ public class ToolPanel {
         eraser.addActionListener(e -> {
             drawHandler.accept(DrawingMode.ERASER);
         });
+        colorSelect.addActionListener(e -> {
+            drawHandler.accept(DrawingMode.COLOR_CHOOSER);
+        });
 
         toolPanel.add(brush);
         toolPanel.add(eraser);
         toolPanel.add(colorSelect);
-
-        colorSelect.addActionListener(e->{
-            selectColor();
-        });
     }
 
     public void addDrawModeHandler(Consumer<DrawingMode> handler) {
@@ -44,12 +43,5 @@ public class ToolPanel {
 
     public JPanel getToolPanel(){
         return toolPanel;
-    }
-
-    public Color selectColor(){
-        JColorChooser chooser = new JColorChooser();
-        Color selectedColor = chooser.showDialog(null, "Color", Color.GRAY);
-
-        return selectedColor;
     }
 }

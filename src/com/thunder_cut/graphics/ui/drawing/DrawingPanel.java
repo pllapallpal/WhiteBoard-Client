@@ -24,7 +24,7 @@ public class DrawingPanel {
         drawingPanel.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
         drawingPanel.setMinimumSize(new Dimension(1100, 900));
         drawingCanvas.addMouseHandler(drawingModeHandler::handleMouseEvent);
-        toolPanel.addDrawModeHandler(drawingModeHandler::toolChanged);
+        toolPanel.addDrawModeHandler(drawingModeHandler::drawingModeChanged);
     }
 
     public JPanel getDrawingPanel(){
