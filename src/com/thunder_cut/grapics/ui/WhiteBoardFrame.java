@@ -9,14 +9,14 @@ import javax.swing.*;
 import java.awt.*;
 
 public class WhiteBoardFrame {
+    private static final Dimension frameSize = new Dimension(1600, 900);
+    private static final int dividerX = (int)(frameSize.width*0.8);
     private JFrame mainFrame = new JFrame("화이트 보드");
     private JMenuBar menuBar = makeMenu();
     private JSplitPane split = new JSplitPane();
     private CanvasPanel canvasPanel = new CanvasPanel();
     private ParticipantsPanel participantsPanel = new ParticipantsPanel();
     private JScrollPane scrollPane = new JScrollPane(participantsPanel.getParticipantsPanel(), JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-    private static final Dimension frameSize = new Dimension(1600, 900);
-    private static final int dividerX = (int)(frameSize.width*0.8);
 
     public WhiteBoardFrame(){
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

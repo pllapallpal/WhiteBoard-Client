@@ -25,6 +25,7 @@ public class ParticipantsPanel {
         JPanel newPanel = new JPanel();
         newPanel.setBackground(Color.LIGHT_GRAY);
         newPanel.setPreferredSize(new Dimension(250, 250));
+        newPanel.setMaximumSize(new Dimension(1000, 250));
         newPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 15));
 
         return newPanel;
