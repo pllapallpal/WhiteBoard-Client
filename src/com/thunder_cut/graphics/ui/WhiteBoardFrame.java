@@ -31,6 +31,7 @@ public class WhiteBoardFrame {
         mainFrame.add(split);
 
         mainFrame.setVisible(true);
+        drawingPanel.getDrawingCanvas().createPixelInfo();
     }
 
     private void makeMenu() {

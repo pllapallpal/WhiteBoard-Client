@@ -30,4 +30,8 @@ public class DrawingPanel {
     public JPanel getDrawingPanel(){
         return drawingPanel;
     }
+
+    public DrawingCanvas getDrawingCanvas() {
+        return drawingCanvas;
+    }
 }

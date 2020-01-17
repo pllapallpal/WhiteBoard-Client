@@ -39,4 +39,8 @@ public class CanvasPixelInfo {
     public int[] getPixels() {
         return pixels;
     }
+
+    public int getWidth() {
+        return width;
+    }
 }
