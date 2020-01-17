@@ -1,3 +1,8 @@
+/*
+ * DrawingCanvas.java
+ * Author : susemeeee
+ * Created Date : 2020-01-17
+ */
 package com.thunder_cut.graphics.ui.drawing;
 
 import com.thunder_cut.graphics.feature.MouseData;
