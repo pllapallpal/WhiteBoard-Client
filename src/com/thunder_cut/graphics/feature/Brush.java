@@ -43,7 +43,6 @@ public class Brush implements DrawingFeature {
         }
 
         int ratio = Math.max(deltaX, deltaY) / Math.min(deltaX, deltaY);
-        System.out.println(ratio);
         int count = 0;
 
         while((currentX != xPos) && (currentY != yPos)) {
