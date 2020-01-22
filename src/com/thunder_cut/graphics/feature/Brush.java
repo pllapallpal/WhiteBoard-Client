@@ -42,7 +42,8 @@ public class Brush implements DrawingFeature {
             return;
         }
 
-        double ratio = Math.max(deltaX, deltaY) / Math.min(deltaX, deltaY);
+        int ratio = Math.max(deltaX, deltaY) / Math.min(deltaX, deltaY);
+        System.out.println(ratio);
         int count = 0;
 
         while((currentX != xPos) && (currentY != yPos)) {
@@ -54,7 +55,7 @@ public class Brush implements DrawingFeature {
                 count = 0;
                 deltaX = Math.abs(xPos - currentX);
                 deltaY = Math.abs(yPos - currentY);
-                ratio = Math.max(deltaX, deltaY) / Math.min(deltaX, deltaY);
+                ratio =  Math.max(deltaX, deltaY) / Math.min(deltaX, deltaY);
             }
             else {
                 controlPosition(isMaxDeltaX, isMaxDeltaX ? isPlusX : isPlusY);
