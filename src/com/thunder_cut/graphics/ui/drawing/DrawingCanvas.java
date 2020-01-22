@@ -9,9 +9,7 @@ import com.thunder_cut.graphics.controller.MouseData;
 import com.thunder_cut.graphics.controller.MouseStatus;
 
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
+import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.function.BiConsumer;
@@ -40,6 +38,13 @@ public class DrawingCanvas {
             public void mouseDragged(MouseEvent e) {
                 mouseHandler.accept(new MouseData(MouseStatus.DRAGGED, e.getX(), e.getY()), canvasPixelInfo);
                 drawCanvas();
+            }
+        });
+        canvas.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+                canvasPixelInfo.setSize(canvas.getWidth(), canvas.getHeight());
             }
         });
     }
