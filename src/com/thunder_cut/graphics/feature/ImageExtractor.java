@@ -41,9 +41,7 @@ public class ImageExtractor {
         int[] extractedPixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
         for(int nowHeight=0; nowHeight<height; nowHeight++) {
-            for(int nowWidth = 0; nowWidth<width; nowWidth++) {
-                extractedPixels[nowHeight*width + nowWidth] = pixels[(lowY+nowHeight)*canvasWidth + (lowX+nowWidth)];
-            }
+            System.arraycopy(pixels,((lowY+nowHeight)*canvasWidth + lowX), extractedPixels, nowHeight*width, width);
         }
 
         return image;
