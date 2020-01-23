@@ -31,12 +31,16 @@ public class Brush implements DrawingFeature {
         int deltaX = Math.abs(xPos - prevXPos);
         int deltaY = Math.abs(yPos - prevYPos);
         boolean isMaxDeltaX = deltaX > deltaY;
+        boolean isCurrentOverCanvas = setIsCurrentOverCanvas(canvasPixelInfo.getWidth(), canvasPixelInfo.getHeight());
 
         if((deltaX == 0) || (deltaY == 0)) {
             while((currentX != xPos) || (currentY != yPos)) {
-                canvasPixelInfo.setPixel(canvasPixelInfo.getWidth() * currentY + currentX, color);
+                if(!isCurrentOverCanvas) {
+                    canvasPixelInfo.setPixel(canvasPixelInfo.getWidth() * currentY + currentX, color);
+                }
 
                 controlPosition(isMaxDeltaX, isMaxDeltaX ? isPlusX : isPlusY);
+                isCurrentOverCanvas = setIsCurrentOverCanvas(canvasPixelInfo.getWidth(), canvasPixelInfo.getHeight());
             }
 
             return;
@@ -46,9 +50,11 @@ public class Brush implements DrawingFeature {
         int count = 0;
 
         while((currentX != xPos) && (currentY != yPos)) {
-            canvasPixelInfo.setPixel(canvasPixelInfo.getWidth() * currentY + currentX, color);
+            if(!isCurrentOverCanvas) {
+                canvasPixelInfo.setPixel(canvasPixelInfo.getWidth() * currentY + currentX, color);
+            }
 
-            if((count >= (int)ratio)) {
+            if((count >= ratio)) {
                 controlPosition(!isMaxDeltaX, isMaxDeltaX ? isPlusY : isPlusX);
 
                 count = 0;
@@ -61,6 +67,8 @@ public class Brush implements DrawingFeature {
 
                 count++;
             }
+
+            isCurrentOverCanvas = setIsCurrentOverCanvas(canvasPixelInfo.getWidth(), canvasPixelInfo.getHeight());
         }
 
         prevXPos = xPos;
@@ -69,7 +77,7 @@ public class Brush implements DrawingFeature {
 
     @Override
     public void released(int xPos, int yPos, CanvasPixelInfo canvasPixelInfo, Color color) {
-        canvasPixelInfo.setPixel(canvasPixelInfo.getWidth() * yPos + xPos, color);
+
     }
 
     private void controlPosition(boolean isMaxDeltaX, boolean isPlus) {
@@ -78,5 +86,9 @@ public class Brush implements DrawingFeature {
             return;
         }
             currentY += (int) Math.pow(-1, isPlus ? 0 : 1);
+    }
+
+    private boolean setIsCurrentOverCanvas(int width, int height) {
+        return ((currentX < 0) || (currentX >= width) || (currentY < 0) || (currentY >= height));
     }
 }
