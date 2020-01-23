@@ -77,7 +77,7 @@ public class Brush implements DrawingFeature {
 
     @Override
     public void released(int xPos, int yPos, CanvasPixelInfo canvasPixelInfo, Color color) {
-        canvasPixelInfo.setPixel(canvasPixelInfo.getWidth() * yPos + xPos, color);
+
     }
 
     private void controlPosition(boolean isMaxDeltaX, boolean isPlus) {
