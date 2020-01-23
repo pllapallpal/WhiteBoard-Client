@@ -1,5 +1,5 @@
 /*
- * ExtractImage.java
+ * ImageExtractor.java
  * Author : Cwhist
  * Created Date : 2020-01-21
  */
@@ -8,7 +8,7 @@ package com.thunder_cut.graphics.feature;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
-public class ExtractImage {
+public class ImageExtractor {
 
     public BufferedImage extract(int[] pixels, int startXPos, int startYPos,
                                  int endXPos, int endYPos, int canvasWidth) {

@@ -1,5 +1,5 @@
 /*
- * SelectArea.java
+ * AreaSelector.java
  * Author : Cwhist
  * Created Date : 2020-01-21
  */
@@ -9,7 +9,7 @@ import com.thunder_cut.graphics.ui.drawing.CanvasPixelInfo;
 
 import java.awt.*;
 
-public class SelectArea implements DrawingFeature {
+public class AreaSelector implements DrawingFeature {
     private int startXPos;
     private int startYPos;
     private int endXPos;

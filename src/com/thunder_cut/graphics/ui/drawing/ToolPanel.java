@@ -16,7 +16,7 @@ public class ToolPanel {
     private JButton brush = new JButton("브러쉬");
     private JButton eraser = new JButton("지우개");
     private JButton colorSelect = new JButton("색상선택");
-    private JButton selectArea = new JButton("영역선택");
+    private JButton areaSelector = new JButton("영역선택");
     private Consumer<DrawingMode> drawHandler;
 
     public ToolPanel(){
@@ -32,14 +32,14 @@ public class ToolPanel {
         colorSelect.addActionListener(e -> {
             drawHandler.accept(DrawingMode.COLOR_CHOOSER);
         });
-        selectArea.addActionListener(e -> {
-            drawHandler.accept(DrawingMode.SELECT_AREA);
+        areaSelector.addActionListener(e -> {
+            drawHandler.accept(DrawingMode.AREA_SELECTOR);
         });
 
         toolPanel.add(brush);
         toolPanel.add(eraser);
         toolPanel.add(colorSelect);
-        toolPanel.add(selectArea);
+        toolPanel.add(areaSelector);
     }
 
     public void addDrawModeHandler(Consumer<DrawingMode> handler) {
