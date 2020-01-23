@@ -60,7 +60,7 @@ public class DrawingCanvas {
             return;
         }
 
-        BufferedImage image = canvasPixelInfo.toBufferedImage(canvas.getWidth(), canvas.getHeight());
+        BufferedImage image = canvasPixelInfo.toBufferedImage();
 
         Graphics2D g = (Graphics2D) canvasBuffer.getDrawGraphics();
         g.drawImage(image, 0, 0, canvas);

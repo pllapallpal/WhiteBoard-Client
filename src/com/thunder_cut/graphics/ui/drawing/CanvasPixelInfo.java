@@ -24,7 +24,7 @@ public class CanvasPixelInfo {
         }
     }
 
-    public BufferedImage toBufferedImage(int width, int height) {
+    public BufferedImage toBufferedImage() {
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         int[] imagePixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
