@@ -44,7 +44,7 @@ public class DrawingCanvas {
             @Override
             public void componentResized(ComponentEvent e) {
                 super.componentResized(e);
-                canvasPixelInfo.setSize(canvas.getWidth(), canvas.getHeight());
+                //Here you can check the changing size
             }
         });
     }
