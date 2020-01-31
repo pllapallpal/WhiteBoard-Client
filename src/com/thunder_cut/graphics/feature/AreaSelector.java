@@ -23,12 +23,17 @@ public class AreaSelector implements DrawingFeature {
 
     @Override
     public void dragged(int xPos, int yPos, CanvasPixelInfo canvasPixelInfo, Color color) {
-
+        if(!isCurrentOverCanvas(xPos, yPos, canvasPixelInfo.getWidth(), canvasPixelInfo.getHeight())) {
+            endXPos = xPos;
+            endYPos = yPos;
+        }
     }
 
     @Override
     public void released(int xPos, int yPos, CanvasPixelInfo canvasPixelInfo, Color color) {
-        endXPos = xPos;
-        endYPos = yPos;
+        if(!isCurrentOverCanvas(xPos, yPos, canvasPixelInfo.getWidth(), canvasPixelInfo.getHeight())) {
+            endXPos = xPos;
+            endYPos = yPos;
+        }
     }
 }

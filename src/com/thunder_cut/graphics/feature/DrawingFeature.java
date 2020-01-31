@@ -12,7 +12,7 @@ import com.thunder_cut.graphics.ui.drawing.CanvasPixelInfo;
 import java.awt.*;
 
 public interface DrawingFeature {
-    default void process(MouseData mouseData, CanvasPixelInfo canvasPixelInfo, Color color){
+    default void process(MouseData mouseData, CanvasPixelInfo canvasPixelInfo, Color color) {
         if(mouseData.status == MouseStatus.PRESSED) {
             pressed(mouseData.xPos, mouseData.yPos, canvasPixelInfo, color);
         }
@@ -22,6 +22,10 @@ public interface DrawingFeature {
         else {
             released(mouseData.xPos, mouseData.yPos, canvasPixelInfo, color);
         }
+    }
+
+    default boolean isCurrentOverCanvas(int currentX, int currentY, int width, int height) {
+        return ((currentX < 0) || (currentX >= width) || (currentY < 0) || (currentY >= height));
     }
 
     void pressed(int xPos, int yPos, CanvasPixelInfo canvasPixelInfo, Color color);
