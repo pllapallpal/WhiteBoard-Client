@@ -24,7 +24,7 @@ public interface DrawingFeature {
         }
     }
 
-    default boolean isCurrentOverCanvas(int currentX, int currentY, int width, int height) {
+    default boolean isOverCanvas(int currentX, int currentY, int width, int height) {
         return ((currentX < 0) || (currentX >= width) || (currentY < 0) || (currentY >= height));
     }
 

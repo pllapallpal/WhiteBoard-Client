@@ -34,7 +34,7 @@ public class Brush implements DrawingFeature {
 
         if((deltaX == 0) || (deltaY == 0)) {
             while((currentX != xPos) || (currentY != yPos)) {
-                if(!isCurrentOverCanvas(currentX, currentY, canvasPixelInfo.getWidth(), canvasPixelInfo.getHeight())) {
+                if(!isOverCanvas(currentX, currentY, canvasPixelInfo.getWidth(), canvasPixelInfo.getHeight())) {
                     canvasPixelInfo.setPixel(canvasPixelInfo.getWidth() * currentY + currentX, color);
                 }
 
@@ -48,7 +48,7 @@ public class Brush implements DrawingFeature {
         int count = 0;
 
         while((currentX != xPos) && (currentY != yPos)) {
-            if(!isCurrentOverCanvas(currentX, currentY, canvasPixelInfo.getWidth(), canvasPixelInfo.getHeight())) {
+            if(!isOverCanvas(currentX, currentY, canvasPixelInfo.getWidth(), canvasPixelInfo.getHeight())) {
                 canvasPixelInfo.setPixel(canvasPixelInfo.getWidth() * currentY + currentX, color);
             }
 
