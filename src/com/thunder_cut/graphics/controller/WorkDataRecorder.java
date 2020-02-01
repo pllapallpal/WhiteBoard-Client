@@ -21,13 +21,17 @@ public class WorkDataRecorder {
         }
         else if(mouseStatus == MouseStatus.RELEASED) {
             WorkUnitData workUnitData = new WorkUnitData();
+            boolean isChanged = false;
             for(int i=0; i<canvasPixelInfo.getPixels().length; i++) {
                 if (prevPixels[i] != canvasPixelInfo.getPixels()[i]) {
                     workUnitData.addData(new ChangedPixelUnitData
                             (i%canvasPixelInfo.getWidth(),i/canvasPixelInfo.getWidth(), prevPixels[i], canvasPixelInfo.getPixels()[i]));
+                    isChanged = true;
                 }
             }
-            workDataList.add(workUnitData);
+            if(isChanged) {
+                workDataList.add(workUnitData);
+            }
         }
     }
 
