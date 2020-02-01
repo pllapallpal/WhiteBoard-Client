@@ -32,6 +32,7 @@ public class WhiteBoardFrame {
 
         mainFrame.setVisible(true);
         drawingPanel.getDrawingCanvas().createPixelInfo();
+        drawingPanel.setRecorderPixelInfo(drawingPanel.getDrawingCanvas().getCanvasPixelInfo());
     }
 
     private void makeMenu() {
