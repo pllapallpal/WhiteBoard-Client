@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class WorkDataList {
     private final int MAXSIZE = 10;
     private ArrayList<WorkUnitData> workDataList = new ArrayList<>();
-    private int presentIndex = 0;
+    private int presentIndex = -1;
 
     public void add(WorkUnitData workUnitData) {
         if(workDataList.size()==MAXSIZE) {
@@ -18,6 +18,9 @@ public class WorkDataList {
         }
         else {
             presentIndex++;
+        }
+        if(isRearWorkExist()) {
+            remove();
         }
         workDataList.add(workUnitData);
     }
@@ -27,13 +30,17 @@ public class WorkDataList {
     }
 
     public void remove() {
-        for(int i=workDataList.size()-1; i>presentIndex; i--) {
+        for(int i=workDataList.size()-1; i>=presentIndex; i--) {
             workDataList.remove(i);
         }
     }
 
     public boolean isRearWorkExist() {
-        return presentIndex != (workDataList.size() - 1);
+        return presentIndex <= (workDataList.size() - 1);
+    }
+
+    public int getPresentIndex() {
+        return presentIndex;
     }
 
     public WorkUnitData getWorkUnitData() {

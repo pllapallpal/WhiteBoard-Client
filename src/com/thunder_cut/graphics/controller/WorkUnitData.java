@@ -13,4 +13,12 @@ public class WorkUnitData {
     public void addData(ChangedPixelUnitData changedPixelUnitData) {
         workUnitData.add(changedPixelUnitData);
     }
+
+    public int getSize() {
+        return workUnitData.size();
+    }
+
+    public ChangedPixelUnitData getPixelUnitData(int index) {
+        return workUnitData.get(index);
+    }
 }
