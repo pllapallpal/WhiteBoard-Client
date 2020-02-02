@@ -19,7 +19,7 @@ public class DrawingPanel {
     private DrawingModeHandler drawingModeHandler = new DrawingModeHandler();
     private WorkDataRecorder workDataRecorder = new WorkDataRecorder();
     private RestoreHandler restoreHandler = new RestoreHandler();
-    private Runnable draw = drawingCanvas::drawCanvas;
+    private Runnable restoreDrawer = drawingCanvas::drawCanvas;
 
     public DrawingPanel() {
         drawingPanel.setLayout(new BorderLayout(20, 20));
@@ -32,7 +32,7 @@ public class DrawingPanel {
         drawingCanvas.addWorkDataRecorder(workDataRecorder::handleRecordWorkData);
         toolPanel.addDrawModeHandler(drawingModeHandler::drawingModeChanged);
         toolPanel.addRestoreHandler(restoreHandler::handleRestoreEvent);
-        toolPanel.setDraw(draw);
+        toolPanel.setRestoreDrawer(restoreDrawer);
         restoreHandler.setWorkDataRecorder(workDataRecorder);
     }
 

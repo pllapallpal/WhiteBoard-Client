@@ -22,7 +22,7 @@ public class ToolPanel {
     private JButton redo = new JButton("Redo");
     private Consumer<DrawingMode> drawHandler;
     private Consumer<RestoreMode> restoreHandler;
-    private Runnable draw;
+    private Runnable restoreDrawer;
 
     public ToolPanel() {
         toolPanel.setPreferredSize(new Dimension(1280, 180));
@@ -42,11 +42,11 @@ public class ToolPanel {
         });
         undo.addActionListener(e -> {
             restoreHandler.accept(RestoreMode.UNDO);
-            draw.run();
+            restoreDrawer.run();
         });
         redo.addActionListener(e -> {
             restoreHandler.accept(RestoreMode.REDO);
-            draw.run();
+            restoreDrawer.run();
         });
 
         toolPanel.add(brush);
@@ -65,8 +65,8 @@ public class ToolPanel {
         restoreHandler = handler;
     }
 
-    public void setDraw(Runnable draw) {
-        this.draw = draw;
+    public void setRestoreDrawer(Runnable restoreDrawer) {
+        this.restoreDrawer = restoreDrawer;
     }
 
     public JPanel getToolPanel() {
