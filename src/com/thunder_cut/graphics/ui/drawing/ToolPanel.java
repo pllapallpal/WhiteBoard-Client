@@ -6,6 +6,7 @@
 package com.thunder_cut.graphics.ui.drawing;
 
 import com.thunder_cut.graphics.controller.DrawingMode;
+import com.thunder_cut.graphics.controller.RestoreMode;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,7 +21,7 @@ public class ToolPanel {
     private JButton undo = new JButton("Undo");
     private JButton redo = new JButton("Redo");
     private Consumer<DrawingMode> drawHandler;
-    private Consumer<String> restoreHandler;
+    private Consumer<RestoreMode> restoreHandler;
     private Runnable draw;
 
     public ToolPanel() {
@@ -40,11 +41,11 @@ public class ToolPanel {
             drawHandler.accept(DrawingMode.AREA_SELECTOR);
         });
         undo.addActionListener(e -> {
-            restoreHandler.accept("UNDO");
+            restoreHandler.accept(RestoreMode.UNDO);
             draw.run();
         });
         redo.addActionListener(e -> {
-            restoreHandler.accept("REDO");
+            restoreHandler.accept(RestoreMode.REDO);
             draw.run();
         });
 
@@ -60,7 +61,7 @@ public class ToolPanel {
         drawHandler = handler;
     }
 
-    public void addRestoreHandler(Consumer<String> handler) {
+    public void addRestoreHandler(Consumer<RestoreMode> handler) {
         restoreHandler = handler;
     }
 

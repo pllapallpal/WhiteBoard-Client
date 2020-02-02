@@ -11,8 +11,8 @@ public class RestoreHandler {
     private WorkDataRecorder workDataRecorder;
     private Restorer restorer = new Restorer();
 
-    public void handleRestoreEvent(String mode) {
-        if (mode == "UNDO") {
+    public void handleRestoreEvent(RestoreMode mode) {
+        if (mode == RestoreMode.UNDO) {
             restorer.undo(workDataRecorder.getWorkDataList(), workDataRecorder.getCanvasPixelInfo());
         }
         else {
