@@ -16,7 +16,6 @@ public class Restorer {
 
     public void undo(WorkDataList workDataList, CanvasPixelInfo canvasPixelInfo) {
         if(workDataList.getPresentIndex() <= -1) {
-            workDataList.setPresentIndex(1);
             return;
         }
 
