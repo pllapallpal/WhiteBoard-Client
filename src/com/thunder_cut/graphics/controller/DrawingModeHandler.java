@@ -16,11 +16,14 @@ import java.awt.*;
 import java.util.EnumMap;
 
 public class DrawingModeHandler {
-    private DrawingMode selectedDrawingMode = DrawingMode.BRUSH;
+    private DrawingMode selectedDrawingMode;
     private EnumMap<DrawingMode, DrawingFeature> drawingFeatures;
-    private Color color = new Color(Color.BLACK.getRGB());
+    private Color color;
 
     public DrawingModeHandler() {
+        selectedDrawingMode = DrawingMode.BRUSH;
+        color = new Color(Color.BLACK.getRGB());
+
         drawingFeatures = new EnumMap<>(DrawingMode.class);
         drawingFeatures.put(DrawingMode.BRUSH, new Brush());
         drawingFeatures.put(DrawingMode.ERASER, new Eraser());
