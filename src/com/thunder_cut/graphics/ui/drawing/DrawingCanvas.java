@@ -7,6 +7,7 @@ package com.thunder_cut.graphics.ui.drawing;
 
 import com.thunder_cut.graphics.controller.MouseData;
 import com.thunder_cut.graphics.controller.MouseStatus;
+import com.thunder_cut.graphics.controller.Resizer;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -20,6 +21,7 @@ public class DrawingCanvas {
     private CanvasPixelInfo canvasPixelInfo;
     private BiConsumer<MouseData, CanvasPixelInfo> mouseHandler;
     private Consumer<MouseStatus> workDataRecorder;
+    private Resizer resizer = new Resizer();
 
     public DrawingCanvas() {
         canvas.setBackground(Color.WHITE);
@@ -49,6 +51,12 @@ public class DrawingCanvas {
             public void componentResized(ComponentEvent e) {
                 super.componentResized(e);
                 //Here you can check the changing size
+                try {
+                    resizer.resize(canvas.getWidth(),canvas.getHeight(),canvasPixelInfo);
+                }
+                catch (NullPointerException e1) { }
+
+                drawCanvas();
             }
         });
     }
