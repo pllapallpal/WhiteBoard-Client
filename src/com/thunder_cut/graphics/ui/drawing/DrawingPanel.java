@@ -6,8 +6,8 @@
 package com.thunder_cut.graphics.ui.drawing;
 
 import com.thunder_cut.graphics.controller.DrawingModeHandler;
-import com.thunder_cut.graphics.controller.RestoreHandler;
-import com.thunder_cut.graphics.controller.WorkDataRecorder;
+import com.thunder_cut.graphics.restorer.RestoreHandler;
+import com.thunder_cut.graphics.restorer.WorkDataRecorder;
 
 import javax.swing.*;
 import java.awt.*;

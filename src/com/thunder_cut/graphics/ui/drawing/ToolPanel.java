@@ -6,7 +6,7 @@
 package com.thunder_cut.graphics.ui.drawing;
 
 import com.thunder_cut.graphics.controller.DrawingMode;
-import com.thunder_cut.graphics.controller.RestoreMode;
+import com.thunder_cut.graphics.restorer.RestoreMode;
 
 import javax.swing.*;
 import java.awt.*;

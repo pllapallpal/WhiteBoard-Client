@@ -3,8 +3,10 @@
  * Author : Cwhist
  * Created Date : 2020-02-01
  */
-package com.thunder_cut.graphics.controller;
+package com.thunder_cut.graphics.restorer;
 
+import com.thunder_cut.graphics.controller.ChangedPixelUnitData;
+import com.thunder_cut.graphics.controller.MouseStatus;
 import com.thunder_cut.graphics.ui.drawing.CanvasPixelInfo;
 
 public class WorkDataRecorder {

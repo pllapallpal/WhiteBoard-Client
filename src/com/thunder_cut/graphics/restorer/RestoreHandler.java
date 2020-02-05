@@ -3,9 +3,7 @@
  * Author : Cwhist
  * Created Date : 2020-01-30
  */
-package com.thunder_cut.graphics.controller;
-
-import com.thunder_cut.graphics.feature.Restorer;
+package com.thunder_cut.graphics.restorer;
 
 public class RestoreHandler {
     private WorkDataRecorder workDataRecorder;
