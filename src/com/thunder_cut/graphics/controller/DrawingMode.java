@@ -6,5 +6,5 @@
 package com.thunder_cut.graphics.controller;
 
 public enum DrawingMode {
-    BRUSH,ERASER,COLOR_CHOOSER,AREA_SELECTOR
+    BRUSH,ERASER,COLOR_CHOOSER
 }
