@@ -12,8 +12,6 @@ import java.awt.*;
 public class Brush implements DrawingFeature {
     private int prevXPos;
     private int prevYPos;
-    private int currentX;
-    private int currentY;
 
     @Override
     public void pressed(int xPos, int yPos, CanvasPixelInfo canvasPixelInfo, Color color) {
@@ -26,42 +24,99 @@ public class Brush implements DrawingFeature {
     public void dragged(int xPos, int yPos, CanvasPixelInfo canvasPixelInfo, Color color) {
         boolean isPlusX = (prevXPos < xPos);
         boolean isPlusY = (prevYPos < yPos);
-        currentX = prevXPos;
-        currentY = prevYPos;
+        int currentX = prevXPos;
+        int currentY = prevYPos;
         int deltaX = Math.abs(xPos - prevXPos);
         int deltaY = Math.abs(yPos - prevYPos);
-        boolean isMaxDeltaX = deltaX > deltaY;
 
-        if((deltaX == 0) || (deltaY == 0)) {
-            while((currentX != xPos) || (currentY != yPos)) {
-                if(!isOverCanvas(currentX, currentY, canvasPixelInfo.getWidth(), canvasPixelInfo.getHeight())) {
-                    canvasPixelInfo.setPixel(canvasPixelInfo.getWidth() * currentY + currentX, color);
+        if(deltaX == 0) {
+            while(currentY != yPos) {
+                canvasPixelInfo.setPixel(canvasPixelInfo.getWidth() * currentY + currentX, color);
+
+                if(isPlusY) {
+                    currentY++;
                 }
-
-                controlPosition(isMaxDeltaX, isMaxDeltaX ? isPlusX : isPlusY);
+                else {
+                    currentY--;
+                }
             }
 
             return;
         }
 
-        int ratio = Math.max(deltaX, deltaY) / Math.min(deltaX, deltaY);
-        int count = 0;
-
-        while((currentX != xPos) && (currentY != yPos)) {
-            if(!isOverCanvas(currentX, currentY, canvasPixelInfo.getWidth(), canvasPixelInfo.getHeight())) {
+        if(deltaY == 0) {
+            while(currentX != xPos) {
                 canvasPixelInfo.setPixel(canvasPixelInfo.getWidth() * currentY + currentX, color);
+
+                if(isPlusX) {
+                    currentX++;
+                }
+                else {
+                    currentX--;
+                }
             }
 
-            if((count >= ratio)) {
-                controlPosition(!isMaxDeltaX, isMaxDeltaX ? isPlusY : isPlusX);
+            return;
+        }
+
+        double ratio;
+        int count = 0;
+
+        if(deltaX > deltaY) {
+            ratio = deltaX / deltaY;
+        }
+        else {
+            ratio = deltaY / deltaX;
+        }
+
+        while((currentX != xPos) && (currentY != yPos)) {
+            canvasPixelInfo.setPixel(canvasPixelInfo.getWidth() * currentY + currentX, color);
+
+            if((count >= (int)ratio)) {
+                if(deltaX > deltaY) {
+                    if(isPlusY && (currentY != yPos)) {
+                        currentY++;
+                    }
+                    else if(currentY != yPos) {
+                        currentY--;
+                    }
+                }
+                else {
+                    if(isPlusX && (currentX != xPos)) {
+                        currentX++;
+                    }
+                    else if(currentX != xPos) {
+                        currentX--;
+                    }
+                }
 
                 count = 0;
                 deltaX = Math.abs(xPos - currentX);
                 deltaY = Math.abs(yPos - currentY);
-                ratio =  Math.max(deltaX, deltaY) / Math.min(deltaX, deltaY);
+                if(deltaX > deltaY) {
+                    ratio = deltaX / deltaY;
+                }
+                else {
+                    ratio = deltaY / deltaX;
+                }
             }
             else {
-                controlPosition(isMaxDeltaX, isMaxDeltaX ? isPlusX : isPlusY);
+                if (deltaX > deltaY) {
+                    if (isPlusX && (currentX != xPos)) {
+                        currentX++;
+                    }
+                    else if (currentX != xPos) {
+                        currentX--;
+                    }
+                }
+                else {
+                    if (isPlusY && (currentY != yPos)) {
+                        currentY++;
+                    }
+                    else if (currentY != yPos) {
+                        currentY--;
+                    }
+                }
 
                 count++;
             }
@@ -73,14 +128,6 @@ public class Brush implements DrawingFeature {
 
     @Override
     public void released(int xPos, int yPos, CanvasPixelInfo canvasPixelInfo, Color color) {
-
-    }
-
-    private void controlPosition(boolean isMaxDeltaX, boolean isPlus) {
-        if (isMaxDeltaX) {
-            currentX += (int) Math.pow(-1, isPlus ? 0 : 1);
-            return;
-        }
-            currentY += (int) Math.pow(-1, isPlus ? 0 : 1);
+        canvasPixelInfo.setPixel(canvasPixelInfo.getWidth() * yPos + xPos, color);
     }
 }

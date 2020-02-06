@@ -8,7 +8,6 @@ package com.thunder_cut.graphics.controller;
 import com.thunder_cut.graphics.feature.Brush;
 import com.thunder_cut.graphics.feature.DrawingFeature;
 import com.thunder_cut.graphics.feature.Eraser;
-import com.thunder_cut.graphics.feature.AreaSelector;
 import com.thunder_cut.graphics.ui.drawing.CanvasPixelInfo;
 
 import javax.swing.*;
@@ -24,7 +23,6 @@ public class DrawingModeHandler {
         drawingFeatures = new EnumMap<>(DrawingMode.class);
         drawingFeatures.put(DrawingMode.BRUSH, new Brush());
         drawingFeatures.put(DrawingMode.ERASER, new Eraser());
-        drawingFeatures.put(DrawingMode.AREA_SELECTOR, new AreaSelector());
     }
 
     public void drawingModeChanged(DrawingMode mode) {
