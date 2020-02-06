@@ -24,12 +24,15 @@ public class CanvasPixelInfo {
         }
     }
 
-    public void toBufferedImage(BufferedImage image) {
+    public BufferedImage toBufferedImage() {
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         int[] imagePixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
         for(int i = 0; i < imagePixels.length; i++) {
             imagePixels[i] = pixels[i];
         }
+
+        return image;
     }
 
     public void setPixel(int index, Color color) {
@@ -42,5 +45,9 @@ public class CanvasPixelInfo {
 
     public int getWidth() {
         return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 }
