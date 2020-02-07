@@ -13,13 +13,20 @@ import java.awt.*;
 public class WhiteBoardFrame {
     private static final Dimension frameSize = new Dimension(1600, 900);
     private static final int dividerX = (int)(frameSize.width*0.8);
-    private JFrame mainFrame = new JFrame("화이트 보드");
-    private JSplitPane split = new JSplitPane();
-    private DrawingPanel drawingPanel = new DrawingPanel();
-    private ParticipantsPanel participantsPanel = new ParticipantsPanel();
-    private JScrollPane scrollPane = new JScrollPane(participantsPanel.getParticipantsPanel(), JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+    private JFrame mainFrame;
+    private JSplitPane split;
+    private DrawingPanel drawingPanel;
+    private ParticipantsPanel participantsPanel;
+    private JScrollPane scrollPane;
 
     public WhiteBoardFrame(){
+        mainFrame = new JFrame("화이트 보드");
+        split = new JSplitPane();
+        drawingPanel = new DrawingPanel();
+        participantsPanel = new ParticipantsPanel();
+        scrollPane = new JScrollPane(participantsPanel.getParticipantsPanel(), JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setSize(frameSize);
         makeMenu();

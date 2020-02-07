@@ -15,11 +15,13 @@ import java.awt.image.BufferedImage;
 import java.util.function.BiConsumer;
 
 public class DrawingCanvas {
-    private Canvas canvas = new Canvas();
+    private Canvas canvas;
     private CanvasPixelInfo canvasPixelInfo;
     private BiConsumer<MouseData, CanvasPixelInfo> mouseHandler;
 
     public DrawingCanvas() {
+        canvas = new Canvas();
+
         canvas.setBackground(Color.WHITE);
         canvas.addMouseListener(new MouseAdapter() {
             @Override

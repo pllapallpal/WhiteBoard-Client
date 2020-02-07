@@ -9,10 +9,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ParticipantsPanel {
-    private JPanel participantsPanel = new JPanel();
+    private JPanel participantsPanel;
     private static int ID = -1;
 
     public ParticipantsPanel(){
+        participantsPanel = new JPanel();
         participantsPanel.setBackground(Color.GRAY);
         participantsPanel.setBorder(BorderFactory.createEmptyBorder(15,15,15,15));
         participantsPanel.setLayout(new BoxLayout(participantsPanel, BoxLayout.Y_AXIS));
