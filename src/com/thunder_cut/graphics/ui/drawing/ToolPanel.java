@@ -24,7 +24,7 @@ public class ToolPanel {
         buttons = new EnumMap<>(DrawingMode.class);
 
         for(DrawingMode mode : DrawingMode.values()){
-            JButton button = new JButton(mode.name());
+            JButton button = new JButton(mode.DISPLAY_NAME);
             button.addActionListener(e -> drawHandler.accept(mode));
             buttons.put(mode,button);
         }
