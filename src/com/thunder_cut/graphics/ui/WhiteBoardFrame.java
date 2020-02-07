@@ -13,7 +13,8 @@ import java.awt.*;
 public class WhiteBoardFrame {
 
     private static final Dimension frameSize = new Dimension(1600, 900);
-    private static final int dividerX = (int)(frameSize.width*0.8);
+    private static final double splitWeight = 0.8;
+    private static final int scrollSpeed = 16;
 
     private JFrame mainFrame;
 
@@ -43,13 +44,16 @@ public class WhiteBoardFrame {
 
         participantsPanel = new ParticipantsPanel();
         scrollPane = new JScrollPane(participantsPanel.getParticipantsPanel(),
-                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(scrollSpeed);
 
     }
 
     private void createView(){
 
-        split.setDividerLocation(dividerX);
+        split.setSize(frameSize);
+        split.setDividerLocation(splitWeight);
+
         split.setLeftComponent(drawingPanel.getDrawingPanel());
         split.setRightComponent(scrollPane);
 
@@ -72,8 +76,9 @@ public class WhiteBoardFrame {
         JMenuItem saveOtherNameMenuItem = new JMenuItem("다른 이름으로 저장");
         JMenuItem exitMenuItem = new JMenuItem("끝내기");
 
-        exitMenuItem.addActionListener(e->{
-            if(JOptionPane.showConfirmDialog(mainFrame, "종료하시겠습니까?", mainFrame.getTitle(), JOptionPane.YES_NO_OPTION) == 0)
+        exitMenuItem.addActionListener(e -> {
+            if(JOptionPane.showConfirmDialog(mainFrame, "종료하시겠습니까?",
+                    mainFrame.getTitle(), JOptionPane.YES_NO_OPTION) == 0)
                 System.exit(0);
         });
 
