@@ -61,7 +61,7 @@ public class WhiteBoardFrame {
 
         mainFrame.setVisible(true);
 
-        drawingPanel.getDrawingCanvas().createPixelInfo();
+        drawingPanel.createImageBuffer();
     }
 
 
