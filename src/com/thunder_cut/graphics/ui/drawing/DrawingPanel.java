@@ -1,5 +1,5 @@
 /*
- * LeftPanel.java
+ * DrawingPanel.java
  * Author : 김태건
  * Created Date : 2020-01-08
  */
