@@ -6,11 +6,13 @@
 package com.thunder_cut;
 
 import com.thunder_cut.graphics.ui.WhiteBoardFrame;
+import com.thunder_cut.netio.ConnectionModule;
 
 public class MainClass {
     public static void main(String[] args) {
         //TODO : Prepare connection
         //TODO : Create UI Component
+        new ConnectionModule();
         new WhiteBoardFrame();
     }
 }
