@@ -7,6 +7,7 @@ package com.thunder_cut.graphics.ui.drawing;
 
 import com.thunder_cut.graphics.controller.MouseData;
 import com.thunder_cut.graphics.controller.MouseStatus;
+import com.thunder_cut.netio.ConnectionModule;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -37,6 +38,7 @@ public class DrawingCanvas {
             public void mouseReleased(MouseEvent e) {
                 mouseHandler.accept(new MouseData(MouseStatus.RELEASED, e.getX(), e.getY()), canvasPixelInfo);
                 workDataRecorder.accept(MouseStatus.RELEASED);
+                ConnectionModule.send(canvasPixelInfo.toBufferedImage());
             }
         });
         canvas.addMouseMotionListener(new MouseMotionAdapter() {
