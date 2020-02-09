@@ -11,7 +11,10 @@ import java.awt.*;
 
 public class Resizer {
     public void resize(int width, int height, CanvasPixelInfo canvasPixelInfo) {
-        int[] newPixels = new int[width*height];
+        if(width <= 0 || height <= 0) {
+            return;
+        }
+        int[] newPixels = new int[width * height];
 
         for(int nowHeight=0; nowHeight<height; nowHeight++) {
             try {
