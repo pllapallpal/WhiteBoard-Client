@@ -5,9 +5,9 @@
  */
 package com.thunder_cut.netio;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 
 /**
@@ -22,8 +22,9 @@ public class ConnectionModule {
     private Thread receivingThread;
 
     /**
-     * <p>This is the constructor of class ConnectionModule.</p>
-     * <p>object ConnectionModule should be created in main()</p>
+     * This is the constructor of class ConnectionModule.
+     * <p>
+     * object ConnectionModule should be created in <code>main</code>
      */
     public ConnectionModule() {
         try {
@@ -40,33 +41,16 @@ public class ConnectionModule {
     }
 
     /**
-     * <p>This is a static method that is called at
-     * <ul>
-     *  <li>mouseReleased() method, which is in constructor of DrawingCanvas class</li>
-     *  <li>undo/redo method</li>
-     * </ul></p>
+     * This is a static method that is called at
+     * <p>
+     * - mouseReleased() method, which is in constructor of DrawingCanvas class
+     * <p>
+     * - undo/redo method
      * @param data is data ready to be sent.
      */
-    public static void send(byte[] data) {
+    public void send(SentData data) {
         try {
-            outputStream.write(data);
-            outputStream.flush();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * temporary code (process and send image directly)
-     * @param image
-     */
-    public static void send(BufferedImage image) {
-        try {
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            ImageIO.write(image, "png", byteArrayOutputStream);
-            byte[] data = byteArrayOutputStream.toByteArray();
-            outputStream.write(data);
+            outputStream.write(data.data.array());
             outputStream.flush();
 
         } catch (IOException e) {

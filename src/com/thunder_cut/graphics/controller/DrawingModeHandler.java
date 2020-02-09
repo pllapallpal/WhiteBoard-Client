@@ -5,10 +5,10 @@
  */
 package com.thunder_cut.graphics.controller;
 
+import com.thunder_cut.graphics.feature.AreaSelector;
 import com.thunder_cut.graphics.feature.Brush;
 import com.thunder_cut.graphics.feature.DrawingFeature;
 import com.thunder_cut.graphics.feature.Eraser;
-import com.thunder_cut.graphics.feature.AreaSelector;
 import com.thunder_cut.graphics.ui.drawing.CanvasPixelInfo;
 
 import javax.swing.*;
@@ -37,6 +37,6 @@ public class DrawingModeHandler {
     }
 
     public void handleMouseEvent(MouseData mouseData, CanvasPixelInfo canvasPixelInfo) {
-        drawingFeatures.get(selectedDrawingMode).process(mouseData, canvasPixelInfo, color);
+        drawingFeatures.get(selectedDrawingMode).process(mouseData, canvasPixelInfo, color); // 이부분
     }
 }

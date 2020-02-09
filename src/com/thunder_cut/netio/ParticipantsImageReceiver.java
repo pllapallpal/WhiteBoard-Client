@@ -11,7 +11,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.function.BiConsumer;
 
 /**
  * <p>A class for receiving other participants' image</p>
@@ -33,6 +32,8 @@ public class ParticipantsImageReceiver implements Runnable {
                 byte[] data = new byte[16384];
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
+                // 메소드로 따로 분리
+                // 헤더에 있는 사이즈 이용하는 거로 다시 짜야 함
                 int readCount = 0;
                 while (true) {
                     for (int i = 0; i < 16384; ++i) {
