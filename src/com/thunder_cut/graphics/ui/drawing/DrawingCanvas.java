@@ -15,17 +15,20 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public class DrawingCanvas {
     private Canvas canvas = new Canvas();
     private CanvasPixelInfo canvasPixelInfo;
     private BiConsumer<MouseData, CanvasPixelInfo> mouseHandler;
+    private Consumer<MouseStatus> workDataRecorder;
 
     public DrawingCanvas() {
         canvas.setBackground(Color.WHITE);
         canvas.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
+                workDataRecorder.accept(MouseStatus.PRESSED);
                 mouseHandler.accept(new MouseData(MouseStatus.PRESSED, e.getX(), e.getY()), canvasPixelInfo);
                 drawCanvas();
             }
@@ -33,6 +36,7 @@ public class DrawingCanvas {
             @Override
             public void mouseReleased(MouseEvent e) {
                 mouseHandler.accept(new MouseData(MouseStatus.RELEASED, e.getX(), e.getY()), canvasPixelInfo);
+                workDataRecorder.accept(MouseStatus.RELEASED);
             }
         });
         canvas.addMouseMotionListener(new MouseMotionAdapter() {
@@ -46,6 +50,10 @@ public class DrawingCanvas {
 
     public void addMouseHandler(BiConsumer<MouseData, CanvasPixelInfo> mouseHandler) {
         this.mouseHandler = mouseHandler;
+    }
+
+    public void addWorkDataRecorder(Consumer<MouseStatus> workDataRecorder) {
+        this.workDataRecorder = workDataRecorder;
     }
 
     public void createPixelInfo() {
@@ -70,5 +78,9 @@ public class DrawingCanvas {
 
     public Canvas getCanvas() {
         return canvas;
+    }
+
+    public CanvasPixelInfo getCanvasPixelInfo() {
+        return canvasPixelInfo;
     }
 }

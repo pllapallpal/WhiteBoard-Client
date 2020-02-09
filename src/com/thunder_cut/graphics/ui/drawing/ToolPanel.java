@@ -6,6 +6,7 @@
 package com.thunder_cut.graphics.ui.drawing;
 
 import com.thunder_cut.graphics.controller.DrawingMode;
+import com.thunder_cut.graphics.controller.RestoreMode;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,9 +18,13 @@ public class ToolPanel {
     private JButton eraser = new JButton("지우개");
     private JButton colorSelect = new JButton("색상선택");
     private JButton areaSelector = new JButton("영역선택");
+    private JButton undo = new JButton("Undo");
+    private JButton redo = new JButton("Redo");
     private Consumer<DrawingMode> drawHandler;
+    private Consumer<RestoreMode> restoreHandler;
+    private Runnable restoreDrawer;
 
-    public ToolPanel(){
+    public ToolPanel() {
         toolPanel.setPreferredSize(new Dimension(1280, 180));
         toolPanel.setBackground(Color.LIGHT_GRAY);
 
@@ -35,18 +40,36 @@ public class ToolPanel {
         areaSelector.addActionListener(e -> {
             drawHandler.accept(DrawingMode.AREA_SELECTOR);
         });
+        undo.addActionListener(e -> {
+            restoreHandler.accept(RestoreMode.UNDO);
+            restoreDrawer.run();
+        });
+        redo.addActionListener(e -> {
+            restoreHandler.accept(RestoreMode.REDO);
+            restoreDrawer.run();
+        });
 
         toolPanel.add(brush);
         toolPanel.add(eraser);
         toolPanel.add(colorSelect);
         toolPanel.add(areaSelector);
+        toolPanel.add(undo);
+        toolPanel.add(redo);
     }
 
     public void addDrawModeHandler(Consumer<DrawingMode> handler) {
         drawHandler = handler;
     }
 
-    public JPanel getToolPanel(){
+    public void addRestoreHandler(Consumer<RestoreMode> handler) {
+        restoreHandler = handler;
+    }
+
+    public void setRestoreDrawer(Runnable restoreDrawer) {
+        this.restoreDrawer = restoreDrawer;
+    }
+
+    public JPanel getToolPanel() {
         return toolPanel;
     }
 }
