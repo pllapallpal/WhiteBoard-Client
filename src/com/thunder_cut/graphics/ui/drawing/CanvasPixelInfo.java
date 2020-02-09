@@ -44,4 +44,7 @@ public class CanvasPixelInfo {
         return width;
     }
 
+    public int getHeight() {
+        return height;
+    }
 }
