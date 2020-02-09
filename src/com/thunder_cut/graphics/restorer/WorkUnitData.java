@@ -5,8 +5,6 @@
  */
 package com.thunder_cut.graphics.restorer;
 
-import com.thunder_cut.graphics.controller.ChangedPixelUnitData;
-
 import java.util.ArrayList;
 
 public class WorkUnitData {

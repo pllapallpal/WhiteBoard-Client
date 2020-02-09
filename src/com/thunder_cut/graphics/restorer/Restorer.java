@@ -5,7 +5,6 @@
  */
 package com.thunder_cut.graphics.restorer;
 
-import com.thunder_cut.graphics.controller.ChangedPixelUnitData;
 import com.thunder_cut.graphics.ui.drawing.CanvasPixelInfo;
 
 import java.awt.*;
