@@ -7,7 +7,11 @@ package com.thunder_cut.graphics.restorer;
 
 public class RestoreHandler {
     private WorkDataRecorder workDataRecorder;
-    private Restorer restorer = new Restorer();
+    private Restorer restorer;
+
+    public RestoreHandler() {
+        restorer = new Restorer();
+    }
 
     public void handleRestoreEvent(RestoreMode mode) {
         if (mode == RestoreMode.UNDO) {

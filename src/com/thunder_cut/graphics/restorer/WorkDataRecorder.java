@@ -9,9 +9,13 @@ import com.thunder_cut.graphics.controller.MouseStatus;
 import com.thunder_cut.graphics.ui.drawing.CanvasPixelInfo;
 
 public class WorkDataRecorder {
-    private WorkDataList workDataList = new WorkDataList();
+    private WorkDataList workDataList;
     private CanvasPixelInfo canvasPixelInfo;
     private int[] prevPixels;
+
+    public WorkDataRecorder() {
+        workDataList = new WorkDataList();
+    }
 
     public void handleRecordWorkData(MouseStatus mouseStatus) {
         if(mouseStatus == MouseStatus.PRESSED) {

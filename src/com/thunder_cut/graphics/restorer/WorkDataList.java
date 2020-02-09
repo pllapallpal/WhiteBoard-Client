@@ -8,9 +8,15 @@ package com.thunder_cut.graphics.restorer;
 import java.util.ArrayList;
 
 public class WorkDataList {
-    private final int MAXSIZE = 10;
-    private ArrayList<WorkUnitData> workDataList = new ArrayList<>();
-    private int presentIndex = -1;
+    private final int MAXSIZE;
+    private ArrayList<WorkUnitData> workDataList;
+    private int presentIndex;
+
+    public WorkDataList() {
+        MAXSIZE = 10;
+        workDataList = new ArrayList<>();
+        presentIndex = -1;
+    }
 
     public void add(WorkUnitData workUnitData) {
         if(workDataList.size()==MAXSIZE) {
