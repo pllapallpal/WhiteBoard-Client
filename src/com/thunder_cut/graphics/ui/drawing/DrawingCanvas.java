@@ -9,19 +9,19 @@ import com.thunder_cut.graphics.controller.MouseData;
 import com.thunder_cut.graphics.controller.MouseStatus;
 
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
+import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.function.BiConsumer;
 
 public class DrawingCanvas {
-    private Canvas canvas = new Canvas();
+    private Canvas canvas;
     private CanvasPixelInfo canvasPixelInfo;
     private BiConsumer<MouseData, CanvasPixelInfo> mouseHandler;
 
     public DrawingCanvas() {
+        canvas = new Canvas();
+
         canvas.setBackground(Color.WHITE);
         canvas.addMouseListener(new MouseAdapter() {
             @Override
@@ -40,6 +40,13 @@ public class DrawingCanvas {
             public void mouseDragged(MouseEvent e) {
                 mouseHandler.accept(new MouseData(MouseStatus.DRAGGED, e.getX(), e.getY()), canvasPixelInfo);
                 drawCanvas();
+            }
+        });
+        canvas.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+                //Here you can check the changing size
             }
         });
     }
