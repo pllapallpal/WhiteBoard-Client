@@ -17,13 +17,15 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class DrawingCanvas {
-    private Canvas canvas = new Canvas();
+    private Canvas canvas;
     private CanvasPixelInfo canvasPixelInfo;
     private BiConsumer<MouseData, CanvasPixelInfo> mouseHandler;
     private Consumer<MouseStatus> workDataRecorder;
     private Resizer resizer = new Resizer();
 
     public DrawingCanvas() {
+        canvas = new Canvas();
+
         canvas.setBackground(Color.WHITE);
         canvas.addMouseListener(new MouseAdapter() {
             @Override

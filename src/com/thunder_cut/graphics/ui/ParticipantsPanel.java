@@ -1,48 +1,67 @@
 /*
- * RightPanel.java
+ * ParticipantsPanel.java
  * Author : 김태건
  * Created Date : 2020-01-08
  */
 package com.thunder_cut.graphics.ui;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ParticipantsPanel {
-    private JPanel participantsPanel = new JPanel();
-    private static int ID = -1;
+    private final int DEFAULT_GAP = 10;
+    private JPanel participantsPanel;
+
+    private List<JPanel> participants;
 
     public ParticipantsPanel(){
+        participants = new ArrayList<>();
+
+        participantsPanel = new JPanel();
         participantsPanel.setBackground(Color.GRAY);
-        participantsPanel.setBorder(BorderFactory.createEmptyBorder(15,15,15,15));
+        participantsPanel.setBorder(BorderFactory.createEmptyBorder(DEFAULT_GAP, DEFAULT_GAP, DEFAULT_GAP, DEFAULT_GAP));
         participantsPanel.setLayout(new BoxLayout(participantsPanel, BoxLayout.Y_AXIS));
 
-        //FirstPanel is your canvas
-        insertPanel(makePanel());
+        makePanel();
     }
 
-    private JPanel makePanel(){
+    private void makePanel(){
         JPanel newPanel = new JPanel();
         newPanel.setBackground(Color.LIGHT_GRAY);
-        newPanel.setPreferredSize(new Dimension(250, 250));
-        newPanel.setMaximumSize(new Dimension(1000, 250));
-        newPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 15));
+        newPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, DEFAULT_GAP));
 
-        return newPanel;
-    }
+        newPanel.setMaximumSize(new Dimension(480, 270));
+        newPanel.setPreferredSize(new Dimension(480, 270));
 
-    private void insertPanel(JPanel jp){
-        participantsPanel.add(jp);
-        ID += 1;
+        participants.add(newPanel);
+
+        participantsPanel.add(newPanel);
         participantsPanel.revalidate();
         participantsPanel.repaint();
     }
 
-    private void deletePanel(){
-        participantsPanel.remove(ID--);
-        participantsPanel.revalidate();
-        participantsPanel.repaint();
+    public void drawImage(int srcID, byte[] imageData){
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(imageData);
+        while(srcID>participants.size()){
+            makePanel();
+        }
+        try {
+            BufferedImage bi =  ImageIO.read(byteArrayInputStream);
+            JPanel target = participants.get(srcID);
+            target.getGraphics()
+                    .drawImage(bi,5,5,target.getWidth()-DEFAULT_GAP,target.getHeight()-DEFAULT_GAP,null);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
 
     public JPanel getParticipantsPanel(){
         return participantsPanel;
