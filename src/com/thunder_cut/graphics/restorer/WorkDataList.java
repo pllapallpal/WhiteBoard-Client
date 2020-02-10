@@ -19,7 +19,7 @@ public class WorkDataList {
     }
 
     public void add(WorkUnitData workUnitData) {
-        if(workDataList.size()==MAXSIZE) {
+        if(presentIndex+1 == MAXSIZE) {
             workDataList.remove(0);
         }
         else {
