@@ -10,10 +10,16 @@ import com.thunder_cut.graphics.ui.drawing.CanvasPixelInfo;
 import java.awt.*;
 
 public class Brush implements DrawingFeature {
+    public static final int DEFAULT_SIZE = 1;
+    private int size;
     private int prevXPos;
     private int prevYPos;
     private int currentX;
     private int currentY;
+
+    public Brush() {
+        size = DEFAULT_SIZE;
+    }
 
     @Override
     public void pressed(int xPos, int yPos, CanvasPixelInfo canvasPixelInfo, Color color) {
@@ -34,9 +40,7 @@ public class Brush implements DrawingFeature {
 
         if((deltaX == 0) || (deltaY == 0)) {
             while((currentX != xPos) || (currentY != yPos)) {
-                if(!isOverCanvas(currentX, currentY, canvasPixelInfo.getWidth(), canvasPixelInfo.getHeight())) {
-                    canvasPixelInfo.setPixel(canvasPixelInfo.getWidth() * currentY + currentX, color);
-                }
+                    setPixels(canvasPixelInfo, currentX, currentY, color);
 
                 controlPosition(isMaxDeltaX, isMaxDeltaX ? isPlusX : isPlusY);
             }
@@ -48,9 +52,7 @@ public class Brush implements DrawingFeature {
         int count = 0;
 
         while((currentX != xPos) && (currentY != yPos)) {
-            if(!isOverCanvas(currentX, currentY, canvasPixelInfo.getWidth(), canvasPixelInfo.getHeight())) {
-                canvasPixelInfo.setPixel(canvasPixelInfo.getWidth() * currentY + currentX, color);
-            }
+                setPixels(canvasPixelInfo, currentX, currentY, color);
 
             if((count >= ratio)) {
                 controlPosition(!isMaxDeltaX, isMaxDeltaX ? isPlusY : isPlusX);
@@ -76,11 +78,32 @@ public class Brush implements DrawingFeature {
 
     }
 
+    private void setPixels(CanvasPixelInfo canvasPixelInfo, int xPos, int yPos, Color color) {
+        xPos -= (size / 2);
+        yPos -= (size / 2);
+
+        for(int i = 0; i < size; i++) {
+            for(int j = 0; j < size; j++) {
+                if(!isOverCanvas(xPos, yPos, canvasPixelInfo.getWidth(), canvasPixelInfo.getHeight())) {
+                    canvasPixelInfo.setPixel(canvasPixelInfo.getWidth() * yPos + xPos, color);
+                }
+                xPos++;
+            }
+
+            xPos -= size;
+            yPos++;
+        }
+    }
+
     private void controlPosition(boolean isMaxDeltaX, boolean isPlus) {
         if (isMaxDeltaX) {
             currentX += (int) Math.pow(-1, isPlus ? 0 : 1);
             return;
         }
-            currentY += (int) Math.pow(-1, isPlus ? 0 : 1);
+        currentY += (int) Math.pow(-1, isPlus ? 0 : 1);
+    }
+
+    public void setSize(int size) {
+        this.size = size;
     }
 }
