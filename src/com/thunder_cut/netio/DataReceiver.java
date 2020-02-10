@@ -11,6 +11,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 
 /**
  * <p>A class for receiving other participants' image</p>
@@ -29,25 +30,24 @@ public class ParticipantsImageReceiver implements Runnable {
     public void run() {
         while (true) {
             try {
-                byte[] data = new byte[16384];
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                byte[] data = new byte[8192];
 
-                // 메소드로 따로 분리
-                // 헤더에 있는 사이즈 이용하는 거로 다시 짜야 함
-                int readCount = 0;
-                while (true) {
-                    for (int i = 0; i < 16384; ++i) {
-                        data[i] = 0;
-                    }
-                    readCount = readCount + inputStream.read(data);
-                    byteArrayOutputStream.write(data);
-                    if (readCount % 16384 != 0) {
-                        break;
-                    }
+                inputStream.read(data);
+                ReceivedData receivedData = new ReceivedData(ByteBuffer.wrap(data));
+                ByteBuffer rawData = ByteBuffer.allocate(receivedData.dataSize + 14);
+                rawData.put(data);
+
+                int dataSize = receivedData.dataSize;
+                while (dataSize > 0) {
+                    inputStream.read(data);
+                    rawData.put(data);
+                    dataSize = dataSize - 8192;
                 }
 
-                data = byteArrayOutputStream.toByteArray();
-                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(data);
+                receivedData = new ReceivedData(rawData);
+
+                byte[] completedData = byteArrayOutputStream.toByteArray();
+                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(completedData);
                 image = ImageIO.read(byteArrayInputStream);
             } catch (IOException e) {
                 e.printStackTrace();

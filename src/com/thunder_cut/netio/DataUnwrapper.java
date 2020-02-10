@@ -16,7 +16,7 @@ public class ReceivedData {
 
     public final ByteBuffer rawData;
 
-    public final DataType dataType;
+    public final char dataType;
     public final int srcID;
     public final int dstID;
     public final int dataSize;
@@ -27,16 +27,16 @@ public class ReceivedData {
         data.flip();
 
         rawData = data;
-        dataType = DataType.valueOf(Character.toString(data.getChar()));
+        dataType = data.getChar();
         srcID = data.getInt();
         dstID = data.getInt();
         dataSize = data.getInt();
         byte[] realData = new byte[data.limit() - 14];
         data.get(realData);
-        this.data = data;
+        this.data = ByteBuffer.wrap(realData);
     }
 
-    // TODO:  * 호스트 번호로 이미지 따로 받아오기
-    //        * 이미지 수신하면 ID랑 데이터 구분해서 UI에 알려주기
-    //          몇번 호스트꺼 이미지인지 && 이미지 부분만 바이트로 바꿔서 알려주기
+    // TODO: 수신된 이미지 ID랑 데이터 구분해서 UI에 알려주기
+    //       몇번 호스트꺼 이미지인지 && 이미지 부분만 바이트로 바꿔서 알려주기
+    //  일단 된다고 가정하고 다음 작업 하기
 }
