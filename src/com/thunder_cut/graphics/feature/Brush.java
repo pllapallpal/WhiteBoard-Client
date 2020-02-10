@@ -31,16 +31,14 @@ public class Brush implements DrawingFeature {
         int deltaX = Math.abs(xPos - prevXPos);
         int deltaY = Math.abs(yPos - prevYPos);
         boolean isMaxDeltaX = deltaX > deltaY;
-        boolean isCurrentOverCanvas = setIsCurrentOverCanvas(canvasPixelInfo.getWidth(), canvasPixelInfo.getHeight());
 
         if((deltaX == 0) || (deltaY == 0)) {
             while((currentX != xPos) || (currentY != yPos)) {
-                if(!isCurrentOverCanvas) {
+                if(!isOverCanvas(currentX, currentY, canvasPixelInfo.getWidth(), canvasPixelInfo.getHeight())) {
                     canvasPixelInfo.setPixel(canvasPixelInfo.getWidth() * currentY + currentX, color);
                 }
 
                 controlPosition(isMaxDeltaX, isMaxDeltaX ? isPlusX : isPlusY);
-                isCurrentOverCanvas = setIsCurrentOverCanvas(canvasPixelInfo.getWidth(), canvasPixelInfo.getHeight());
             }
 
             return;
@@ -50,7 +48,7 @@ public class Brush implements DrawingFeature {
         int count = 0;
 
         while((currentX != xPos) && (currentY != yPos)) {
-            if(!isCurrentOverCanvas) {
+            if(!isOverCanvas(currentX, currentY, canvasPixelInfo.getWidth(), canvasPixelInfo.getHeight())) {
                 canvasPixelInfo.setPixel(canvasPixelInfo.getWidth() * currentY + currentX, color);
             }
 
@@ -67,8 +65,6 @@ public class Brush implements DrawingFeature {
 
                 count++;
             }
-
-            isCurrentOverCanvas = setIsCurrentOverCanvas(canvasPixelInfo.getWidth(), canvasPixelInfo.getHeight());
         }
 
         prevXPos = xPos;
@@ -86,9 +82,5 @@ public class Brush implements DrawingFeature {
             return;
         }
             currentY += (int) Math.pow(-1, isPlus ? 0 : 1);
-    }
-
-    private boolean setIsCurrentOverCanvas(int width, int height) {
-        return ((currentX < 0) || (currentX >= width) || (currentY < 0) || (currentY >= height));
     }
 }
