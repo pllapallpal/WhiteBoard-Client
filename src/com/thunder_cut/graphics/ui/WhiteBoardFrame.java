@@ -6,6 +6,7 @@
 package com.thunder_cut.graphics.ui;
 
 import com.thunder_cut.graphics.ui.drawing.DrawingPanel;
+import com.thunder_cut.graphics.ui.keys.HotKeyExecutor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,6 +32,8 @@ public class WhiteBoardFrame {
         addMenuBar();
 
         createView();
+
+        HotKeyExecutor.initialize();
     }
 
     private void initializeComponents(){
@@ -62,6 +65,7 @@ public class WhiteBoardFrame {
         mainFrame.setVisible(true);
 
         drawingPanel.createImageBuffer();
+
     }
 
 

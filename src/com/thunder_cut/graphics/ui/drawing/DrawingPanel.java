@@ -6,6 +6,9 @@
 package com.thunder_cut.graphics.ui.drawing;
 
 import com.thunder_cut.graphics.controller.DrawingModeHandler;
+import com.thunder_cut.graphics.controller.RestoreHandler;
+import com.thunder_cut.graphics.controller.WorkDataRecorder;
+import com.thunder_cut.graphics.ui.theme.Theme;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,6 +22,10 @@ public class DrawingPanel {
     private DrawingCanvas drawingCanvas;
 
     private DrawingModeHandler drawingModeHandler;
+
+    private WorkDataRecorder workDataRecorder;
+    private RestoreHandler restoreHandler;
+    private Runnable restoreDrawer;
 
     public DrawingPanel(){
 
@@ -34,25 +41,37 @@ public class DrawingPanel {
         drawingModeHandler = new DrawingModeHandler();
 
         drawingPanel.setLayout(new BorderLayout(DEFAULT_GAP, DEFAULT_GAP));
+
+        workDataRecorder = new WorkDataRecorder();
+        restoreHandler = new RestoreHandler();
+        restoreDrawer = drawingCanvas::drawCanvas;
+
+        toolPanel.addDrawModeHandler(drawingModeHandler::drawingModeChanged);
+        toolPanel.addRestoreHandler(restoreHandler::handleRestoreEvent);
+        toolPanel.setRestoreDrawer(restoreDrawer);
+        drawingCanvas.addMouseHandler(drawingModeHandler::handleMouseEvent);
+        drawingCanvas.addWorkDataRecorder(workDataRecorder::handleRecordWorkData);
+
+        restoreHandler.setWorkDataRecorder(workDataRecorder);
     }
 
     private void createView(){
-        drawingPanel.setBackground(Color.GRAY);
+        drawingPanel.setBackground(Theme.CURRENT.background);
         drawingPanel.add(toolPanel.getToolPanel(), BorderLayout.NORTH);
         drawingPanel.add(drawingCanvas.getCanvas(), BorderLayout.CENTER);
 
         drawingPanel.setBorder(BorderFactory.createEmptyBorder(DEFAULT_GAP, DEFAULT_GAP, DEFAULT_GAP, DEFAULT_GAP));
 
-        drawingCanvas.addMouseHandler(drawingModeHandler::handleMouseEvent);
-        toolPanel.addDrawModeHandler(drawingModeHandler::drawingModeChanged);
     }
 
-    public JPanel getDrawingPanel(){
+    public JPanel getDrawingPanel() {
         return drawingPanel;
     }
 
     public void createImageBuffer(){
         drawingCanvas.createPixelInfo();
+        workDataRecorder.setCanvasPixelInfo(drawingCanvas.getCanvasPixelInfo());
     }
+
 
 }

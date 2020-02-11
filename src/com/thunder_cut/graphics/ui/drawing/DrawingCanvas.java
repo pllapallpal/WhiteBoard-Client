@@ -13,11 +13,13 @@ import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public class DrawingCanvas {
     private Canvas canvas;
     private CanvasPixelInfo canvasPixelInfo;
     private BiConsumer<MouseData, CanvasPixelInfo> mouseHandler;
+    private Consumer<MouseStatus> workDataRecorder;
 
     public DrawingCanvas() {
         canvas = new Canvas();
@@ -26,6 +28,7 @@ public class DrawingCanvas {
         canvas.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
+                workDataRecorder.accept(MouseStatus.PRESSED);
                 mouseHandler.accept(new MouseData(MouseStatus.PRESSED, e.getX(), e.getY()), canvasPixelInfo);
                 drawCanvas();
             }
@@ -33,6 +36,7 @@ public class DrawingCanvas {
             @Override
             public void mouseReleased(MouseEvent e) {
                 mouseHandler.accept(new MouseData(MouseStatus.RELEASED, e.getX(), e.getY()), canvasPixelInfo);
+                workDataRecorder.accept(MouseStatus.RELEASED);
             }
         });
         canvas.addMouseMotionListener(new MouseMotionAdapter() {
@@ -55,6 +59,10 @@ public class DrawingCanvas {
         this.mouseHandler = mouseHandler;
     }
 
+    public void addWorkDataRecorder(Consumer<MouseStatus> workDataRecorder) {
+        this.workDataRecorder = workDataRecorder;
+    }
+
     public void createPixelInfo() {
         canvasPixelInfo = new CanvasPixelInfo(canvas.getWidth(), canvas.getHeight(), Color.WHITE);
     }
@@ -67,8 +75,7 @@ public class DrawingCanvas {
             return;
         }
 
-        BufferedImage image = new BufferedImage(canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_RGB);
-        canvasPixelInfo.toBufferedImage(image);
+        BufferedImage image = canvasPixelInfo.toBufferedImage();
 
         Graphics2D g = (Graphics2D) canvasBuffer.getDrawGraphics();
         g.drawImage(image, 0, 0, canvas);
@@ -78,5 +85,9 @@ public class DrawingCanvas {
 
     public Canvas getCanvas() {
         return canvas;
+    }
+
+    public CanvasPixelInfo getCanvasPixelInfo() {
+        return canvasPixelInfo;
     }
 }
