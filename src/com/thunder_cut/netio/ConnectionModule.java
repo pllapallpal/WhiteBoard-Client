@@ -6,9 +6,8 @@
 package com.thunder_cut.netio;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.Socket;
+import java.net.InetSocketAddress;
+import java.nio.channels.SocketChannel;
 import java.util.function.Consumer;
 
 /**
@@ -18,9 +17,7 @@ public class ConnectionModule {
 
     private static ConnectionModule connectionModule;
 
-    private static Socket socket;
-    private static OutputStream outputStream;
-    private static InputStream inputStream;
+    private SocketChannel socketChannel;
     private DataReceiver receiver;
     private Thread receivingThread;
 
@@ -33,14 +30,14 @@ public class ConnectionModule {
      */
     private ConnectionModule() {
         try {
-            ConnectionModule.socket = new Socket("whiteboard.sysbot32.com", 3001);
-            ConnectionModule.inputStream = socket.getInputStream();
-            ConnectionModule.outputStream = socket.getOutputStream();
+            socketChannel = SocketChannel.open();
+            socketChannel.connect(new InetSocketAddress("127.0.0.1", 3001));
+
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        receiver = new DataReceiver(inputStream);
+        receiver = new DataReceiver(socketChannel);
         receivingThread = new Thread(receiver);
         receivingThread.start();
     }
@@ -53,17 +50,18 @@ public class ConnectionModule {
      * - undo/redo method
      * @param data is data ready to be sent.
      */
-    public void send(DataWrapper data, DataType dataType) {
+    public void send(DataWrapper data) {
         try {
-            outputStream.write(data.wrappedData.array());
-            outputStream.flush();
+            System.out.println("data to send : " + data.wrappedData.toString());
+            socketChannel.write(data.wrappedData);
+            System.out.println("success");
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public ConnectionModule getInstance() {
+    public static ConnectionModule getInstance() {
         if (connectionModule == null) {
             connectionModule = new ConnectionModule();
         }
