@@ -71,7 +71,7 @@ public class DataReceiver implements Runnable {
             receivedData = new DataUnwrapper(unwrappedData);
             System.out.println("succeed to receive : " + Arrays.toString(unwrappedData.array()));
 
-            drawImage.accept(srcID - 1, receivedData.data.array());
+            drawImage.accept(srcID, receivedData.data.array());
 
         } catch (IOException e) {
             System.out.println("failed to receive data");
