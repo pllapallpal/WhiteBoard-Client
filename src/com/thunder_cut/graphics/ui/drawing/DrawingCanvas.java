@@ -7,6 +7,7 @@ package com.thunder_cut.graphics.ui.drawing;
 
 import com.thunder_cut.graphics.controller.MouseData;
 import com.thunder_cut.graphics.controller.MouseStatus;
+import com.thunder_cut.graphics.controller.Resizer;
 import com.thunder_cut.netio.ConnectionModule;
 import com.thunder_cut.netio.DataType;
 import com.thunder_cut.netio.DataWrapper;
@@ -27,7 +28,7 @@ public class DrawingCanvas {
     private CanvasPixelInfo canvasPixelInfo;
     private BiConsumer<MouseData, CanvasPixelInfo> mouseHandler;
     private Consumer<MouseStatus> workDataRecorder;
-    private Consumer<BufferedImage> imageSender;
+    private Resizer resizer = new Resizer();
 
     public DrawingCanvas() {
         canvas = new Canvas();
@@ -60,6 +61,12 @@ public class DrawingCanvas {
             public void componentResized(ComponentEvent e) {
                 super.componentResized(e);
                 //Here you can check the changing size
+                try {
+                    resizer.resize(canvas.getWidth(),canvas.getHeight(),canvasPixelInfo);
+                }
+                catch (NullPointerException e1) { }
+
+                drawCanvas();
             }
         });
     }

@@ -16,11 +16,14 @@ import java.awt.*;
 import java.util.EnumMap;
 
 public class DrawingModeHandler {
-    private DrawingMode selectedDrawingMode = DrawingMode.BRUSH;
+    private DrawingMode selectedDrawingMode;
     private EnumMap<DrawingMode, DrawingFeature> drawingFeatures;
-    private Color color = new Color(Color.BLACK.getRGB());
+    private Color color;
 
     public DrawingModeHandler() {
+        selectedDrawingMode = DrawingMode.BRUSH;
+        color = new Color(Color.BLACK.getRGB());
+
         drawingFeatures = new EnumMap<>(DrawingMode.class);
         drawingFeatures.put(DrawingMode.BRUSH, new Brush());
         drawingFeatures.put(DrawingMode.ERASER, new Eraser());
@@ -30,6 +33,11 @@ public class DrawingModeHandler {
     public void drawingModeChanged(DrawingMode mode) {
         if(mode == DrawingMode.COLOR_CHOOSER) {
             color = JColorChooser.showDialog(null, "Color", Color.GRAY);
+        }
+        else if(mode == DrawingMode.SIZE_CHOOSER) {
+            int size = Integer.parseInt(JOptionPane.showInputDialog("size"));
+            ((Brush) drawingFeatures.get(DrawingMode.BRUSH)).setSize(size);
+            ((Eraser) drawingFeatures.get(DrawingMode.ERASER)).setSize(size);
         }
         else {
             selectedDrawingMode = mode;

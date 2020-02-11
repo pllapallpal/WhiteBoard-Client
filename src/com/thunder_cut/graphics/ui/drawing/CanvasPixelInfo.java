@@ -39,6 +39,12 @@ public class CanvasPixelInfo {
         pixels[index] = color.getRGB();
     }
 
+    public void setPixels(int[] pixels, int width, int height) {
+        this.pixels = pixels;
+        this.width = width;
+        this.height = height;
+    }
+
     public int[] getPixels() {
         return pixels;
     }
@@ -50,4 +56,5 @@ public class CanvasPixelInfo {
     public int getHeight() {
         return height;
     }
+
 }
