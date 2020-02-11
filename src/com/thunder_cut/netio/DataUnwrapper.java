@@ -14,8 +14,6 @@ import java.nio.ByteBuffer;
  */
 public class DataUnwrapper {
 
-    public final ByteBuffer rawData;
-
     public final char dataType;
     public final int srcID;
     public final int dstID;
@@ -28,7 +26,6 @@ public class DataUnwrapper {
 
         System.out.println(data.toString());
 
-        rawData = data;
         dataType = data.getChar();
         srcID = data.getInt();
         dstID = data.getInt();
@@ -37,7 +34,9 @@ public class DataUnwrapper {
         data.get(realData);
         this.data = ByteBuffer.wrap(realData);
 
+        System.out.println(this.data.toString());
         this.data.flip();
+        System.out.println(this.data.toString());
     }
 
     // TODO: 수신된 이미지 ID랑 데이터 구분해서 UI에 알려주기

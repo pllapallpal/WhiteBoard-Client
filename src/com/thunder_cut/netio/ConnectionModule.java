@@ -8,7 +8,6 @@ package com.thunder_cut.netio;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.channels.SocketChannel;
-import java.util.function.Consumer;
 
 /**
  * ConnectionModule is a class that supervises net i/o.
@@ -18,10 +17,8 @@ public class ConnectionModule {
     private static ConnectionModule connectionModule;
 
     private SocketChannel socketChannel;
-    private DataReceiver receiver;
-    private Thread receivingThread;
-
-    private Consumer<DataWrapper> senderConsumer;
+    public final DataReceiver receiver;
+    public final Thread receivingThread;
 
     /**
      * This is the constructor of class ConnectionModule.
@@ -29,10 +26,10 @@ public class ConnectionModule {
      * object ConnectionModule should be created in <code>main</code>
      */
     private ConnectionModule() {
+
         try {
             socketChannel = SocketChannel.open();
-            socketChannel.connect(new InetSocketAddress("127.0.0.1", 3001));
-
+            socketChannel.connect(new InetSocketAddress("whiteboard.sysbot32.com", 3001));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -52,10 +49,7 @@ public class ConnectionModule {
      */
     public void send(DataWrapper data) {
         try {
-            System.out.println("data to send : " + data.wrappedData.toString());
             socketChannel.write(data.wrappedData);
-            System.out.println("success");
-
         } catch (IOException e) {
             e.printStackTrace();
         }

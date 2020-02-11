@@ -5,57 +5,85 @@
  */
 package com.thunder_cut.netio;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.nio.channels.SocketChannel;
+import java.util.Arrays;
+import java.util.function.BiConsumer;
 
 /**
- * <p>A class for receiving other participants' image</p>
+ * Receives other participants' image
+ * <p>
  * It has infinite loop, and is run in constructor of ConnectionModule
  */
-public class ParticipantsImageReceiver implements Runnable {
+public class DataReceiver implements Runnable {
 
-    private InputStream inputStream;
-    private BufferedImage image;
+    private SocketChannel socketChannel;
+    private DataUnwrapper receivedData;
 
-    public ParticipantsImageReceiver(InputStream inputStream) {
-        this.inputStream = inputStream;
+    private BiConsumer<Integer, byte[]> drawImage;
+
+    public DataReceiver(SocketChannel socketChannel) {
+        this.socketChannel = socketChannel;
     }
 
     @Override
     public void run() {
         while (true) {
-            try {
-                byte[] data = new byte[8192];
-
-                inputStream.read(data);
-                ReceivedData receivedData = new ReceivedData(ByteBuffer.wrap(data));
-                ByteBuffer rawData = ByteBuffer.allocate(receivedData.dataSize + 14);
-                rawData.put(data);
-
-                int dataSize = receivedData.dataSize;
-                while (dataSize > 0) {
-                    inputStream.read(data);
-                    rawData.put(data);
-                    dataSize = dataSize - 8192;
-                }
-
-                receivedData = new ReceivedData(rawData);
-
-                byte[] completedData = byteArrayOutputStream.toByteArray();
-                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(completedData);
-                image = ImageIO.read(byteArrayInputStream);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            receiveData();
         }
     }
 
-    public BufferedImage getImage() {
-        return image;
+    public void receiveData() {
+
+        try {
+            // 먼저 헤더만큼 allocate 한 다음에 그만큼만 읽는다
+            ByteBuffer header = ByteBuffer.allocate(14);
+            socketChannel.read(header);
+
+            // 헤더를 딴다
+            header.flip();
+            char type = header.getChar();
+            int srcID = header.getInt();
+            int dstID = header.getInt();
+            int dataSize = header.getInt();
+
+            System.out.println(type);
+            System.out.println(srcID);
+            System.out.println(dstID);
+            System.out.println(dataSize);
+
+            // dataSize 만큼 ByteBuffer allocate 한 뒤 받는다
+            ByteBuffer data = ByteBuffer.allocate(dataSize);
+            while (data.hasRemaining()) {
+                socketChannel.read(data);
+            }
+            System.out.println("received " + data.toString());
+
+            // 헤더를 포함한 unwrappedData
+            data.flip();
+            ByteBuffer unwrappedData = ByteBuffer.allocate(dataSize + 14);
+            unwrappedData.putChar(type);
+            unwrappedData.putInt(srcID);
+            unwrappedData.putInt(dstID);
+            unwrappedData.putInt(dataSize);
+            unwrappedData.put(data);
+            receivedData = new DataUnwrapper(unwrappedData);
+            System.out.println("succeed to receive : " + Arrays.toString(unwrappedData.array()));
+
+            drawImage.accept(srcID - 1, receivedData.data.array());
+
+        } catch (IOException e) {
+            System.out.println("failed to receive data");
+            e.printStackTrace();
+        }
+    }
+
+    public void addDrawImage(BiConsumer<Integer, byte[]> drawImage) {
+        this.drawImage = drawImage;
+    }
+
+    public DataUnwrapper getReceivedData() {
+        return receivedData;
     }
 }
