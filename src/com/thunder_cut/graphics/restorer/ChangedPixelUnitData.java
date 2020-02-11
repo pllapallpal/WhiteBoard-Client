@@ -3,7 +3,7 @@
  * Author : Cwhist
  * Created Date : 2020-01-30
  */
-package com.thunder_cut.graphics.controller;
+package com.thunder_cut.graphics.restorer;
 
 public class ChangedPixelUnitData {
     public final int xPos;

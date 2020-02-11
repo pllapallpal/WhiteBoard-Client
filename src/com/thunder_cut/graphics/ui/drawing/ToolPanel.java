@@ -6,7 +6,7 @@
 package com.thunder_cut.graphics.ui.drawing;
 
 import com.thunder_cut.graphics.controller.DrawingMode;
-import com.thunder_cut.graphics.controller.RestoreMode;
+import com.thunder_cut.graphics.restorer.RestoreMode;
 import com.thunder_cut.graphics.ui.theme.Theme;
 
 import javax.swing.*;
@@ -19,7 +19,6 @@ public class ToolPanel {
 
     private Consumer<DrawingMode> drawHandler;
     private Consumer<RestoreMode> restoreHandler;
-    private Runnable restoreDrawer;
 
     private EnumMap<DrawingMode,JButton> buttons;
 
@@ -45,7 +44,6 @@ public class ToolPanel {
 
         undo.addActionListener(e -> {
             restoreHandler.accept(RestoreMode.UNDO);
-            restoreDrawer.run();
         });
         undo.setBackground(Theme.CURRENT.secondary);
         undo.setForeground(Theme.CURRENT.onSecondary);
@@ -53,7 +51,6 @@ public class ToolPanel {
 
         redo.addActionListener(e -> {
             restoreHandler.accept(RestoreMode.REDO);
-            restoreDrawer.run();
         });
         redo.setBackground(Theme.CURRENT.secondary);
         redo.setForeground(Theme.CURRENT.onSecondary);
@@ -74,10 +71,6 @@ public class ToolPanel {
 
     public void addRestoreHandler(Consumer<RestoreMode> handler) {
         restoreHandler = handler;
-    }
-
-    public void setRestoreDrawer(Runnable restoreDrawer) {
-        this.restoreDrawer = restoreDrawer;
     }
 
     public JPanel getToolPanel() {
