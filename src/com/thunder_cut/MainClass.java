@@ -12,7 +12,7 @@ public class MainClass {
     public static void main(String[] args) {
         //TODO : Prepare connection
         //TODO : Create UI Component
-        new ConnectionModule();
+        ConnectionModule.getInstance();
         new WhiteBoardFrame();
     }
 }
