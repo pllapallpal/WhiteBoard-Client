@@ -12,18 +12,18 @@ import java.nio.ByteBuffer;
  * <p>
  * (rawData, dataType, dataSize, actual data)
  */
-public class SentData {
+public class DataWrapper {
 
-    public final ByteBuffer sentData;
+    public final ByteBuffer wrappedData;
 
-    public SentData(ByteBuffer data, DataType dataType) {
-
-        data.flip();
+    public DataWrapper(ByteBuffer data, DataType dataType) {
 
         int dataSize = data.limit();
-        sentData = ByteBuffer.allocate(dataSize + 6);
-        sentData.putChar(dataType.type);
-        sentData.putInt(dataSize);
-        sentData.put(data);
+        wrappedData = ByteBuffer.allocate(dataSize + 6);
+        wrappedData.putChar(dataType.type);
+        wrappedData.putInt(dataSize);
+        wrappedData.put(data);
+
+        wrappedData.flip();
     }
 }

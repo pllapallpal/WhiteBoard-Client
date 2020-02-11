@@ -12,7 +12,7 @@ import java.nio.ByteBuffer;
  * <p>
  * (rawData, dataType, srcID, dstID, dataSize, actual data)
  */
-public class ReceivedData {
+public class DataUnwrapper {
 
     public final ByteBuffer rawData;
 
@@ -22,9 +22,11 @@ public class ReceivedData {
     public final int dataSize;
     public final ByteBuffer data;
 
-    public ReceivedData(ByteBuffer data) {
+    public DataUnwrapper(ByteBuffer data) {
 
         data.flip();
+
+        System.out.println(data.toString());
 
         rawData = data;
         dataType = data.getChar();
@@ -34,6 +36,8 @@ public class ReceivedData {
         byte[] realData = new byte[data.limit() - 14];
         data.get(realData);
         this.data = ByteBuffer.wrap(realData);
+
+        this.data.flip();
     }
 
     // TODO: 수신된 이미지 ID랑 데이터 구분해서 UI에 알려주기
