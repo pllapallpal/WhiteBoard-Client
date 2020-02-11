@@ -5,21 +5,60 @@
  */
 package com.thunder_cut.graphics.restorer;
 
+import com.thunder_cut.graphics.ui.drawing.CanvasPixelInfo;
+
+import java.awt.*;
+
 public class RestoreHandler {
     private WorkDataRecorder workDataRecorder;
-    private Restorer restorer;
+    private Runnable drawCanvas;
 
-    public RestoreHandler() {
-        restorer = new Restorer();
+    public RestoreHandler(Runnable drawCanvas) {
+        this.drawCanvas = drawCanvas;
     }
 
     public void handleRestoreEvent(RestoreMode mode) {
         if (mode == RestoreMode.UNDO) {
-            restorer.undo(workDataRecorder.getWorkDataList(), workDataRecorder.getCanvasPixelInfo());
+            undo(workDataRecorder.getCanvasPixelInfo());
         }
         else {
-            restorer.redo(workDataRecorder.getWorkDataList(), workDataRecorder.getCanvasPixelInfo());
+            redo(workDataRecorder.getCanvasPixelInfo());
         }
+    }
+
+    public void undo(CanvasPixelInfo canvasPixelInfo) {
+        if(workDataRecorder.getPresentIndex() <= -1) {
+            return;
+        }
+
+        WorkUnitData workUnitData = workDataRecorder.getCurrentWorkUnitData();
+
+        for (int i = 0; i < workUnitData.getSize(); i++) {
+            ChangedPixelUnitData pixelUnitData = workUnitData.getPixelUnitData(i);
+            canvasPixelInfo.setPixel(canvasPixelInfo.getWidth() * pixelUnitData.yPos + pixelUnitData.xPos, new Color(pixelUnitData.prevColor));
+        }
+
+        workDataRecorder.decreasePresentIndex();
+
+        drawCanvas.run();
+    }
+
+    public void redo(CanvasPixelInfo canvasPixelInfo) {
+        workDataRecorder.increasePresentIndex();
+
+        if(!workDataRecorder.isRearWorkExist()) {
+            workDataRecorder.decreasePresentIndex();
+            return;
+        }
+        WorkUnitData workUnitData = workDataRecorder.getCurrentWorkUnitData();
+
+        for(int i=0; i<workUnitData.getSize(); i++) {
+            ChangedPixelUnitData pixelUnitData = workUnitData.getPixelUnitData(i);
+            canvasPixelInfo.setPixel(canvasPixelInfo.getWidth() * pixelUnitData.yPos + pixelUnitData.xPos, new Color(pixelUnitData.changedColor));
+        }
+
+        drawCanvas.run();
+
     }
 
     public void setWorkDataRecorder(WorkDataRecorder workDataRecorder) {

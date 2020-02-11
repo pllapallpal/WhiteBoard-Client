@@ -24,7 +24,6 @@ public class DrawingPanel {
 
     private WorkDataRecorder workDataRecorder;
     private RestoreHandler restoreHandler;
-    private Runnable restoreDrawer;
 
     public DrawingPanel(){
 
@@ -35,20 +34,19 @@ public class DrawingPanel {
     private void initializeComponents(){
         drawingPanel = new JPanel();
         toolPanel = new ToolPanel();
-        drawingCanvas = new DrawingCanvas();
 
+        drawingCanvas = new DrawingCanvas();
         drawingModeHandler = new DrawingModeHandler();
+
+        workDataRecorder = new WorkDataRecorder();
+        restoreHandler = new RestoreHandler(drawingCanvas::drawCanvas);
 
         drawingPanel.setLayout(new BorderLayout(DEFAULT_GAP, DEFAULT_GAP));
 
-        workDataRecorder = new WorkDataRecorder();
-        restoreHandler = new RestoreHandler();
-        restoreDrawer = drawingCanvas::drawCanvas;
-
         toolPanel.addDrawModeHandler(drawingModeHandler::drawingModeChanged);
-        toolPanel.addRestoreHandler(restoreHandler::handleRestoreEvent);
-        toolPanel.setRestoreDrawer(restoreDrawer);
         drawingCanvas.addMouseHandler(drawingModeHandler::handleMouseEvent);
+
+        toolPanel.addRestoreHandler(restoreHandler::handleRestoreEvent);
         drawingCanvas.addWorkDataRecorder(workDataRecorder::handleRecordWorkData);
 
         restoreHandler.setWorkDataRecorder(workDataRecorder);
