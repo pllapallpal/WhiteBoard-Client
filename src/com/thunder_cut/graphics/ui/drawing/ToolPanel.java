@@ -6,40 +6,39 @@
 package com.thunder_cut.graphics.ui.drawing;
 
 import com.thunder_cut.graphics.controller.DrawingMode;
-import com.thunder_cut.graphics.controller.RestoreMode;
+import com.thunder_cut.graphics.restorer.RestoreMode;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.EnumMap;
 import java.util.function.Consumer;
 
 public class ToolPanel {
-    private JPanel toolPanel = new JPanel();
-    private JButton brush = new JButton("브러쉬");
-    private JButton eraser = new JButton("지우개");
-    private JButton colorSelect = new JButton("색상선택");
-    private JButton areaSelector = new JButton("영역선택");
-    private JButton undo = new JButton("Undo");
-    private JButton redo = new JButton("Redo");
+    private JPanel toolPanel;
+
     private Consumer<DrawingMode> drawHandler;
     private Consumer<RestoreMode> restoreHandler;
     private Runnable restoreDrawer;
 
-    public ToolPanel() {
-        toolPanel.setPreferredSize(new Dimension(1280, 180));
-        toolPanel.setBackground(Color.LIGHT_GRAY);
+    private EnumMap<DrawingMode,JButton> buttons;
 
-        brush.addActionListener(e -> {
-            drawHandler.accept(DrawingMode.BRUSH);
-        });
-        eraser.addActionListener(e -> {
-            drawHandler.accept(DrawingMode.ERASER);
-        });
-        colorSelect.addActionListener(e -> {
-            drawHandler.accept(DrawingMode.COLOR_CHOOSER);
-        });
-        areaSelector.addActionListener(e -> {
-            drawHandler.accept(DrawingMode.AREA_SELECTOR);
-        });
+    private JButton undo;
+    private JButton redo;
+
+    public ToolPanel(){
+        toolPanel = new JPanel();
+
+        buttons = new EnumMap<>(DrawingMode.class);
+
+        undo = new JButton("Undo");
+        redo = new JButton("Redo");
+
+        for(DrawingMode mode : DrawingMode.values()){
+            JButton button = new JButton(mode.DISPLAY_NAME);
+            button.addActionListener(e -> drawHandler.accept(mode));
+            buttons.put(mode,button);
+        }
+
         undo.addActionListener(e -> {
             restoreHandler.accept(RestoreMode.UNDO);
             restoreDrawer.run();
@@ -49,10 +48,11 @@ public class ToolPanel {
             restoreDrawer.run();
         });
 
-        toolPanel.add(brush);
-        toolPanel.add(eraser);
-        toolPanel.add(colorSelect);
-        toolPanel.add(areaSelector);
+        toolPanel.setPreferredSize(new Dimension(1280, 180));
+        toolPanel.setBackground(Color.LIGHT_GRAY);
+
+        buttons.forEach((mode,button) -> toolPanel.add(button));
+
         toolPanel.add(undo);
         toolPanel.add(redo);
     }

@@ -3,11 +3,8 @@
  * Author : Cwhist
  * Created Date : 2020-02-01
  */
-package com.thunder_cut.graphics.feature;
+package com.thunder_cut.graphics.restorer;
 
-import com.thunder_cut.graphics.controller.ChangedPixelUnitData;
-import com.thunder_cut.graphics.controller.WorkDataList;
-import com.thunder_cut.graphics.controller.WorkUnitData;
 import com.thunder_cut.graphics.ui.drawing.CanvasPixelInfo;
 
 import java.awt.*;

@@ -3,12 +3,16 @@
  * Author : Cwhist
  * Created Date : 2020-01-30
  */
-package com.thunder_cut.graphics.controller;
+package com.thunder_cut.graphics.restorer;
 
 import java.util.ArrayList;
 
 public class WorkUnitData {
-    private ArrayList<ChangedPixelUnitData> workUnitData = new ArrayList<>();
+    private ArrayList<ChangedPixelUnitData> workUnitData;
+
+    public WorkUnitData() {
+        workUnitData = new ArrayList<>();
+    }
 
     public void addData(ChangedPixelUnitData changedPixelUnitData) {
         workUnitData.add(changedPixelUnitData);
