@@ -34,6 +34,11 @@ public class DrawingModeHandler {
         if(mode == DrawingMode.COLOR_CHOOSER) {
             color = JColorChooser.showDialog(null, "Color", Color.GRAY);
         }
+        else if(mode == DrawingMode.SIZE_CHOOSER) {
+            int size = Integer.parseInt(JOptionPane.showInputDialog("size"));
+            ((Brush) drawingFeatures.get(DrawingMode.BRUSH)).setSize(size);
+            ((Eraser) drawingFeatures.get(DrawingMode.ERASER)).setSize(size);
+        }
         else {
             selectedDrawingMode = mode;
         }
