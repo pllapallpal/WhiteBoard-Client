@@ -5,6 +5,8 @@
  */
 package com.thunder_cut.graphics.ui;
 
+import com.thunder_cut.graphics.ui.theme.Theme;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -24,7 +26,7 @@ public class ParticipantsPanel {
         participants = new ArrayList<>();
 
         participantsPanel = new JPanel();
-        participantsPanel.setBackground(Color.GRAY);
+        participantsPanel.setBackground(Theme.CURRENT.background);
         participantsPanel.setBorder(BorderFactory.createEmptyBorder(DEFAULT_GAP, DEFAULT_GAP, DEFAULT_GAP, DEFAULT_GAP));
         participantsPanel.setLayout(new BoxLayout(participantsPanel, BoxLayout.Y_AXIS));
 
@@ -33,8 +35,8 @@ public class ParticipantsPanel {
 
     private void makePanel(){
         JPanel newPanel = new JPanel();
-        newPanel.setBackground(Color.LIGHT_GRAY);
-        newPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, DEFAULT_GAP));
+        newPanel.setBackground(Theme.CURRENT.primary);
+        newPanel.setBorder(BorderFactory.createLineBorder(Theme.CURRENT.primary, DEFAULT_GAP));
 
         newPanel.setMaximumSize(new Dimension(480, 270));
         newPanel.setPreferredSize(new Dimension(480, 270));

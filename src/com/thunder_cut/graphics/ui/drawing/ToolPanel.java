@@ -7,6 +7,7 @@ package com.thunder_cut.graphics.ui.drawing;
 
 import com.thunder_cut.graphics.controller.DrawingMode;
 import com.thunder_cut.graphics.restorer.RestoreMode;
+import com.thunder_cut.graphics.ui.theme.Theme;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,18 +36,28 @@ public class ToolPanel {
         for(DrawingMode mode : DrawingMode.values()){
             JButton button = new JButton(mode.DISPLAY_NAME);
             button.addActionListener(e -> drawHandler.accept(mode));
+            button.setBackground(Theme.CURRENT.secondary);
+            button.setForeground(Theme.CURRENT.onSecondary);
+            button.setFont(Theme.CURRENT.font);
             buttons.put(mode,button);
         }
 
         undo.addActionListener(e -> {
             restoreHandler.accept(RestoreMode.UNDO);
         });
+        undo.setBackground(Theme.CURRENT.secondary);
+        undo.setForeground(Theme.CURRENT.onSecondary);
+        undo.setFont(Theme.CURRENT.font);
+
         redo.addActionListener(e -> {
             restoreHandler.accept(RestoreMode.REDO);
         });
+        redo.setBackground(Theme.CURRENT.secondary);
+        redo.setForeground(Theme.CURRENT.onSecondary);
+        redo.setFont(Theme.CURRENT.font);
 
         toolPanel.setPreferredSize(new Dimension(1280, 180));
-        toolPanel.setBackground(Color.LIGHT_GRAY);
+        toolPanel.setBackground(Theme.CURRENT.primary);
 
         buttons.forEach((mode,button) -> toolPanel.add(button));
 

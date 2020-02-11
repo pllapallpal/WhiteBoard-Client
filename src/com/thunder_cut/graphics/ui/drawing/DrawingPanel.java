@@ -8,6 +8,7 @@ package com.thunder_cut.graphics.ui.drawing;
 import com.thunder_cut.graphics.controller.DrawingModeHandler;
 import com.thunder_cut.graphics.restorer.RestoreHandler;
 import com.thunder_cut.graphics.restorer.WorkDataRecorder;
+import com.thunder_cut.graphics.ui.theme.Theme;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,7 +54,7 @@ public class DrawingPanel {
     }
 
     private void createView(){
-        drawingPanel.setBackground(Color.GRAY);
+        drawingPanel.setBackground(Theme.CURRENT.background);
         drawingPanel.add(toolPanel.getToolPanel(), BorderLayout.NORTH);
         drawingPanel.add(drawingCanvas.getCanvas(), BorderLayout.CENTER);
 
