@@ -5,38 +5,57 @@
  */
 package com.thunder_cut.netio;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.channels.SocketChannel;
+import java.util.function.BiConsumer;
 
 /**
  * ConnectionModule is a class that supervises net i/o.
  */
-public class ConnectionModule {
+public class Connection {
 
-    private static ConnectionModule connectionModule;
+    private static Connection connection;
 
     private SocketChannel socketChannel;
-    public final DataReceiver receiver;
-    public final Thread receivingThread;
+    private DataReceiver receiver;
+    private Thread receivingThread;
 
     /**
      * This is the constructor of class ConnectionModule.
      * <p>
      * object ConnectionModule should be created in <code>main</code>
      */
-    private ConnectionModule() {
+    private Connection() {
 
+        receiver = new DataReceiver();
+    }
+
+    public static void initialize() {
+        if (connection == null) {
+            connection = new Connection();
+        }
+    }
+
+    public static void createConnection() {
+        if (connection == null) {
+            initialize();
+        }
         try {
-            socketChannel = SocketChannel.open();
-            socketChannel.connect(new InetSocketAddress("127.0.0.1", 3001));
+            connection.socketChannel = SocketChannel.open();
+            connection.socketChannel.connect(new InetSocketAddress("127.0.0.1", 3001));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        receiver = new DataReceiver(socketChannel);
-        receivingThread = new Thread(receiver);
-        receivingThread.start();
+        connection.receiver.setSocketChannel(connection.socketChannel);
+        connection.receivingThread = new Thread(connection.receiver);
+        connection.receivingThread.start();
+    }
+
+    public static void send(BufferedImage image) {
+        send(new DataWrapper(image));
     }
 
     /**
@@ -47,18 +66,15 @@ public class ConnectionModule {
      * - undo/redo method
      * @param data is data ready to be sent.
      */
-    public void send(DataWrapper data) {
+    public static void send(DataWrapper data) {
         try {
-            socketChannel.write(data.wrappedData);
+            connection.socketChannel.write(data.wrappedData);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static ConnectionModule getInstance() {
-        if (connectionModule == null) {
-            connectionModule = new ConnectionModule();
-        }
-        return connectionModule;
+    public static void addDrawImage(BiConsumer<Integer, byte[]> drawImage) {
+        connection.receiver.addDrawImage(drawImage);
     }
 }
