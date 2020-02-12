@@ -23,10 +23,6 @@ public class DataReceiver implements Runnable {
 
     private BiConsumer<Integer, byte[]> drawImage;
 
-    public DataReceiver(SocketChannel socketChannel) {
-        this.socketChannel = socketChannel;
-    }
-
     @Override
     public void run() {
         while (true) {
@@ -85,5 +81,9 @@ public class DataReceiver implements Runnable {
 
     public DataUnwrapper getReceivedData() {
         return receivedData;
+    }
+
+    public void setSocketChannel(SocketChannel socketChannel) {
+        this.socketChannel = socketChannel;
     }
 }

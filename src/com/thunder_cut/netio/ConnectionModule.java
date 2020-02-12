@@ -14,9 +14,9 @@ import java.util.function.BiConsumer;
 /**
  * ConnectionModule is a class that supervises net i/o.
  */
-public class Connection {
+public class ConnectionModule {
 
-    private static Connection connection;
+    private static ConnectionModule connectionModule;
 
     private SocketChannel socketChannel;
     private DataReceiver receiver;
@@ -27,31 +27,31 @@ public class Connection {
      * <p>
      * object ConnectionModule should be created in <code>main</code>
      */
-    private Connection() {
+    private ConnectionModule() {
 
         receiver = new DataReceiver();
     }
 
     public static void initialize() {
-        if (connection == null) {
-            connection = new Connection();
+        if (connectionModule == null) {
+            connectionModule = new ConnectionModule();
         }
     }
 
     public static void createConnection() {
-        if (connection == null) {
+        if (connectionModule == null) {
             initialize();
         }
         try {
-            connection.socketChannel = SocketChannel.open();
-            connection.socketChannel.connect(new InetSocketAddress("127.0.0.1", 3001));
+            connectionModule.socketChannel = SocketChannel.open();
+            connectionModule.socketChannel.connect(new InetSocketAddress("127.0.0.1", 3001));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        connection.receiver.setSocketChannel(connection.socketChannel);
-        connection.receivingThread = new Thread(connection.receiver);
-        connection.receivingThread.start();
+        connectionModule.receiver.setSocketChannel(connectionModule.socketChannel);
+        connectionModule.receivingThread = new Thread(connectionModule.receiver);
+        connectionModule.receivingThread.start();
     }
 
     public static void send(BufferedImage image) {
@@ -68,13 +68,13 @@ public class Connection {
      */
     public static void send(DataWrapper data) {
         try {
-            connection.socketChannel.write(data.wrappedData);
+            connectionModule.socketChannel.write(data.wrappedData);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public static void addDrawImage(BiConsumer<Integer, byte[]> drawImage) {
-        connection.receiver.addDrawImage(drawImage);
+        connectionModule.receiver.addDrawImage(drawImage);
     }
 }

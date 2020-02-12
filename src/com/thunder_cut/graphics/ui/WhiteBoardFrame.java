@@ -6,8 +6,8 @@
 package com.thunder_cut.graphics.ui;
 
 import com.thunder_cut.graphics.ui.drawing.DrawingPanel;
-import com.thunder_cut.netio.ConnectionModule;
 import com.thunder_cut.graphics.ui.keys.HotKeyExecutor;
+import com.thunder_cut.netio.ConnectionModule;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,6 +37,8 @@ public class WhiteBoardFrame {
         createView();
 
         HotKeyExecutor.initialize();
+
+        ConnectionModule.createConnection();
     }
 
     private void initializeComponents(){
@@ -53,7 +55,7 @@ public class WhiteBoardFrame {
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.getVerticalScrollBar().setUnitIncrement(scrollSpeed);
 
-        ConnectionModule.getInstance().receiver.addDrawImage(participantsPanel::drawImage);
+        ConnectionModule.addDrawImage(participantsPanel::drawImage);
 
         mainFrame.addComponentListener(new ComponentAdapter() {
             @Override
