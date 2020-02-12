@@ -8,7 +8,8 @@ package com.thunder_cut.netio;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
-import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.function.BiConsumer;
 
 /**
@@ -23,6 +24,13 @@ public class DataReceiver implements Runnable {
 
     private BiConsumer<Integer, byte[]> drawImage;
 
+    private enum HeaderItem {
+        TYPE,
+        SRC_ID,
+        DST_ID,
+        DATA_SIZE;
+    }
+
     @Override
     public void run() {
         while (true) {
@@ -33,46 +41,50 @@ public class DataReceiver implements Runnable {
     public void receiveData() {
 
         try {
-            // 먼저 헤더만큼 allocate 한 다음에 그만큼만 읽는다
-            ByteBuffer header = ByteBuffer.allocate(14);
-            socketChannel.read(header);
-
-            // 헤더를 딴다
-            header.flip();
-            char type = header.getChar();
-            int srcID = header.getInt();
-            int dstID = header.getInt();
-            int dataSize = header.getInt();
-
-            System.out.println(type);
-            System.out.println(srcID);
-            System.out.println(dstID);
-            System.out.println(dataSize);
-
-            // dataSize 만큼 ByteBuffer allocate 한 뒤 받는다
-            ByteBuffer data = ByteBuffer.allocate(dataSize);
-            while (data.hasRemaining()) {
-                socketChannel.read(data);
-            }
-            System.out.println("received " + data.toString());
-
-            // 헤더를 포함한 unwrappedData
-            data.flip();
-            ByteBuffer unwrappedData = ByteBuffer.allocate(dataSize + 14);
-            unwrappedData.putChar(type);
-            unwrappedData.putInt(srcID);
-            unwrappedData.putInt(dstID);
-            unwrappedData.putInt(dataSize);
-            unwrappedData.put(data);
-            receivedData = new DataUnwrapper(unwrappedData);
-            System.out.println("succeed to receive : " + Arrays.toString(unwrappedData.array()));
-
-            drawImage.accept(srcID, receivedData.data.array());
-
+            Map<HeaderItem, Integer> header = readHeader();
+            readData(header);
         } catch (IOException e) {
-            System.out.println("failed to receive data");
             e.printStackTrace();
         }
+    }
+
+    private Map<HeaderItem, Integer> readHeader() throws IOException {
+
+        Map<HeaderItem, Integer> headers = new EnumMap<>(HeaderItem.class);
+        ByteBuffer header = ByteBuffer.allocate(14);
+        socketChannel.read(header);
+
+        header.flip();
+
+        headers.put(HeaderItem.TYPE, (int) header.getChar());
+        headers.put(HeaderItem.SRC_ID, header.getInt());
+        headers.put(HeaderItem.DST_ID, header.getInt());
+        headers.put(HeaderItem.DATA_SIZE, header.getInt());
+
+        return headers;
+    }
+
+    private void readData(Map<HeaderItem, Integer> header) throws IOException {
+
+        int dataSize = header.get(HeaderItem.DATA_SIZE);
+        int srcID = header.get(HeaderItem.SRC_ID);
+
+        ByteBuffer data = ByteBuffer.allocate(dataSize);
+        while (data.hasRemaining()) {
+            socketChannel.read(data);
+        }
+        data.flip();
+
+        ByteBuffer unwrappedData = ByteBuffer.allocate(dataSize + 14);
+        unwrappedData.putChar((char) header.get(HeaderItem.TYPE).intValue())
+                     .putInt(srcID)
+                     .putInt(header.get(HeaderItem.DST_ID))
+                     .putInt(dataSize)
+                     .put(data);
+
+        receivedData = new DataUnwrapper(unwrappedData);
+
+        drawImage.accept(srcID, receivedData.data.array());
     }
 
     public void addDrawImage(BiConsumer<Integer, byte[]> drawImage) {
