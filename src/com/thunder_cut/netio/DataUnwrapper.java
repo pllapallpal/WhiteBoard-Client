@@ -24,8 +24,6 @@ public class DataUnwrapper {
 
         data.flip();
 
-        System.out.println(data.toString());
-
         dataType = data.getChar();
         srcID = data.getInt();
         dstID = data.getInt();
@@ -34,12 +32,6 @@ public class DataUnwrapper {
         data.get(realData);
         this.data = ByteBuffer.wrap(realData);
 
-        System.out.println(this.data.toString());
         this.data.flip();
-        System.out.println(this.data.toString());
     }
-
-    // TODO: 수신된 이미지 ID랑 데이터 구분해서 UI에 알려주기
-    //       몇번 호스트꺼 이미지인지 && 이미지 부분만 바이트로 바꿔서 알려주기
-    //  일단 된다고 가정하고 다음 작업 하기
 }
