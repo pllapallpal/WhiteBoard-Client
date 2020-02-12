@@ -14,9 +14,9 @@ import java.util.function.BiConsumer;
 /**
  * ConnectionModule is a class that supervises net i/o.
  */
-public class ConnectionModule {
+public class Connection {
 
-    private static ConnectionModule connectionModule;
+    private static Connection connectionModule;
 
     private SocketChannel socketChannel;
     private DataReceiver receiver;
@@ -27,18 +27,18 @@ public class ConnectionModule {
      * <p>
      * object ConnectionModule should be created in <code>main</code>
      */
-    private ConnectionModule() {
+    private Connection() {
 
         receiver = new DataReceiver();
     }
 
     public static void initialize() {
         if (connectionModule == null) {
-            connectionModule = new ConnectionModule();
+            connectionModule = new Connection();
         }
     }
 
-    public static void createConnection() {
+       public static void createConnection() {
         if (connectionModule == null) {
             initialize();
         }
