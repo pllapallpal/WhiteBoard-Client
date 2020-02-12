@@ -8,6 +8,7 @@ package com.thunder_cut.graphics.ui.drawing;
 import com.thunder_cut.graphics.controller.DrawingModeHandler;
 import com.thunder_cut.graphics.restorer.RestoreHandler;
 import com.thunder_cut.graphics.restorer.WorkDataRecorder;
+import com.thunder_cut.graphics.ui.theme.Theme;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,7 +25,6 @@ public class DrawingPanel {
 
     private WorkDataRecorder workDataRecorder;
     private RestoreHandler restoreHandler;
-    private Runnable restoreDrawer;
 
     public DrawingPanel(){
 
@@ -35,27 +35,26 @@ public class DrawingPanel {
     private void initializeComponents(){
         drawingPanel = new JPanel();
         toolPanel = new ToolPanel();
-        drawingCanvas = new DrawingCanvas();
 
+        drawingCanvas = new DrawingCanvas();
         drawingModeHandler = new DrawingModeHandler();
+
+        workDataRecorder = new WorkDataRecorder();
+        restoreHandler = new RestoreHandler(drawingCanvas::drawCanvas);
 
         drawingPanel.setLayout(new BorderLayout(DEFAULT_GAP, DEFAULT_GAP));
 
-        workDataRecorder = new WorkDataRecorder();
-        restoreHandler = new RestoreHandler();
-        restoreDrawer = drawingCanvas::drawCanvas;
-
         toolPanel.addDrawModeHandler(drawingModeHandler::drawingModeChanged);
-        toolPanel.addRestoreHandler(restoreHandler::handleRestoreEvent);
-        toolPanel.setRestoreDrawer(restoreDrawer);
         drawingCanvas.addMouseHandler(drawingModeHandler::handleMouseEvent);
+
+        toolPanel.addRestoreHandler(restoreHandler::handleRestoreEvent);
         drawingCanvas.addWorkDataRecorder(workDataRecorder::handleRecordWorkData);
 
         restoreHandler.setWorkDataRecorder(workDataRecorder);
     }
 
     private void createView(){
-        drawingPanel.setBackground(Color.GRAY);
+        drawingPanel.setBackground(Theme.CURRENT.background);
         drawingPanel.add(toolPanel.getToolPanel(), BorderLayout.NORTH);
         drawingPanel.add(drawingCanvas.getCanvas(), BorderLayout.CENTER);
 
@@ -72,5 +71,8 @@ public class DrawingPanel {
         workDataRecorder.setCanvasPixelInfo(drawingCanvas.getCanvasPixelInfo());
     }
 
+    public void notifyFrameMoved(){
+        drawingCanvas.notifyFrameMoved();
+    }
 
 }

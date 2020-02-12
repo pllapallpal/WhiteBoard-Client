@@ -32,7 +32,7 @@ public class DrawingCanvas {
 
     public DrawingCanvas() {
         canvas = new Canvas();
-
+        canvas.setIgnoreRepaint(true);
         canvas.setBackground(Color.WHITE);
         canvas.addMouseListener(new MouseAdapter() {
             @Override
@@ -116,5 +116,9 @@ public class DrawingCanvas {
 
     public CanvasPixelInfo getCanvasPixelInfo() {
         return canvasPixelInfo;
+    }
+
+    public void notifyFrameMoved(){
+        drawCanvas();
     }
 }

@@ -29,7 +29,7 @@ public class ConnectionModule {
 
         try {
             socketChannel = SocketChannel.open();
-            socketChannel.connect(new InetSocketAddress("whiteboard.sysbot32.com", 3001));
+            socketChannel.connect(new InetSocketAddress("127.0.0.1", 3001));
         } catch (IOException e) {
             e.printStackTrace();
         }
