@@ -38,7 +38,7 @@ public class Connection {
         }
     }
 
-       public static void createConnection() {
+    public static void createConnection() {
         if (connectionModule == null) {
             initialize();
         }
@@ -64,6 +64,7 @@ public class Connection {
      * - mouseReleased() method, which is in constructor of DrawingCanvas class
      * <p>
      * - undo/redo method
+     *
      * @param data is data ready to be sent.
      */
     public static void send(DataWrapper data) {

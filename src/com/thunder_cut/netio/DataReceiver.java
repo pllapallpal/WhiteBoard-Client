@@ -9,20 +9,15 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
 /**
- * Receives other participants' image
+ * Receives other participants' data
  * <p>
- * It has infinite loop, and is run in constructor of ConnectionModule
  */
 public class DataReceiver implements Runnable {
-
-    private SocketChannel socketChannel;
-    private DataUnwrapper receivedData;
-
-    private BiConsumer<Integer, byte[]> drawImage;
 
     private enum HeaderItem {
         TYPE,
@@ -31,10 +26,26 @@ public class DataReceiver implements Runnable {
         DATA_SIZE;
     }
 
+    private SocketChannel socketChannel;
+    private DataUnwrapper receivedData;
+
+    private BiConsumer<Integer, byte[]> drawImage;
+
+    private Map<Character, BiConsumer<Integer, byte[]>> dataType;
+
     @Override
     public void run() {
+
+        dataType = new HashMap<Character, BiConsumer<Integer, byte[]>>();
+
+        dataType.put(DataType.IMG.type, drawImage);
+//        dataType.put(DataType.MSG, ***);
+//        dataType.put(DataType.CMD, ***);
+
         while (true) {
             receiveData();
+
+            dataType.get(receivedData.dataType).accept(receivedData.srcID, receivedData.data.array());
         }
     }
 
@@ -77,22 +88,16 @@ public class DataReceiver implements Runnable {
 
         ByteBuffer unwrappedData = ByteBuffer.allocate(dataSize + 14);
         unwrappedData.putChar((char) header.get(HeaderItem.TYPE).intValue())
-                     .putInt(srcID)
-                     .putInt(header.get(HeaderItem.DST_ID))
-                     .putInt(dataSize)
-                     .put(data);
+                .putInt(srcID)
+                .putInt(header.get(HeaderItem.DST_ID))
+                .putInt(dataSize)
+                .put(data);
 
         receivedData = new DataUnwrapper(unwrappedData);
-
-        drawImage.accept(srcID, receivedData.data.array());
     }
 
     public void addDrawImage(BiConsumer<Integer, byte[]> drawImage) {
         this.drawImage = drawImage;
-    }
-
-    public DataUnwrapper getReceivedData() {
-        return receivedData;
     }
 
     public void setSocketChannel(SocketChannel socketChannel) {
