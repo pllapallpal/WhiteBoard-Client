@@ -11,6 +11,7 @@ import java.awt.image.DataBufferInt;
 
 public class CanvasPixelInfo {
     private int[] pixels;
+    private int[] effectPixels;
     private int width;
     private int height;
 
@@ -18,14 +19,16 @@ public class CanvasPixelInfo {
         this.width = width;
         this.height = height;
         pixels = new int[width * height];
+        effectPixels = new int[width * height];
 
         for(int i = 0; i < pixels.length; i++) {
             pixels[i] = backgroundColor.getRGB();
+            effectPixels[i] = new Color(255,255,255,0).getRGB();
         }
     }
 
     public BufferedImage toBufferedImage() {
-        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         int[] imagePixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
         for(int i = 0; i < imagePixels.length; i++) {
@@ -35,8 +38,30 @@ public class CanvasPixelInfo {
         return image;
     }
 
+    public BufferedImage toBufferedImageEffect() {
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        int[] imagePixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+
+        for(int i = 0; i < imagePixels.length; i++) {
+            imagePixels[i] = effectPixels[i];
+        }
+
+        return image;
+    }
+
+    public void initEffectPixels() {
+        effectPixels = new int[width * height];
+        for(int i = 0; i < pixels.length; i++) {
+            effectPixels[i] = new Color(255,255,255,0).getRGB();
+        }
+    }
+
     public void setPixel(int index, Color color) {
         pixels[index] = color.getRGB();
+    }
+
+    public void setEffectPixel(int index, Color color) {
+        effectPixels[index] = color.getRGB();
     }
 
     public void setPixels(int[] pixels, int width, int height) {
