@@ -1,5 +1,5 @@
 /*
- * ConnectionModule.java
+ * Connection.java
  * Author : Hyeokwoo Kwon
  * Created Date : 2020-02-01
  */
@@ -12,7 +12,7 @@ import java.nio.channels.SocketChannel;
 import java.util.function.BiConsumer;
 
 /**
- * ConnectionModule is a class that supervises net i/o.
+ * A class that supervises overall net i/o
  */
 public class Connection {
 
@@ -22,22 +22,25 @@ public class Connection {
     private DataReceiver receiver;
     private Thread receivingThread;
 
-    /**
-     * This is the constructor of class ConnectionModule.
-     * <p>
-     * object ConnectionModule should be created in <code>main</code>
-     */
     private Connection() {
 
         receiver = new DataReceiver();
     }
 
+    /**
+     * Creates connectionModule instance (if it doesn't exist)
+     */
     public static void initialize() {
         if (connectionModule == null) {
             connectionModule = new Connection();
         }
     }
 
+    /**
+     * If connectionModule doesn't exist, this method runs initialize() method
+     * <p>
+     * Opens socketChannel, and starts to receive data from the server
+     */
     public static void createConnection() {
         if (connectionModule == null) {
             initialize();
@@ -54,18 +57,19 @@ public class Connection {
         connectionModule.receivingThread.start();
     }
 
+    /**
+     * Is called at drawCanvas() method in DrawingCanvas
+     *
+     * @param image is wrapped by overridden send() method
+     */
     public static void send(BufferedImage image) {
         send(new DataWrapper(image));
     }
 
     /**
-     * Is called at
-     * <p>
-     * - mouseReleased() method, which is in constructor of DrawingCanvas class
-     * <p>
-     * - undo/redo method
+     * Sends data through the socketChannel
      *
-     * @param data is data ready to be sent.
+     * @param data Data that is ready to be sent
      */
     public static void send(DataWrapper data) {
         try {

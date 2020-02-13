@@ -1,5 +1,5 @@
 /*
- * ParticipantsImageReceiver.java
+ * DataReceiver.java
  * Author : Hyeokwoo Kwon
  * Created Date : 2020-02-01
  */
@@ -14,8 +14,7 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 
 /**
- * Receives other participants' data
- * <p>
+ * Receives data sent from the server
  */
 public class DataReceiver implements Runnable {
 
@@ -39,8 +38,6 @@ public class DataReceiver implements Runnable {
         dataType = new HashMap<Character, BiConsumer<Integer, byte[]>>();
 
         dataType.put(DataType.IMG.type, drawImage);
-//        dataType.put(DataType.MSG, ***);
-//        dataType.put(DataType.CMD, ***);
 
         while (true) {
             receiveData();
@@ -52,8 +49,7 @@ public class DataReceiver implements Runnable {
     public void receiveData() {
 
         try {
-            Map<HeaderItem, Integer> header = readHeader();
-            readData(header);
+            readData(readHeader());
         } catch (IOException e) {
             e.printStackTrace();
         }

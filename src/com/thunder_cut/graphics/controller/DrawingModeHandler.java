@@ -45,6 +45,6 @@ public class DrawingModeHandler {
     }
 
     public void handleMouseEvent(MouseData mouseData, CanvasPixelInfo canvasPixelInfo) {
-        drawingFeatures.get(selectedDrawingMode).process(mouseData, canvasPixelInfo, color); // 이부분
+        drawingFeatures.get(selectedDrawingMode).process(mouseData, canvasPixelInfo, color);
     }
 }

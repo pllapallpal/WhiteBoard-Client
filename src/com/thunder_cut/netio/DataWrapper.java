@@ -1,5 +1,5 @@
 /*
- * SentData.java
+ * DataWrapper.java
  * Author : Hyeokwoo Kwon
  * Created Date : 2020-02-07
  */
