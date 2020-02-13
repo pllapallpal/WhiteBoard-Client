@@ -12,7 +12,7 @@ import java.nio.channels.SocketChannel;
 import java.util.function.BiConsumer;
 
 /**
- * A class that supervises overall net i/o
+ * A class that supervises overall net i/o (establish connection, send/receive data)
  */
 public class Connection {
 
@@ -28,7 +28,7 @@ public class Connection {
     }
 
     /**
-     * Creates connectionModule instance (if it doesn't exist)
+     * Initializes connectionModule instance
      */
     public static void initialize() {
         if (connectionModule == null) {
@@ -37,9 +37,13 @@ public class Connection {
     }
 
     /**
-     * If connectionModule doesn't exist, this method runs initialize() method
+     * If connectionModule instance doesn't exist, this method
+     * runs initialize() method
      * <p>
      * Opens socketChannel, and starts to receive data from the server
+     *
+     * @param address Address of the server you want to connect in
+     * @param port Port number that matches with server
      */
     public static void createConnection(String address, int port) {
         if (connectionModule == null) {
@@ -58,18 +62,18 @@ public class Connection {
     }
 
     /**
-     * Is called at drawCanvas() method in DrawingCanvas
+     * Sends image to connected server
      *
-     * @param image is wrapped by overridden send() method
+     * @param image Image to send to the server
      */
     public static void send(BufferedImage image) {
         send(new DataWrapper(image));
     }
 
     /**
-     * Sends data through the socketChannel
+     * Sends data to connected server
      *
-     * @param data Data that is ready to be sent
+     * @param data Data ready to be sent
      */
     public static void send(DataWrapper data) {
         try {
@@ -79,6 +83,13 @@ public class Connection {
         }
     }
 
+    /**
+     * Functional interface, mediates drawImage() in ParticipantsPanel to DataReceiver
+     *
+     * @param drawImage DrawImage is BiConsumer.
+     *                  First argument Integer stands for srcID,
+     *                  Second argument byte[] is image transformed to byte array
+     */
     public static void addDrawImage(BiConsumer<Integer, byte[]> drawImage) {
         connectionModule.receiver.addDrawImage(drawImage);
     }

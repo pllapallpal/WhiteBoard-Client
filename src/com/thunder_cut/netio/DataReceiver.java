@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 
 /**
- * Receives data sent from the server
+ * Receives data sent from the server, looping until the program ends
  */
 public class DataReceiver implements Runnable {
 
@@ -46,7 +46,7 @@ public class DataReceiver implements Runnable {
         }
     }
 
-    public void receiveData() {
+    private void receiveData() {
 
         try {
             readData(readHeader());
@@ -92,10 +92,22 @@ public class DataReceiver implements Runnable {
         receivedData = new DataUnwrapper(unwrappedData);
     }
 
+    /**
+     * Functional interface, adds drawImage() (accepted from Connection) to DataReceiver
+     *
+     * @param drawImage DrawImage is BiConsumer.
+     *                  First argument Integer stands for srcID,
+     *                  Second argument byte[] is image transformed to byte array
+     */
     public void addDrawImage(BiConsumer<Integer, byte[]> drawImage) {
         this.drawImage = drawImage;
     }
 
+    /**
+     * Sets socketChannel needed to communicate with the server
+     *
+     * @param socketChannel Sets socketChannel value in DataReceiver
+     */
     public void setSocketChannel(SocketChannel socketChannel) {
         this.socketChannel = socketChannel;
     }

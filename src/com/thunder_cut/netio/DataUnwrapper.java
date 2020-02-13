@@ -10,7 +10,14 @@ import java.nio.ByteBuffer;
 /**
  * Includes information of data that has come from server
  * <p>
- * (rawData, dataType, srcID, dstID, dataSize, actual data)
+ * Header of the data has a set of sequence
+ * <pre>
+ * - dataType
+ * - srcID
+ * - dstID
+ * - dataSize
+ * - actual data
+ * </pre>
  */
 public class DataUnwrapper {
 

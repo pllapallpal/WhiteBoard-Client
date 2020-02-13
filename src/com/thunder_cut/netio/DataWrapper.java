@@ -12,9 +12,14 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 /**
- * Includes information of data that'll be sent to server
+ * Includes information of data that'll be sent to the server
  * <p>
- * (rawData, dataType, dataSize, actual data)
+ * Header of the data has a set of sequence
+ * <pre>
+ * - dataType
+ * - dataSize
+ * - actual data
+ * </pre>
  */
 public class DataWrapper {
 
