@@ -48,6 +48,12 @@ public class DrawingCanvas {
                 mouseHandler.accept(new MouseData(MouseStatus.DRAGGED, e.getX(), e.getY()), canvasPixelInfo);
                 drawCanvas();
             }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                mouseHandler.accept(new MouseData(MouseStatus.MOVED, e.getX(), e.getY()), canvasPixelInfo);
+                drawCanvas();
+            }
         });
         canvas.addComponentListener(new ComponentAdapter() {
             @Override

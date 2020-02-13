@@ -17,11 +17,33 @@ public class Eraser extends Brush {
 
     @Override
     public void dragged(int xPos, int yPos, CanvasPixelInfo canvasPixelInfo, Color color) {
+        canvasPixelInfo.initEffectPixels();
         super.dragged(xPos, yPos, canvasPixelInfo, Color.WHITE);
+        this.moved(xPos, yPos, canvasPixelInfo, Color.WHITE);
+        makeBorderEffect(xPos, yPos, canvasPixelInfo);
     }
 
     @Override
     public void released(int xPos, int yPos, CanvasPixelInfo canvasPixelInfo, Color color) {
         super.released(xPos, yPos, canvasPixelInfo, Color.WHITE);
+    }
+
+    @Override
+    public void moved(int xPos, int yPos, CanvasPixelInfo canvasPixelInfo, Color color) {
+        super.moved(xPos, yPos, canvasPixelInfo, Color.WHITE);
+        makeBorderEffect(xPos, yPos, canvasPixelInfo);
+    }
+
+    public void makeBorderEffect(int xPos, int yPos, CanvasPixelInfo canvasPixelInfo) {
+        xPos -= (super.getSize() / 2);
+        yPos -= (super.getSize() / 2);
+        for(int i=0; i<super.getSize(); i++) {
+            if(!isOverCanvas(xPos, yPos, canvasPixelInfo.getWidth(), canvasPixelInfo.getHeight())) {
+                canvasPixelInfo.setEffectPixel(canvasPixelInfo.getWidth() * yPos + (xPos + i), Color.BLACK);
+                canvasPixelInfo.setEffectPixel(canvasPixelInfo.getWidth() * (yPos + i) + xPos, Color.BLACK);
+                canvasPixelInfo.setEffectPixel(canvasPixelInfo.getWidth() * (yPos + super.getSize()) + (xPos + i), Color.BLACK);
+                canvasPixelInfo.setEffectPixel(canvasPixelInfo.getWidth() * (yPos + i ) + (xPos + super.getSize()), Color.BLACK);
+            }
+        }
     }
 }

@@ -27,6 +27,8 @@ public class AreaSelector implements DrawingFeature {
             endXPos = xPos;
             endYPos = yPos;
         }
+        canvasPixelInfo.initEffectPixels();
+        makeBorderEffect(xPos,yPos,canvasPixelInfo);
     }
 
     @Override
@@ -35,5 +37,50 @@ public class AreaSelector implements DrawingFeature {
             endXPos = xPos;
             endYPos = yPos;
         }
+        canvasPixelInfo.initEffectPixels();
+        makeBorderEffect(xPos,yPos,canvasPixelInfo);
+    }
+
+    @Override
+    public void moved(int xPos, int yPos, CanvasPixelInfo canvasPixelInfo, Color color) {
+
+    }
+
+    public void makeBorderEffect(int xPos, int yPos, CanvasPixelInfo canvasPixelInfo) {
+        int lowX;
+        int lowY;
+        int highX;
+        int highY;
+
+        if(startXPos > endXPos) {
+            lowX = endXPos;
+            highX = startXPos;
+        }
+        else {
+            lowX = startXPos;
+            highX = endXPos;
+        }
+        if(startYPos > endYPos) {
+            lowY = endYPos;
+            highY = startYPos;
+        }
+        else {
+            lowY = startYPos;
+            highY = endYPos;
+        }
+
+        for(int i = lowX; i < highX; i++) {
+            if(i % 12 > 6) {
+                canvasPixelInfo.setEffectPixel(canvasPixelInfo.getWidth() * lowY + i, Color.BLACK);
+                canvasPixelInfo.setEffectPixel(canvasPixelInfo.getWidth() * highY + i, Color.BLACK);
+            }
+        }
+        for(int i = lowY; i < highY; i++) {
+            if(i % 12 > 6) {
+                canvasPixelInfo.setEffectPixel(canvasPixelInfo.getWidth() * i + lowX, Color.BLACK);
+                canvasPixelInfo.setEffectPixel(canvasPixelInfo.getWidth() * i + highX, Color.BLACK);
+            }
+        }
+
     }
 }
