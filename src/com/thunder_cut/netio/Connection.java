@@ -41,13 +41,13 @@ public class Connection {
      * <p>
      * Opens socketChannel, and starts to receive data from the server
      */
-    public static void createConnection() {
+    public static void createConnection(String address, int port) {
         if (connectionModule == null) {
             initialize();
         }
         try {
             connectionModule.socketChannel = SocketChannel.open();
-            connectionModule.socketChannel.connect(new InetSocketAddress("127.0.0.1", 3001));
+            connectionModule.socketChannel.connect(new InetSocketAddress(address, port));
         } catch (IOException e) {
             e.printStackTrace();
         }
