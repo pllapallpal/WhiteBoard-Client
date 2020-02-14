@@ -38,9 +38,6 @@ public class DataReceiver implements Runnable {
 
         dataType.put(DataType.IMG.type, drawImage);
 
-        // TODO: 탈출 조건 만들기
-        //  ExecutorService 로 전환하는 것도 방법
-        //  if문 넣고 synchronize 걸기 - 자원관리
         while (true) {
             DecapsulatedData decapsulatedData = receiveData();
 
