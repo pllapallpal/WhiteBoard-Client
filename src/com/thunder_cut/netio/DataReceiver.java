@@ -26,7 +26,6 @@ public class DataReceiver implements Runnable {
     }
 
     private SocketChannel socketChannel;
-    private DataUnwrapper receivedData;
 
     private BiConsumer<Integer, byte[]> drawImage;
 
@@ -35,43 +34,32 @@ public class DataReceiver implements Runnable {
     @Override
     public void run() {
 
-        dataType = new HashMap<Character, BiConsumer<Integer, byte[]>>();
+        dataType = new HashMap<>();
 
         dataType.put(DataType.IMG.type, drawImage);
 
+        // TODO: 탈출 조건 만들기
+        //  ExecutorService 로 전환하는 것도 방법
+        //  if문 넣고 synchronize 걸기 - 자원관리
         while (true) {
-            receiveData();
+            DecapsulatedData decapsulatedData = receiveData();
 
-            dataType.get(receivedData.dataType).accept(receivedData.srcID, receivedData.data.array());
+            dataType.get(decapsulatedData.dataType).accept(decapsulatedData.srcID, decapsulatedData.data.array());
         }
     }
 
-    private void receiveData() {
+    private DecapsulatedData receiveData() {
 
+        DecapsulatedData decapsulatedData = null;
         try {
-            readData(readHeader());
+            decapsulatedData = readData(readHeader());
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return decapsulatedData;
     }
 
-    private Map<HeaderItem, Integer> readHeader() throws IOException {
-
-        Map<HeaderItem, Integer> headers = new EnumMap<>(HeaderItem.class);
-        ByteBuffer header = ByteBuffer.allocate(14);
-        socketChannel.read(header);
-
-        header.flip();
-
-        headers.put(HeaderItem.TYPE, (int) header.getChar());
-        headers.put(HeaderItem.SRC_ID, header.getInt());
-        headers.put(HeaderItem.DST_ID, header.getInt());
-        headers.put(HeaderItem.DATA_SIZE, header.getInt());
-
-        return headers;
-    }
-
-    private void readData(Map<HeaderItem, Integer> header) throws IOException {
+    private DecapsulatedData readData(Map<HeaderItem, Integer> header) throws IOException {
 
         int dataSize = header.get(HeaderItem.DATA_SIZE);
         int srcID = header.get(HeaderItem.SRC_ID);
@@ -89,7 +77,23 @@ public class DataReceiver implements Runnable {
                 .putInt(dataSize)
                 .put(data);
 
-        receivedData = new DataUnwrapper(unwrappedData);
+        return new DecapsulatedData(unwrappedData);
+    }
+
+    private Map<HeaderItem, Integer> readHeader() throws IOException {
+
+        Map<HeaderItem, Integer> headers = new EnumMap<>(HeaderItem.class);
+        ByteBuffer header = ByteBuffer.allocate(14);
+        socketChannel.read(header);
+
+        header.flip();
+
+        headers.put(HeaderItem.TYPE, (int) header.getChar());
+        headers.put(HeaderItem.SRC_ID, header.getInt());
+        headers.put(HeaderItem.DST_ID, header.getInt());
+        headers.put(HeaderItem.DATA_SIZE, header.getInt());
+
+        return headers;
     }
 
     /**
