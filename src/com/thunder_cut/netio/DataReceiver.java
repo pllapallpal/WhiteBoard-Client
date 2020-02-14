@@ -28,15 +28,15 @@ public class DataReceiver implements Runnable {
     private SocketChannel socketChannel;
 
     private BiConsumer<Integer, byte[]> drawImage;
-
-    private Map<Character, BiConsumer<Integer, byte[]>> dataType;
+    private BiConsumer<Integer, byte[]> receiveMessage;
 
     @Override
     public void run() {
 
-        dataType = new HashMap<>();
+        Map<Character, BiConsumer<Integer, byte[]>> dataType = new HashMap<>();
 
         dataType.put(DataType.IMG.type, drawImage);
+        dataType.put(DataType.MSG.type, receiveMessage);
 
         while (true) {
             DecapsulatedData decapsulatedData = receiveData();
@@ -94,14 +94,25 @@ public class DataReceiver implements Runnable {
     }
 
     /**
-     * Functional interface, adds drawImage() (accepted from Connection) to DataReceiver
+     * Functional interface, adds drawImage() (accepted from Connection) to this (DataReceiver).
      *
      * @param drawImage DrawImage is BiConsumer.
      *                  First argument Integer stands for srcID,
-     *                  Second argument byte[] is image transformed to byte array
+     *                  second argument byte[] is image transformed to byte array
      */
     public void addDrawImage(BiConsumer<Integer, byte[]> drawImage) {
         this.drawImage = drawImage;
+    }
+
+    /**
+     * Functional interface, adds receiveMessage() to this (dataReceiver).
+     *
+     * @param receiveMessage ReceiveMessage is BiConsumer.
+     *                       First argument Integer stands for srcID,
+     *                       second argument byte[] is bytes got from the message
+     */
+    public void addReceiveMessage(BiConsumer<Integer, byte[]> receiveMessage) {
+        this.receiveMessage = receiveMessage;
     }
 
     /**

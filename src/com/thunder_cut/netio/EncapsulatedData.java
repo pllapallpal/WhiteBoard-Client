@@ -23,7 +23,7 @@ import java.nio.ByteBuffer;
  */
 public class EncapsulatedData {
 
-    public final ByteBuffer wrappedData;
+    public final ByteBuffer encapsulatedData;
 
     public EncapsulatedData(BufferedImage image) {
 
@@ -37,22 +37,35 @@ public class EncapsulatedData {
         ByteBuffer data = ByteBuffer.wrap(bos.toByteArray());
 
         int dataSize = data.limit();
-        wrappedData = ByteBuffer.allocate(dataSize + 6);
-        wrappedData.putChar(DataType.IMG.type);
-        wrappedData.putInt(dataSize);
-        wrappedData.put(data);
+        encapsulatedData = ByteBuffer.allocate(dataSize + 6);
+        encapsulatedData.putChar(DataType.IMG.type);
+        encapsulatedData.putInt(dataSize);
+        encapsulatedData.put(data);
 
-        wrappedData.flip();
+        encapsulatedData.flip();
+    }
+
+    public EncapsulatedData(String message) {
+
+        ByteBuffer data = ByteBuffer.wrap(message.getBytes());
+        int dataSize = data.limit();
+
+        encapsulatedData = ByteBuffer.allocate(dataSize + 6);
+        encapsulatedData.putChar(DataType.MSG.type);
+        encapsulatedData.putInt(dataSize);
+        encapsulatedData.put(data);
+
+        encapsulatedData.flip();
     }
 
     public EncapsulatedData(ByteBuffer data, DataType dataType) {
 
         int dataSize = data.limit();
-        wrappedData = ByteBuffer.allocate(dataSize + 6);
-        wrappedData.putChar(dataType.type);
-        wrappedData.putInt(dataSize);
-        wrappedData.put(data);
+        encapsulatedData = ByteBuffer.allocate(dataSize + 6);
+        encapsulatedData.putChar(dataType.type);
+        encapsulatedData.putInt(dataSize);
+        encapsulatedData.put(data);
 
-        wrappedData.flip();
+        encapsulatedData.flip();
     }
 }

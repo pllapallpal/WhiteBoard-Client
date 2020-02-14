@@ -66,6 +66,19 @@ public class Connection {
     }
 
     /**
+     * Sends data to connected server
+     *
+     * @param data Data ready to be sent
+     */
+    public static void send(EncapsulatedData data) {
+        try {
+            connectionModule.socketChannel.write(data.encapsulatedData);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Sends image to connected server
      *
      * @param image Image to be sent to the server
@@ -75,16 +88,13 @@ public class Connection {
     }
 
     /**
-     * Sends data to connected server
+     * Sends message to connected server.
+     * If the message starts with '/', message would work as command.
      *
-     * @param data Data ready to be sent
+     * @param message Message to be sent to the server
      */
-    public static void send(EncapsulatedData data) {
-        try {
-            connectionModule.socketChannel.write(data.wrappedData);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public static void send(String message) {
+        send(new EncapsulatedData(message));
     }
 
     /**
@@ -99,10 +109,22 @@ public class Connection {
     }
 
     /**
+     * Functional interface, mediates receiveMessage() in ChatFrame to DataReceiver
+     *
+     * @param receiveMessage This is a BiConsumer.
+     *                       First argument Integer stands for srcID,
+     *                       second argument byte[] is bytes got from the message
+     */
+    public static void addReceiveMessage(BiConsumer<Integer, byte[]> receiveMessage) {
+        connectionModule.receiver.addReceiveMessage(receiveMessage);
+    }
+
+    /**
      * Starts to receive data from the server
      */
     public static void startReceiving() {
         if (!connectionModule.isReceiving) {
+            connectionModule.isReceiving = true;
             connectionModule.receivingExecutorService.submit(connectionModule.receiver);
         }
     }
@@ -112,6 +134,7 @@ public class Connection {
      */
     public static void stopReceiving() {
         if (connectionModule.isReceiving) {
+            connectionModule.isReceiving = false;
             connectionModule.receivingExecutorService.shutdown();
         }
     }
