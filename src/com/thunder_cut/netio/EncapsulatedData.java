@@ -1,5 +1,5 @@
 /*
- * DataWrapper.java
+ * EncapsulatedData.java
  * Author : Hyeokwoo Kwon
  * Created Date : 2020-02-07
  */
@@ -21,11 +21,11 @@ import java.nio.ByteBuffer;
  * - actual data
  * </pre>
  */
-public class DataWrapper {
+public class EncapsulatedData {
 
     public final ByteBuffer wrappedData;
 
-    public DataWrapper(BufferedImage image) {
+    public EncapsulatedData(BufferedImage image) {
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         try {
@@ -45,7 +45,7 @@ public class DataWrapper {
         wrappedData.flip();
     }
 
-    public DataWrapper(ByteBuffer data, DataType dataType) {
+    public EncapsulatedData(ByteBuffer data, DataType dataType) {
 
         int dataSize = data.limit();
         wrappedData = ByteBuffer.allocate(dataSize + 6);

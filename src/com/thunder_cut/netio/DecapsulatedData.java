@@ -1,5 +1,5 @@
 /*
- * DataUnwrapper.java
+ * DecapsulatedData.java
  * Author : Hyeokwoo Kwon
  * Created Date : 2020-02-07
  */
@@ -19,7 +19,7 @@ import java.nio.ByteBuffer;
  * - actual data
  * </pre>
  */
-public class DataUnwrapper {
+public class DecapsulatedData {
 
     public final char dataType;
     public final int srcID;
@@ -27,7 +27,7 @@ public class DataUnwrapper {
     public final int dataSize;
     public final ByteBuffer data;
 
-    public DataUnwrapper(ByteBuffer data) {
+    public DecapsulatedData(ByteBuffer data) {
 
         data.flip();
 
