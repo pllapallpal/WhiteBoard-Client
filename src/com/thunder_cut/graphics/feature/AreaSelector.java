@@ -52,7 +52,7 @@ public class AreaSelector implements DrawingFeature {
         int highX;
         int highY;
 
-        if(startXPos > endXPos) {
+        if (startXPos > endXPos) {
             lowX = endXPos;
             highX = startXPos;
         }
@@ -60,7 +60,7 @@ public class AreaSelector implements DrawingFeature {
             lowX = startXPos;
             highX = endXPos;
         }
-        if(startYPos > endYPos) {
+        if (startYPos > endYPos) {
             lowY = endYPos;
             highY = startYPos;
         }
@@ -69,18 +69,52 @@ public class AreaSelector implements DrawingFeature {
             highY = endYPos;
         }
 
-        for(int i = lowX; i < highX; i++) {
-            if(i % 12 > 6) {
-                canvasPixelInfo.setEffectPixel(canvasPixelInfo.getWidth() * lowY + i, Color.BLACK);
-                canvasPixelInfo.setEffectPixel(canvasPixelInfo.getWidth() * highY + i, Color.BLACK);
-            }
-        }
-        for(int i = lowY; i < highY; i++) {
-            if(i % 12 > 6) {
-                canvasPixelInfo.setEffectPixel(canvasPixelInfo.getWidth() * i + lowX, Color.BLACK);
-                canvasPixelInfo.setEffectPixel(canvasPixelInfo.getWidth() * i + highX, Color.BLACK);
+        for (int i = lowX; i < highX; i++) {
+            if (i % 12 > 5) {
+                canvasPixelInfo.setEffectPixel(canvasPixelInfo.getWidth() * lowY + i,
+                        toInvertColor(canvasPixelInfo.getPixels()[canvasPixelInfo.getWidth() * lowY + i]));
+                canvasPixelInfo.setEffectPixel(canvasPixelInfo.getWidth() * highY + i,
+                        toInvertColor(canvasPixelInfo.getPixels()[canvasPixelInfo.getWidth() * highY + i]));
             }
         }
 
+        for(int i = lowY; i < highY; i++) {
+            if(i % 12 > 5) {
+                System.out.println(i);
+                canvasPixelInfo.setEffectPixel(canvasPixelInfo.getWidth() * i + lowX,
+                        toInvertColor(canvasPixelInfo.getPixels()[canvasPixelInfo.getWidth() * i + lowX]));
+                canvasPixelInfo.setEffectPixel(canvasPixelInfo.getWidth() * i + highX,
+                        toInvertColor(canvasPixelInfo.getPixels()[canvasPixelInfo.getWidth() * i + highX]));
+            }
+        }
+
+    }
+
+    private Color toInvertColor(int data) {
+        Color color = new Color(data);
+        int red, green, blue;
+
+        if(color.getRed() > 100 && color.getRed() < 128)
+            red = 156;
+        else if(color.getRed() >= 128 && color.getRed() < 156)
+            red = 100;
+        else
+            red = 255 - color.getRed();
+
+        if(color.getGreen() > 100 && color.getGreen() < 128)
+            green = 156;
+        else if(color.getGreen() >= 128 && color.getGreen() < 156)
+            green = 100;
+        else
+            green = 255 - color.getGreen();
+
+        if(color.getBlue() > 100 && color.getBlue() < 128)
+            blue = 156;
+        else if(color.getBlue() >= 128 && color.getBlue() < 156)
+            blue = 100;
+        else
+            blue = 255 - color.getBlue();
+
+        return new Color(red, green, blue);
     }
 }
