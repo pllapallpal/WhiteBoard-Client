@@ -33,5 +33,6 @@ public class Resizer {
         }
 
         canvasPixelInfo.setPixels(newPixels, width, height);
+        canvasPixelInfo.initEffectPixels();
     }
 }
