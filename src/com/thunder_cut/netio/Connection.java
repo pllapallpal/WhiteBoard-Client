@@ -9,6 +9,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.channels.SocketChannel;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.BiConsumer;
 
 /**
@@ -19,8 +21,10 @@ public class Connection {
     private static Connection connectionModule;
 
     private SocketChannel socketChannel;
+
     private DataReceiver receiver;
-    private Thread receivingThread;
+    private ExecutorService receivingExecutorService;
+    private boolean isReceiving = false;
 
     private Connection() {
 
@@ -37,18 +41,18 @@ public class Connection {
     }
 
     /**
-     * If connectionModule instance doesn't exist, this method
-     * runs initialize() method
-     * <p>
-     * Opens socketChannel, and starts to receive data from the server
+     * If connectionModule instance is not initialized, this method runs initialize() method.
+     * Then it opens socketChannel, and starts to receive data from the server.
      *
      * @param address Address of the server you want to connect in
      * @param port Port number that matches with server
      */
     public static void createConnection(String address, int port) {
+
         if (connectionModule == null) {
             initialize();
         }
+
         try {
             connectionModule.socketChannel = SocketChannel.open();
             connectionModule.socketChannel.connect(new InetSocketAddress(address, port));
@@ -57,17 +61,17 @@ public class Connection {
         }
 
         connectionModule.receiver.setSocketChannel(connectionModule.socketChannel);
-        connectionModule.receivingThread = new Thread(connectionModule.receiver);
-        connectionModule.receivingThread.start();
+        connectionModule.receivingExecutorService = Executors.newSingleThreadExecutor();
+        startReceiving();
     }
 
     /**
      * Sends image to connected server
      *
-     * @param image Image to send to the server
+     * @param image Image to be sent to the server
      */
     public static void send(BufferedImage image) {
-        send(new DataWrapper(image));
+        send(new EncapsulatedData(image));
     }
 
     /**
@@ -75,7 +79,7 @@ public class Connection {
      *
      * @param data Data ready to be sent
      */
-    public static void send(DataWrapper data) {
+    public static void send(EncapsulatedData data) {
         try {
             connectionModule.socketChannel.write(data.wrappedData);
         } catch (IOException e) {
@@ -86,11 +90,29 @@ public class Connection {
     /**
      * Functional interface, mediates drawImage() in ParticipantsPanel to DataReceiver
      *
-     * @param drawImage DrawImage is BiConsumer.
+     * @param drawImage This is a BiConsumer.
      *                  First argument Integer stands for srcID,
-     *                  Second argument byte[] is image transformed to byte array
+     *                  second argument byte[] stands for the image transformed to byte array
      */
     public static void addDrawImage(BiConsumer<Integer, byte[]> drawImage) {
         connectionModule.receiver.addDrawImage(drawImage);
+    }
+
+    /**
+     * Starts to receive data from the server
+     */
+    public static void startReceiving() {
+        if (!connectionModule.isReceiving) {
+            connectionModule.receivingExecutorService.submit(connectionModule.receiver);
+        }
+    }
+
+    /**
+     * Stops receiving data from the server
+     */
+    public static void stopReceiving() {
+        if (connectionModule.isReceiving) {
+            connectionModule.receivingExecutorService.shutdown();
+        }
     }
 }
