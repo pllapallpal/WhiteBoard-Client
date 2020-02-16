@@ -26,6 +26,8 @@ public class Connection {
     private DataReceiver receiver;
     private ExecutorService receivingExecutorService;
 
+    private static String nickname;
+
     private Connection() {
 
         receiver = new DataReceiver();
@@ -64,7 +66,7 @@ public class Connection {
         connectionModule.receivingExecutorService = Executors.newSingleThreadExecutor();
         startReceiving();
 
-        send("/set_name Bob");
+        send("/set_name " + getNickname());
     }
 
     /**
@@ -138,5 +140,19 @@ public class Connection {
      */
     public static void stopReceiving() {
         connectionModule.receivingExecutorService.shutdown();
+    }
+
+    /**
+     * @return Nickname of you
+     */
+    public static String getNickname() {
+        return Connection.nickname;
+    }
+
+    /**
+     * @param nickname Nickname you want to set by
+     */
+    public static void setNickname(String nickname) {
+        Connection.nickname = nickname;
     }
 }
