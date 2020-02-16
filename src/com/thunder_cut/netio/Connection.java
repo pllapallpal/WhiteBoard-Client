@@ -94,7 +94,12 @@ public class Connection {
      * @param message Message to be sent to the server
      */
     public static void send(String message) {
-        send(new EncapsulatedData(message));
+        if (message.charAt(0) == '/') {
+            send(new EncapsulatedData(ByteBuffer.wrap(message.getBytes()), DataType.CMD));
+        }
+        else {
+            send(new EncapsulatedData(message));
+        }
     }
 
     /**
