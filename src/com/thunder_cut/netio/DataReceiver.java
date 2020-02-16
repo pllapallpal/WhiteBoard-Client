@@ -9,12 +9,11 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
 /**
- * Receives data sent from the server, looping until the program ends
+ * Receives data sent from the server, looping until the program ends.
  */
 public class DataReceiver {
 
@@ -32,15 +31,15 @@ public class DataReceiver {
 
     public void startReceiving() {
 
-        Map<Character, BiConsumer<Integer, byte[]>> dataType = new HashMap<>();
-
-        dataType.put(DataType.IMG.type, drawImage);
-        dataType.put(DataType.MSG.type, receiveMessage);
-
         while (true) {
             DecapsulatedData decapsulatedData = receiveData();
 
-            dataType.get(decapsulatedData.dataType).accept(decapsulatedData.srcID, decapsulatedData.data.array());
+            if (decapsulatedData.dataType == 'I') {
+                drawImage.accept(decapsulatedData.srcID, decapsulatedData.data.array());
+            }
+            else {
+                receiveMessage.accept(decapsulatedData.srcID, decapsulatedData.data.array());
+            }
         }
     }
 

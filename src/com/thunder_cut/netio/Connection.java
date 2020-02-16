@@ -63,10 +63,12 @@ public class Connection {
         connectionModule.receiver.setSocketChannel(connectionModule.socketChannel);
         connectionModule.receivingExecutorService = Executors.newSingleThreadExecutor();
         startReceiving();
+
+        send("/set_name Bob");
     }
 
     /**
-     * Sends data to connected server
+     * Sends data to connected server.
      *
      * @param data Data ready to be sent
      */
@@ -79,7 +81,7 @@ public class Connection {
     }
 
     /**
-     * Sends image to connected server
+     * Sends image to connected server.
      *
      * @param image Image to be sent to the server
      */
@@ -103,7 +105,7 @@ public class Connection {
     }
 
     /**
-     * Functional interface, mediates drawImage() in ParticipantsPanel to DataReceiver
+     * Functional interface, mediates drawImage() in ParticipantsPanel to DataReceiver.
      *
      * @param drawImage This is a BiConsumer.
      *                  First argument Integer stands for srcID,
@@ -114,7 +116,7 @@ public class Connection {
     }
 
     /**
-     * Functional interface, mediates receiveMessage() in ChatFrame to DataReceiver
+     * Functional interface, mediates receiveMessage() in ChatFrame to DataReceiver.
      *
      * @param receiveMessage This is a BiConsumer.
      *                       First argument Integer stands for srcID,
@@ -125,14 +127,14 @@ public class Connection {
     }
 
     /**
-     * Starts to receive data from the server
+     * Starts to receive data from the server.
      */
     public static void startReceiving() {
         connectionModule.receivingExecutorService.submit(connectionModule.receiver::startReceiving);
     }
 
     /**
-     * Stops receiving data from the server
+     * Stops receiving data from the server.
      */
     public static void stopReceiving() {
         connectionModule.receivingExecutorService.shutdown();
