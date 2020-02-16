@@ -8,6 +8,7 @@ package com.thunder_cut.netio;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -24,7 +25,6 @@ public class Connection {
 
     private DataReceiver receiver;
     private ExecutorService receivingExecutorService;
-    private boolean isReceiving = false;
 
     private Connection() {
 
@@ -123,19 +123,13 @@ public class Connection {
      * Starts to receive data from the server
      */
     public static void startReceiving() {
-        if (!connectionModule.isReceiving) {
-            connectionModule.isReceiving = true;
-            connectionModule.receivingExecutorService.submit(connectionModule.receiver);
-        }
+        connectionModule.receivingExecutorService.submit(connectionModule.receiver::startReceiving);
     }
 
     /**
      * Stops receiving data from the server
      */
     public static void stopReceiving() {
-        if (connectionModule.isReceiving) {
-            connectionModule.isReceiving = false;
-            connectionModule.receivingExecutorService.shutdown();
-        }
+        connectionModule.receivingExecutorService.shutdown();
     }
 }

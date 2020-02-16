@@ -16,7 +16,7 @@ import java.util.function.BiConsumer;
 /**
  * Receives data sent from the server, looping until the program ends
  */
-public class DataReceiver implements Runnable {
+public class DataReceiver {
 
     private enum HeaderItem {
         TYPE,
@@ -30,8 +30,7 @@ public class DataReceiver implements Runnable {
     private BiConsumer<Integer, byte[]> drawImage;
     private BiConsumer<Integer, byte[]> receiveMessage;
 
-    @Override
-    public void run() {
+    public void startReceiving() {
 
         Map<Character, BiConsumer<Integer, byte[]>> dataType = new HashMap<>();
 
