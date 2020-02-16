@@ -66,7 +66,7 @@ public class Connection {
         connectionModule.receivingExecutorService = Executors.newSingleThreadExecutor();
         startReceiving();
 
-        send("/set_name " + getNickname());
+        send(ChatCommands.SET_NAME + getNickname());
     }
 
     /**
