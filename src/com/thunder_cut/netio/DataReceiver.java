@@ -34,7 +34,7 @@ public class DataReceiver {
         while (true) {
             DecapsulatedData decapsulatedData = receiveData();
 
-            if (decapsulatedData.dataType == 'I') {
+            if (decapsulatedData.dataType == DataType.IMG.type) {
                 drawImage.accept(decapsulatedData.srcID, decapsulatedData.data.array());
             }
             else {
