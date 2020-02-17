@@ -25,7 +25,7 @@ public class Brush implements DrawingFeature {
     public void pressed(int xPos, int yPos, CanvasPixelInfo canvasPixelInfo, Color color) {
         prevXPos = xPos;
         prevYPos = yPos;
-        canvasPixelInfo.setPixel(canvasPixelInfo.getWidth() * yPos + xPos, color);
+        setPixels(canvasPixelInfo, xPos, yPos, color);
     }
 
     @Override

@@ -10,6 +10,8 @@ import com.thunder_cut.graphics.ui.keys.HotKeyExecutor;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 public class WhiteBoardFrame {
 
@@ -49,6 +51,14 @@ public class WhiteBoardFrame {
         scrollPane = new JScrollPane(participantsPanel.getParticipantsPanel(),
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.getVerticalScrollBar().setUnitIncrement(scrollSpeed);
+
+        mainFrame.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentMoved(ComponentEvent e) {
+                super.componentMoved(e);
+                drawingPanel.notifyFrameMoved();
+            }
+        });
 
     }
 

@@ -71,5 +71,8 @@ public class DrawingPanel {
         workDataRecorder.setCanvasPixelInfo(drawingCanvas.getCanvasPixelInfo());
     }
 
+    public void notifyFrameMoved(){
+        drawingCanvas.notifyFrameMoved();
+    }
 
 }
