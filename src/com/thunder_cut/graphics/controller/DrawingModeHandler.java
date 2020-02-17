@@ -10,6 +10,7 @@ import com.thunder_cut.graphics.feature.DrawingFeature;
 import com.thunder_cut.graphics.feature.Eraser;
 import com.thunder_cut.graphics.feature.AreaSelector;
 import com.thunder_cut.graphics.ui.drawing.CanvasPixelInfo;
+import com.thunder_cut.graphics.ui.keys.HotKey;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,6 +29,41 @@ public class DrawingModeHandler {
         drawingFeatures.put(DrawingMode.BRUSH, new Brush());
         drawingFeatures.put(DrawingMode.ERASER, new Eraser());
         drawingFeatures.put(DrawingMode.AREA_SELECTOR, new AreaSelector());
+
+        HotKey.BRUSH.setAction(()->{
+            drawingModeChanged(DrawingMode.BRUSH);
+        });
+
+        HotKey.ERASER.setAction(()->{
+            drawingModeChanged(DrawingMode.ERASER);
+        });
+
+        HotKey.AREA_SELECT.setAction(()->{
+            drawingModeChanged(DrawingMode.AREA_SELECTOR);
+        });
+
+        HotKey.COLOR_SELECT.setAction(()->{
+            drawingModeChanged(DrawingMode.COLOR_CHOOSER);
+        });
+
+        HotKey.BRUSH_SIZE_UP.setAction(()->{
+            Brush brush = ((Brush) drawingFeatures.get(DrawingMode.BRUSH));
+            brush.setSize(brush.getSize()+2);
+            Eraser eraser = ((Eraser) drawingFeatures.get(DrawingMode.ERASER));
+            eraser.setSize(eraser.getSize()+2);
+        });
+
+        HotKey.BRUSH_SIZE_DOWN.setAction(()->{
+
+            Brush brush = ((Brush) drawingFeatures.get(DrawingMode.BRUSH));
+            if(brush.getSize()<=2){
+                return;
+            }
+            brush.setSize(brush.getSize()-2);
+            Eraser eraser = ((Eraser) drawingFeatures.get(DrawingMode.ERASER));
+            eraser.setSize(eraser.getSize()-2);
+        });
+
     }
 
     public void drawingModeChanged(DrawingMode mode) {

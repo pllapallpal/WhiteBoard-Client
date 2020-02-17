@@ -6,6 +6,7 @@
 package com.thunder_cut.graphics.restorer;
 
 import com.thunder_cut.graphics.ui.drawing.CanvasPixelInfo;
+import com.thunder_cut.graphics.ui.keys.HotKey;
 
 import java.awt.*;
 
@@ -15,6 +16,12 @@ public class RestoreHandler {
 
     public RestoreHandler(Runnable drawCanvas) {
         this.drawCanvas = drawCanvas;
+        HotKey.UNDO.setAction(()->{
+            undo(workDataRecorder.getCanvasPixelInfo());
+        });
+        HotKey.REDO.setAction(()->{
+            redo(workDataRecorder.getCanvasPixelInfo());
+        });
     }
 
     public void handleRestoreEvent(RestoreMode mode) {
