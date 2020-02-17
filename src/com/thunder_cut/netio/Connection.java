@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.BiConsumer;
@@ -75,6 +76,9 @@ public class Connection {
      * @param data Data ready to be sent
      */
     public static void send(EncapsulatedData data) {
+        if(Objects.isNull(connectionModule.socketChannel)) {
+            return;
+        }
         try {
             connectionModule.socketChannel.write(data.encapsulatedData);
         } catch (IOException e) {
