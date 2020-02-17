@@ -27,6 +27,7 @@ public class DrawingCanvas {
         canvas = new Canvas();
         canvas.setIgnoreRepaint(true);
         canvas.setBackground(Color.WHITE);
+        canvas.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
         canvas.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -45,6 +46,12 @@ public class DrawingCanvas {
             @Override
             public void mouseDragged(MouseEvent e) {
                 mouseHandler.accept(new MouseData(MouseStatus.DRAGGED, e.getX(), e.getY()), canvasPixelInfo);
+                drawCanvas();
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                mouseHandler.accept(new MouseData(MouseStatus.MOVED, e.getX(), e.getY()), canvasPixelInfo);
                 drawCanvas();
             }
         });
@@ -83,10 +90,12 @@ public class DrawingCanvas {
             return;
         }
 
-        BufferedImage image = canvasPixelInfo.toBufferedImage();
+        BufferedImage image1 = canvasPixelInfo.toBufferedImage();
+        BufferedImage image2 = canvasPixelInfo.toBufferedImageEffect();
 
         Graphics2D g = (Graphics2D) canvasBuffer.getDrawGraphics();
-        g.drawImage(image, 0, 0, canvas);
+        g.drawImage(image1, 0, 0, canvas);
+        g.drawImage(image2, 0, 0, canvas);
         g.dispose();
         canvasBuffer.show();
     }

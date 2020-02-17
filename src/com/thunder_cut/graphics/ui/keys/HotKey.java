@@ -10,12 +10,20 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static java.awt.event.KeyEvent.*;
+
 public enum HotKey {
 
-    REDO(KeyEvent.VK_CONTROL, KeyEvent.VK_SHIFT, KeyEvent.VK_Z),
-    UNDO(KeyEvent.VK_CONTROL, KeyEvent.VK_Z),
-    BRUSH(KeyEvent.VK_B),
-    ERASER(KeyEvent.VK_E),
+    BRUSH(VK_CONTROL, VK_SHIFT, VK_B),
+    ERASER(VK_CONTROL, VK_SHIFT, VK_E),
+    BRUSH_SIZE_UP(VK_CONTROL, VK_SHIFT, VK_W),
+    BRUSH_SIZE_DOWN(VK_CONTROL, VK_SHIFT, VK_Q),
+    COLOR_SELECT(VK_CONTROL, VK_SHIFT, VK_C, VK_S),
+    AREA_SELECT(VK_CONTROL, VK_SHIFT, VK_A, VK_S),
+
+    REDO(VK_CONTROL, VK_SHIFT, VK_Z),
+    UNDO(VK_CONTROL, VK_Z)
+
     ;
 
     private Set<Integer> keyCodes;
@@ -70,7 +78,7 @@ public enum HotKey {
     }
 
     boolean isMatched(final Set<Integer> keys){
-        return keys.containsAll(this.keyCodes);
+        return (keys.containsAll(this.keyCodes) && this.keyCodes.containsAll(keys));
     }
 
     void execute(){

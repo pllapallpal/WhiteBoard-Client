@@ -6,5 +6,5 @@
 package com.thunder_cut.graphics.controller;
 
 public enum MouseStatus {
-    PRESSED,DRAGGED,RELEASED
+    PRESSED,DRAGGED,RELEASED,MOVED
 }
