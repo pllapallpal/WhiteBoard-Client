@@ -19,8 +19,11 @@ public interface DrawingFeature {
         else if(mouseData.status == MouseStatus.DRAGGED) {
             dragged(mouseData.xPos, mouseData.yPos, canvasPixelInfo, color);
         }
-        else {
+        else if(mouseData.status == MouseStatus.RELEASED){
             released(mouseData.xPos, mouseData.yPos, canvasPixelInfo, color);
+        }
+        else {
+            moved(mouseData.xPos, mouseData.yPos, canvasPixelInfo, color);
         }
     }
 
@@ -31,4 +34,5 @@ public interface DrawingFeature {
     void pressed(int xPos, int yPos, CanvasPixelInfo canvasPixelInfo, Color color);
     void dragged(int xPos, int yPos, CanvasPixelInfo canvasPixelInfo, Color color);
     void released(int xPos, int yPos, CanvasPixelInfo canvasPixelInfo, Color color);
+    void moved(int xPos, int yPos, CanvasPixelInfo canvasPixelInfo, Color color);
 }

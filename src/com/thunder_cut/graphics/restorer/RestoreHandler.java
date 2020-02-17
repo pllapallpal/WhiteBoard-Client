@@ -33,6 +33,7 @@ public class RestoreHandler {
 
         WorkUnitData workUnitData = workDataRecorder.getCurrentWorkUnitData();
 
+        canvasPixelInfo.initEffectPixels();
         for (int i = 0; i < workUnitData.getSize(); i++) {
             ChangedPixelUnitData pixelUnitData = workUnitData.getPixelUnitData(i);
             canvasPixelInfo.setPixel(canvasPixelInfo.getWidth() * pixelUnitData.yPos + pixelUnitData.xPos, new Color(pixelUnitData.prevColor));
@@ -52,6 +53,7 @@ public class RestoreHandler {
         }
         WorkUnitData workUnitData = workDataRecorder.getCurrentWorkUnitData();
 
+        canvasPixelInfo.initEffectPixels();
         for(int i=0; i<workUnitData.getSize(); i++) {
             ChangedPixelUnitData pixelUnitData = workUnitData.getPixelUnitData(i);
             canvasPixelInfo.setPixel(canvasPixelInfo.getWidth() * pixelUnitData.yPos + pixelUnitData.xPos, new Color(pixelUnitData.changedColor));
