@@ -13,6 +13,7 @@ import java.nio.channels.SocketChannel;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.BiConsumer;
 
 /**
@@ -67,7 +68,8 @@ public class Connection {
         connectionModule.receivingExecutorService = Executors.newSingleThreadExecutor();
         startReceiving();
 
-        send(ChatCommands.SET_NAME + getNickname());
+        setNickname("user" + Integer.toString(ThreadLocalRandom.current().nextInt(65536)));
+        send(ChatCommands.SET_NAME.command + getNickname());
     }
 
     /**
