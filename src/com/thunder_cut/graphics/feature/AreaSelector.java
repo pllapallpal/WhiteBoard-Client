@@ -80,7 +80,6 @@ public class AreaSelector implements DrawingFeature {
 
         for(int i = lowY; i < highY; i++) {
             if(i % 12 > 5) {
-                System.out.println(i);
                 canvasPixelInfo.setEffectPixel(canvasPixelInfo.getWidth() * i + lowX,
                         toInvertColor(canvasPixelInfo.getPixels()[canvasPixelInfo.getWidth() * i + lowX]));
                 canvasPixelInfo.setEffectPixel(canvasPixelInfo.getWidth() * i + highX,
