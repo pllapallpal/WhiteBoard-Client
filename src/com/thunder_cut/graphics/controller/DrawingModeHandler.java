@@ -5,10 +5,10 @@
  */
 package com.thunder_cut.graphics.controller;
 
+import com.thunder_cut.graphics.feature.AreaSelector;
 import com.thunder_cut.graphics.feature.Brush;
 import com.thunder_cut.graphics.feature.DrawingFeature;
 import com.thunder_cut.graphics.feature.Eraser;
-import com.thunder_cut.graphics.feature.AreaSelector;
 import com.thunder_cut.graphics.ui.drawing.CanvasPixelInfo;
 import com.thunder_cut.graphics.ui.keys.HotKey;
 
