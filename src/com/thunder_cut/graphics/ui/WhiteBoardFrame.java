@@ -6,6 +6,7 @@
 package com.thunder_cut.graphics.ui;
 
 import com.thunder_cut.graphics.ui.drawing.DrawingPanel;
+import com.thunder_cut.graphics.ui.frame.chat.ChatFrame;
 import com.thunder_cut.graphics.ui.frame.participants.ParticipantsFrame;
 import com.thunder_cut.graphics.ui.keys.HotKeyExecutor;
 import com.thunder_cut.netio.Connection;
@@ -26,9 +27,9 @@ public class WhiteBoardFrame {
     private JFrame mainFrame;
 
     private ParticipantsFrame participantsFrame;
+    private ChatFrame chatFrame;
 
     private DrawingPanel drawingPanel;
-
 
     public WhiteBoardFrame(){
         initializeComponents();
@@ -47,7 +48,8 @@ public class WhiteBoardFrame {
         mainFrame.setLocation(MAIN_FRAME_X_POS + FRAME_GAP,0);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        participantsFrame = new ParticipantsFrame(MAIN_FRAME_SIZE.width+ MAIN_FRAME_X_POS + FRAME_GAP,0);
+        chatFrame = new ChatFrame(0,0);
+        participantsFrame = new ParticipantsFrame(MAIN_FRAME_SIZE.width+ MAIN_FRAME_X_POS + FRAME_GAP*2,0);
 
         drawingPanel = new DrawingPanel();
 
@@ -60,6 +62,7 @@ public class WhiteBoardFrame {
         mainFrame.setVisible(true);
 
         participantsFrame.setVisible(true);
+        chatFrame.setVisible(true);
 
         drawingPanel.createImageBuffer();
 
@@ -86,7 +89,7 @@ public class WhiteBoardFrame {
 
         exitMenuItem.addActionListener(e -> {
             if(JOptionPane.showConfirmDialog(mainFrame, "종료하시겠습니까?",
-                    mainFrame.getTitle(), JOptionPane.YES_NO_OPTION) == 0)
+                    mainFrame.getTitle(), JOptionPane.YES_NO_OPTION) == JOptionPane.OK_OPTION)
                 System.exit(0);
         });
 
@@ -130,7 +133,13 @@ public class WhiteBoardFrame {
             participantsFrame.setVisible(true);
         });
 
+        JMenuItem chatWindowMenuItem = new JMenuItem("Chatting");
+        chatWindowMenuItem.addActionListener(e -> {
+            chatFrame.setVisible(true);
+        });
+
         windowMenu.add(participantsWindowMenuItem);
+        windowMenu.add(chatWindowMenuItem);
 
         menuBar.add(fileMenu);
         menuBar.add(editMenu);
