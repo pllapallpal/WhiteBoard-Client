@@ -36,11 +36,12 @@ public class Connection {
     }
 
     /**
-     * Initializes connectionModule instance
+     * Initializes connectionModule instance, and sets temporary nickname
      */
     public static void initialize() {
         if (connectionModule == null) {
             connectionModule = new Connection();
+            setNickname("user" + Integer.toString(ThreadLocalRandom.current().nextInt(65536)));
         }
     }
 
@@ -68,7 +69,6 @@ public class Connection {
         connectionModule.receivingExecutorService = Executors.newSingleThreadExecutor();
         startReceiving();
 
-        setNickname("user" + Integer.toString(ThreadLocalRandom.current().nextInt(65536)));
         send(ChatCommands.SET_NAME.command + getNickname());
     }
 
