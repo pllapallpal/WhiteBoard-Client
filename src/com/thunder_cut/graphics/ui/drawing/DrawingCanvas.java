@@ -29,6 +29,10 @@ public class DrawingCanvas {
         canvas.setIgnoreRepaint(true);
         canvas.setBackground(Color.WHITE);
         canvas.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
+
+    }
+
+    public void addEventListeners(){
         canvas.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {

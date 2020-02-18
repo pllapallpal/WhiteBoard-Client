@@ -66,6 +66,8 @@ public class WhiteBoardFrame {
 
         drawingPanel.createImageBuffer();
 
+        drawingPanel.addEventListeners();
+
         mainFrame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentMoved(ComponentEvent e) {
