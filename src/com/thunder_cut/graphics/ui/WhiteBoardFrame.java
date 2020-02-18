@@ -6,6 +6,7 @@
 package com.thunder_cut.graphics.ui;
 
 import com.thunder_cut.graphics.ui.drawing.DrawingPanel;
+import com.thunder_cut.graphics.ui.frame.participants.ParticipantsFrame;
 import com.thunder_cut.graphics.ui.keys.HotKeyExecutor;
 import com.thunder_cut.netio.Connection;
 
@@ -14,22 +15,20 @@ import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.Objects;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class WhiteBoardFrame {
 
-    private static final Dimension frameSize = new Dimension(1600, 900);
-    private static final double splitWeight = 0.8;
-    private static final int scrollSpeed = 16;
+    private static final Dimension MAIN_FRAME_SIZE = new Dimension(960, 720);
+    private static final int MAIN_FRAME_X_POS = 360;
+
+    private static final int FRAME_GAP = -10;
 
     private JFrame mainFrame;
 
+    private ParticipantsFrame participantsFrame;
+
     private DrawingPanel drawingPanel;
 
-    private JSplitPane split;
-
-    private JScrollPane scrollPane;
-    private ParticipantsPanel participantsPanel;
 
     public WhiteBoardFrame(){
         initializeComponents();
@@ -44,19 +43,25 @@ public class WhiteBoardFrame {
 
     private void initializeComponents(){
         mainFrame = new JFrame("화이트 보드");
-        mainFrame.setSize(frameSize);
+        mainFrame.setSize(MAIN_FRAME_SIZE);
+        mainFrame.setLocation(MAIN_FRAME_X_POS + FRAME_GAP,0);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        participantsFrame = new ParticipantsFrame(MAIN_FRAME_SIZE.width+ MAIN_FRAME_X_POS + FRAME_GAP,0);
 
         drawingPanel = new DrawingPanel();
 
-        split = new JSplitPane();
+    }
 
-        participantsPanel = new ParticipantsPanel();
-        scrollPane = new JScrollPane(participantsPanel.getParticipantsPanel(),
-                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.getVerticalScrollBar().setUnitIncrement(scrollSpeed);
+    private void createView(){
 
-        Connection.addDrawImage(participantsPanel::drawImage);
+        mainFrame.add(drawingPanel.getDrawingPanel());
+
+        mainFrame.setVisible(true);
+
+        participantsFrame.setVisible(true);
+
+        drawingPanel.createImageBuffer();
 
         mainFrame.addComponentListener(new ComponentAdapter() {
             @Override
@@ -65,22 +70,6 @@ public class WhiteBoardFrame {
                 drawingPanel.notifyFrameMoved();
             }
         });
-    }
-
-    private void createView(){
-
-        split.setSize(frameSize);
-        split.setDividerLocation(splitWeight);
-
-        split.setLeftComponent(drawingPanel.getDrawingPanel());
-        split.setRightComponent(scrollPane);
-
-        mainFrame.add(split);
-
-        mainFrame.setVisible(true);
-
-        drawingPanel.createImageBuffer();
-
     }
 
 
@@ -134,9 +123,19 @@ public class WhiteBoardFrame {
         connectMenu.add(createConnectionMenuItem);
         connectMenu.add(nicknameMenuItem);
 
+        JMenu windowMenu = new JMenu("창");
+        JMenuItem participantsWindowMenuItem = new JMenuItem("Participants");
+
+        participantsWindowMenuItem.addActionListener(e -> {
+            participantsFrame.setVisible(true);
+        });
+
+        windowMenu.add(participantsWindowMenuItem);
+
         menuBar.add(fileMenu);
         menuBar.add(editMenu);
         menuBar.add(connectMenu);
+        menuBar.add(windowMenu);
 
         mainFrame.setJMenuBar(menuBar);
     }
@@ -146,8 +145,8 @@ public class WhiteBoardFrame {
         String serverIP = "";
         int serverPort = 0;
 
-        JTextField IPInput = new JTextField();
-        JTextField portInput = new JTextField();
+        JTextField IPInput = new JTextField("127.0.0.1");
+        JTextField portInput = new JTextField("3001");
 
         JComponent[] components = new JComponent[] {
 
