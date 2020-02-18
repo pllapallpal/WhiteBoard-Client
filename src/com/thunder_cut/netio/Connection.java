@@ -10,8 +10,10 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.BiConsumer;
 
 /**
@@ -34,11 +36,12 @@ public class Connection {
     }
 
     /**
-     * Initializes connectionModule instance
+     * Initializes connectionModule instance, and sets temporary nickname
      */
     public static void initialize() {
         if (connectionModule == null) {
             connectionModule = new Connection();
+            setNickname("user" + Integer.toString(ThreadLocalRandom.current().nextInt(65536)));
         }
     }
 
@@ -66,7 +69,7 @@ public class Connection {
         connectionModule.receivingExecutorService = Executors.newSingleThreadExecutor();
         startReceiving();
 
-        send(ChatCommands.SET_NAME + getNickname());
+        send(ChatCommands.SET_NAME.command + getNickname());
     }
 
     /**
@@ -75,6 +78,9 @@ public class Connection {
      * @param data Data ready to be sent
      */
     public static void send(EncapsulatedData data) {
+        if(Objects.isNull(connectionModule.socketChannel)) {
+            return;
+        }
         try {
             connectionModule.socketChannel.write(data.encapsulatedData);
         } catch (IOException e) {

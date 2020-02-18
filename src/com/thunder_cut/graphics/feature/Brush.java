@@ -25,7 +25,7 @@ public class Brush implements DrawingFeature {
     public void pressed(int xPos, int yPos, CanvasPixelInfo canvasPixelInfo, Color color) {
         prevXPos = xPos;
         prevYPos = yPos;
-        canvasPixelInfo.setPixel(canvasPixelInfo.getWidth() * yPos + xPos, color);
+        setPixels(canvasPixelInfo, xPos, yPos, color);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class Brush implements DrawingFeature {
         int count = 0;
 
         while((currentX != xPos) && (currentY != yPos)) {
-                setPixels(canvasPixelInfo, currentX, currentY, color);
+            setPixels(canvasPixelInfo, currentX, currentY, color);
 
             if((count >= ratio)) {
                 controlPosition(!isMaxDeltaX, isMaxDeltaX ? isPlusY : isPlusX);
@@ -78,6 +78,12 @@ public class Brush implements DrawingFeature {
 
     }
 
+    @Override
+    public void moved(int xPos, int yPos, CanvasPixelInfo canvasPixelInfo, Color color) {
+        canvasPixelInfo.initEffectPixels();
+        setEffectPixels(canvasPixelInfo, xPos, yPos, color);
+    }
+
     private void setPixels(CanvasPixelInfo canvasPixelInfo, int xPos, int yPos, Color color) {
         xPos -= (size / 2);
         yPos -= (size / 2);
@@ -86,6 +92,23 @@ public class Brush implements DrawingFeature {
             for(int j = 0; j < size; j++) {
                 if(!isOverCanvas(xPos, yPos, canvasPixelInfo.getWidth(), canvasPixelInfo.getHeight())) {
                     canvasPixelInfo.setPixel(canvasPixelInfo.getWidth() * yPos + xPos, color);
+                }
+                xPos++;
+            }
+
+            xPos -= size;
+            yPos++;
+        }
+    }
+
+    private void setEffectPixels(CanvasPixelInfo canvasPixelInfo, int xPos, int yPos, Color color) {
+        xPos -= (size / 2);
+        yPos -= (size / 2);
+
+        for(int i = 0; i < size; i++) {
+            for(int j = 0; j < size; j++) {
+                if(!isOverCanvas(xPos, yPos, canvasPixelInfo.getWidth(), canvasPixelInfo.getHeight())) {
+                    canvasPixelInfo.setEffectPixel(canvasPixelInfo.getWidth() * yPos + xPos, color);
                 }
                 xPos++;
             }
@@ -105,5 +128,9 @@ public class Brush implements DrawingFeature {
 
     public void setSize(int size) {
         this.size = size;
+    }
+
+    public int getSize() {
+        return size;
     }
 }
