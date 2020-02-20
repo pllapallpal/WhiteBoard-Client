@@ -103,7 +103,6 @@ public class DrawingCanvas {
         Graphics2D g = (Graphics2D) canvasBuffer.getDrawGraphics();
         g.drawImage(image1, 0, 0, canvas);
         g.drawImage(image2, 0, 0, canvas);
-        ;
         g.dispose();
         canvasBuffer.show();
 

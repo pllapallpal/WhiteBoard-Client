@@ -23,6 +23,9 @@ public class ParticipantsFrame {
 
     private JFrame frame;
 
+    private int framePrevX;
+    private int framePrevY;
+
     public ParticipantsFrame(int initXPos, int initYPos){
 
         frame = new JFrame("Participants");
@@ -43,7 +46,17 @@ public class ParticipantsFrame {
             @Override
             public void componentShown(ComponentEvent e) {
                 super.componentShown(e);
-                SwingUtilities.invokeLater(participantsPanel::redrawParticipantPanel);
+                participantsPanel.getParticipantsPanel().repaint();
+            }
+
+            @Override
+            public void componentMoved(ComponentEvent e) {
+                super.componentMoved(e);
+                if (!(framePrevX == e.getComponent().getX() && framePrevY == e.getComponent().getY())) {
+                    framePrevX = e.getComponent().getX();
+                    framePrevY = e.getComponent().getY();
+                    participantsPanel.redrawParticipantPanel();
+                }
             }
         });
 
