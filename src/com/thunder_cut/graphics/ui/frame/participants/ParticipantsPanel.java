@@ -41,6 +41,11 @@ public class ParticipantsPanel {
                 super.componentMoved(e);
                 redrawParticipantPanel();
             }
+
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+                resizeParticipantsPanel();
+            }
         });
 
         makePanel();
@@ -54,6 +59,7 @@ public class ParticipantsPanel {
 
         newPanel.setMaximumSize(new Dimension(480, 270));
         newPanel.setPreferredSize(new Dimension(480, 270));
+        newPanel.setIgnoreRepaint(true);
 
         participants.add(newPanel);
 
@@ -76,27 +82,42 @@ public class ParticipantsPanel {
             else{
                 lastImages.put(srcID,bi);
             }
-
-            JPanel target = participants.get(srcID);
-            target.getGraphics()
-                    .drawImage(bi,DEFAULT_GAP,DEFAULT_GAP,
-                            target.getWidth()-DEFAULT_GAP*2,target.getHeight()-DEFAULT_GAP*2,null);
+            drawImage(srcID);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void drawImage(int srcID, BufferedImage image){
+    public void drawImage(int srcID){
 
         JPanel target = participants.get(srcID);
-        target.getGraphics()
-                .drawImage(image,DEFAULT_GAP,DEFAULT_GAP,target.getWidth()-DEFAULT_GAP*2,target.getHeight()-DEFAULT_GAP*2,null);
+        SwingUtilities.invokeLater(()->{
+            target.getGraphics()
+                    .drawImage(lastImages.get(srcID),DEFAULT_GAP,DEFAULT_GAP,target.getWidth()-DEFAULT_GAP*2,target.getHeight()-DEFAULT_GAP*2,null);
+        });
+
     }
 
     public void redrawParticipantPanel(){
         for(int i = 0; i<participants.size(); ++i)
-            drawImage(i,lastImages.get(i));
+            drawImage(i);
+    }
+
+    public void resizeParticipantsPanel(){
+
+        int width = participantsPanel.getWidth();
+        int height = participantsPanel.getWidth() * 9 / 16;
+
+        for(int i = 0; i < participants.size(); ++i){
+            JPanel panel = participants.get(i);
+            Dimension dimension = new Dimension(width - DEFAULT_GAP * 3, height - DEFAULT_GAP * 3);
+            panel.setMaximumSize(dimension);
+            panel.setPreferredSize(dimension);
+            panel.revalidate();
+        }
+
+        redrawParticipantPanel();
     }
 
 
