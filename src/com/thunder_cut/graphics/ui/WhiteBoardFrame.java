@@ -31,6 +31,9 @@ public class WhiteBoardFrame {
 
     private DrawingPanel drawingPanel;
 
+    private int prevX;
+    private int prevY;
+
     public WhiteBoardFrame(){
         initializeComponents();
 
@@ -72,7 +75,12 @@ public class WhiteBoardFrame {
             @Override
             public void componentMoved(ComponentEvent e) {
                 super.componentMoved(e);
-                drawingPanel.notifyFrameMoved();
+                if(!(prevX == e.getComponent().getX() && prevY == e.getComponent().getY())){
+                    prevX = e.getComponent().getX();
+                    prevY = e.getComponent().getY();
+                    drawingPanel.notifyFrameMoved();
+                }
+
             }
         });
     }
