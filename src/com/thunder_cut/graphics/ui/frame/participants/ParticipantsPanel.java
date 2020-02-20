@@ -44,6 +44,7 @@ public class ParticipantsPanel {
         });
 
         makePanel();
+        makePanel();
     }
 
     private void makePanel(){
@@ -78,7 +79,8 @@ public class ParticipantsPanel {
 
             JPanel target = participants.get(srcID);
             target.getGraphics()
-                    .drawImage(bi,5,5,target.getWidth()-DEFAULT_GAP,target.getHeight()-DEFAULT_GAP,null);
+                    .drawImage(bi,DEFAULT_GAP,DEFAULT_GAP,
+                            target.getWidth()-DEFAULT_GAP*2,target.getHeight()-DEFAULT_GAP*2,null);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -89,7 +91,7 @@ public class ParticipantsPanel {
 
         JPanel target = participants.get(srcID);
         target.getGraphics()
-                .drawImage(image,5,5,target.getWidth()-DEFAULT_GAP,target.getHeight()-DEFAULT_GAP,null);
+                .drawImage(image,DEFAULT_GAP,DEFAULT_GAP,target.getWidth()-DEFAULT_GAP*2,target.getHeight()-DEFAULT_GAP*2,null);
     }
 
     public void redrawParticipantPanel(){
