@@ -14,7 +14,6 @@ import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.Objects;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class WhiteBoardFrame {
 
@@ -31,7 +30,7 @@ public class WhiteBoardFrame {
     private JScrollPane scrollPane;
     private ParticipantsPanel participantsPanel;
 
-    public WhiteBoardFrame(){
+    public WhiteBoardFrame() {
         initializeComponents();
 
         addMenuBar();
@@ -42,7 +41,7 @@ public class WhiteBoardFrame {
 
     }
 
-    private void initializeComponents(){
+    private void initializeComponents() {
         mainFrame = new JFrame("화이트 보드");
         mainFrame.setSize(frameSize);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -67,7 +66,7 @@ public class WhiteBoardFrame {
         });
     }
 
-    private void createView(){
+    private void createView() {
 
         split.setSize(frameSize);
         split.setDividerLocation(splitWeight);
@@ -96,7 +95,7 @@ public class WhiteBoardFrame {
         JMenuItem exitMenuItem = new JMenuItem("끝내기");
 
         exitMenuItem.addActionListener(e -> {
-            if(JOptionPane.showConfirmDialog(mainFrame, "종료하시겠습니까?",
+            if (JOptionPane.showConfirmDialog(mainFrame, "종료하시겠습니까?",
                     mainFrame.getTitle(), JOptionPane.YES_NO_OPTION) == 0)
                 System.exit(0);
         });
@@ -119,19 +118,27 @@ public class WhiteBoardFrame {
         JMenu connectMenu = new JMenu("연결");
         JMenuItem createConnectionMenuItem = new JMenuItem("연결");
 
-        createConnectionMenuItem.addActionListener((actionEvent)->{
+        createConnectionMenuItem.addActionListener((actionEvent) -> {
             showConnectionDialog();
+        });
+
+        JMenuItem destroyConnectionMenuItem = new JMenuItem("연결 해제");
+        destroyConnectionMenuItem.addActionListener(e -> {
+            if (JOptionPane.showConfirmDialog(mainFrame, "연결을 해제하시겠습니까?", mainFrame.getTitle(), JOptionPane.YES_NO_OPTION) == 0) {
+                Connection.destroyConnection();
+            }
         });
 
         JMenuItem nicknameMenuItem = new JMenuItem("닉네임 설정");
         nicknameMenuItem.addActionListener(e -> {
-            String nickname = JOptionPane.showInputDialog(mainFrame,"Nickname : ","Nickname",JOptionPane.PLAIN_MESSAGE);
-            if(!(Objects.isNull(nickname) || nickname.equals(""))){
+            String nickname = JOptionPane.showInputDialog(mainFrame, "Nickname : ", "Nickname", JOptionPane.PLAIN_MESSAGE);
+            if (!(Objects.isNull(nickname) || nickname.equals(""))) {
                 Connection.setNickname(nickname);
             }
         });
 
         connectMenu.add(createConnectionMenuItem);
+        connectMenu.add(destroyConnectionMenuItem);
         connectMenu.add(nicknameMenuItem);
 
         menuBar.add(fileMenu);
@@ -141,7 +148,7 @@ public class WhiteBoardFrame {
         mainFrame.setJMenuBar(menuBar);
     }
 
-    private void showConnectionDialog(){
+    private void showConnectionDialog() {
 
         String serverIP = "";
         int serverPort = 0;
@@ -149,29 +156,29 @@ public class WhiteBoardFrame {
         JTextField IPInput = new JTextField();
         JTextField portInput = new JTextField();
 
-        JComponent[] components = new JComponent[] {
+        JComponent[] components = new JComponent[]{
 
                 new JLabel("IP : "), IPInput,
                 new JLabel("Port : "), portInput
         };
 
-        int result = JOptionPane.showConfirmDialog(mainFrame,components, "연결 설정", JOptionPane.OK_CANCEL_OPTION);
+        int result = JOptionPane.showConfirmDialog(mainFrame, components, "연결 설정", JOptionPane.OK_CANCEL_OPTION);
 
-        if(result == JOptionPane.OK_OPTION){
+        if (result == JOptionPane.OK_OPTION) {
 
             serverIP = IPInput.getText();
-            if(serverIP.equals("") || portInput.getText().equals("")){
-                JOptionPane.showMessageDialog(mainFrame,"올바르지 않은 입력입니다.","Error!",JOptionPane.WARNING_MESSAGE);
+            if (serverIP.equals("") || portInput.getText().equals("")) {
+                JOptionPane.showMessageDialog(mainFrame, "올바르지 않은 입력입니다.", "Error!", JOptionPane.WARNING_MESSAGE);
                 return;
             }
-            try{
+            try {
                 serverPort = Integer.parseInt(portInput.getText());
-            }catch (NumberFormatException e){
-                JOptionPane.showMessageDialog(mainFrame,"올바르지 않은 입력입니다.","Error!",JOptionPane.WARNING_MESSAGE);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(mainFrame, "올바르지 않은 입력입니다.", "Error!", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
-            Connection.createConnection(serverIP,serverPort);
+            Connection.createConnection(serverIP, serverPort);
         }
 
     }
