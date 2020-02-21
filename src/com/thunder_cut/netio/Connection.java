@@ -50,7 +50,7 @@ public class Connection {
      * Then it opens socketChannel, and starts to receive data from the server.
      *
      * @param address Address of the server you want to connect in
-     * @param port Port number that matches with server
+     * @param port    Port number that matches with server
      */
     public static void createConnection(String address, int port) {
 
@@ -73,12 +73,33 @@ public class Connection {
     }
 
     /**
+     * Stop receiving data and close a socketChannel.
+     */
+    public static void destroyConnection() {
+        if (Objects.isNull(connectionModule)) {
+            return;
+        }
+
+        if (Objects.nonNull(connectionModule.receivingExecutorService)) {
+            stopReceiving();
+        }
+        if (Objects.nonNull(connectionModule.socketChannel) && connectionModule.socketChannel.isOpen()) {
+            try {
+                connectionModule.socketChannel.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        connectionModule = null;
+    }
+
+    /**
      * Sends data to connected server.
      *
      * @param data Data ready to be sent
      */
     public static void send(EncapsulatedData data) {
-        if(Objects.isNull(connectionModule.socketChannel)) {
+        if (Objects.isNull(connectionModule) || Objects.isNull(connectionModule.socketChannel)) {
             return;
         }
         try {
@@ -106,8 +127,7 @@ public class Connection {
     public static void send(String message) {
         if (message.charAt(0) == '/') {
             send(new EncapsulatedData(ByteBuffer.wrap(message.getBytes()), DataType.CMD));
-        }
-        else {
+        } else {
             send(new EncapsulatedData(message));
         }
     }
