@@ -127,7 +127,8 @@ public class WhiteBoardFrame {
 
         JMenuItem nicknameMenuItem = new JMenuItem("닉네임 설정");
         nicknameMenuItem.addActionListener(e -> {
-            String nickname = JOptionPane.showInputDialog(mainFrame,"Nickname : ","Nickname",JOptionPane.PLAIN_MESSAGE);
+            String nickname = JOptionPane.showInputDialog(mainFrame,"Nickname : ",
+                    "Nickname",JOptionPane.PLAIN_MESSAGE);
             if(!(Objects.isNull(nickname) || nickname.equals(""))){
                 Connection.setNickname(nickname);
             }
@@ -164,8 +165,8 @@ public class WhiteBoardFrame {
         String serverIP = "";
         int serverPort = 0;
 
-        JTextField IPInput = new JTextField("127.0.0.1");
-        JTextField portInput = new JTextField("3001");
+        JTextField IPInput = new JTextField();
+        JTextField portInput = new JTextField();
 
         JComponent[] components = new JComponent[] {
 
