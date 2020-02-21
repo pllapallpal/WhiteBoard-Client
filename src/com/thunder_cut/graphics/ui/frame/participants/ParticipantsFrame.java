@@ -47,6 +47,7 @@ public class ParticipantsFrame {
             public void componentShown(ComponentEvent e) {
                 super.componentShown(e);
                 participantsPanel.getParticipantsPanel().repaint();
+                participantsPanel.redrawParticipantPanel();
             }
 
             @Override
