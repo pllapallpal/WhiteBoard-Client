@@ -7,10 +7,10 @@ package com.thunder_cut.netio;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.channels.SocketChannel;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * Receives data sent from the server, looping until the program ends.
@@ -24,7 +24,7 @@ public class DataReceiver {
         DATA_SIZE;
     }
 
-    private SocketChannel socketChannel;
+    private Consumer<ByteBuffer> readSocket;
 
     private BiConsumer<Integer, byte[]> drawImage;
     private BiConsumer<Integer, byte[]> receiveMessage;
@@ -61,7 +61,7 @@ public class DataReceiver {
 
         ByteBuffer data = ByteBuffer.allocate(dataSize);
         while (data.hasRemaining()) {
-            socketChannel.read(data);
+            readSocket.accept(data);
         }
         data.flip();
 
@@ -79,7 +79,7 @@ public class DataReceiver {
 
         Map<HeaderItem, Integer> headers = new EnumMap<>(HeaderItem.class);
         ByteBuffer header = ByteBuffer.allocate(14);
-        socketChannel.read(header);
+        readSocket.accept(header);
 
         header.flip();
 
@@ -114,11 +114,12 @@ public class DataReceiver {
     }
 
     /**
-     * Sets socketChannel needed to communicate with the server
+     * Functional interface, adds readSocket() to this (dataReceiver).
      *
-     * @param socketChannel Sets socketChannel value in DataReceiver
+     * @param readSocket ReadSocket is Consumer.
+     *                   Argument ByteBuffer is a buffer where the received data is stored.
      */
-    public void setSocketChannel(SocketChannel socketChannel) {
-        this.socketChannel = socketChannel;
+    public void addReadSocket(Consumer<ByteBuffer> readSocket) {
+        this.readSocket = readSocket;
     }
 }

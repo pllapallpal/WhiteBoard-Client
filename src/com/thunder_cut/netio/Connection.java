@@ -65,7 +65,7 @@ public class Connection {
             e.printStackTrace();
         }
 
-        connectionModule.receiver.setSocketChannel(connectionModule.socketChannel);
+        connectionModule.receiver.addReadSocket(Connection::readSocket);
         connectionModule.receivingExecutorService = Executors.newSingleThreadExecutor();
         startReceiving();
 
@@ -166,6 +166,19 @@ public class Connection {
      */
     public static void stopReceiving() {
         connectionModule.receivingExecutorService.shutdown();
+    }
+
+    /**
+     * Reads ByteBuffer from the socket.
+     *
+     * @param buffer Where the received data is stored.
+     */
+    public static void readSocket(ByteBuffer buffer) {
+        try {
+            connectionModule.socketChannel.read(buffer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
