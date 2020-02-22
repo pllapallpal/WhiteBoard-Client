@@ -8,6 +8,7 @@ package com.thunder_cut.graphics.feature;
 import com.thunder_cut.graphics.controller.MouseData;
 import com.thunder_cut.graphics.controller.MouseStatus;
 import com.thunder_cut.graphics.ui.drawing.CanvasPixelInfo;
+import com.thunder_cut.netio.Connection;
 
 import java.awt.*;
 
@@ -24,7 +25,10 @@ public interface DrawingFeature {
         }
         else {
             moved(mouseData.xPos, mouseData.yPos, canvasPixelInfo, color);
+            return;
         }
+
+        Connection.send(canvasPixelInfo.toBufferedImage());
     }
 
     default boolean isOverCanvas(int currentX, int currentY, int width, int height) {

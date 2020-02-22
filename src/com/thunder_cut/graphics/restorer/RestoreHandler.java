@@ -7,6 +7,7 @@ package com.thunder_cut.graphics.restorer;
 
 import com.thunder_cut.graphics.ui.drawing.CanvasPixelInfo;
 import com.thunder_cut.graphics.ui.keys.HotKey;
+import com.thunder_cut.netio.Connection;
 
 import java.awt.*;
 
@@ -49,6 +50,8 @@ public class RestoreHandler {
         workDataRecorder.decreasePresentIndex();
 
         drawCanvas.run();
+
+        Connection.send(canvasPixelInfo.toBufferedImage());
     }
 
     public void redo(CanvasPixelInfo canvasPixelInfo) {
@@ -68,6 +71,7 @@ public class RestoreHandler {
 
         drawCanvas.run();
 
+        Connection.send(canvasPixelInfo.toBufferedImage());
     }
 
     public void setWorkDataRecorder(WorkDataRecorder workDataRecorder) {

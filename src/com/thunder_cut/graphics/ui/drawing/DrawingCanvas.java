@@ -105,8 +105,6 @@ public class DrawingCanvas {
         g.drawImage(image2, 0, 0, canvas);
         g.dispose();
         canvasBuffer.show();
-
-        Connection.send(canvasPixelInfo.toBufferedImage());
     }
 
     public Canvas getCanvas() {
