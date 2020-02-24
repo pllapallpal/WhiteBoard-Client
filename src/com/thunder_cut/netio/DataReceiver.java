@@ -5,10 +5,13 @@
  */
 package com.thunder_cut.netio;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -29,9 +32,37 @@ public class DataReceiver {
     private BiConsumer<Integer, byte[]> drawImage;
     private BiConsumer<Integer, byte[]> receiveMessage;
 
-    public void startReceiving() {
+    private ExecutorService receivingExecutor;
+    private AtomicBoolean isReceiving;
+    private Future<?> futureReceivingExecutor;
 
-        while (true) {
+    public DataReceiver() {
+        receivingExecutor = Executors.newSingleThreadExecutor();
+        isReceiving = new AtomicBoolean();
+    }
+
+    public void start() {
+        isReceiving.set(true);
+        futureReceivingExecutor = receivingExecutor.submit(this::startReceiving);
+    }
+
+    public void stop() {
+        isReceiving.set(false);
+        futureReceivingExecutor.cancel(true);
+        receivingExecutor.shutdown();
+    }
+
+    public boolean getIsReceiving() {
+        return isReceiving.get();
+    }
+
+    public void startReceiving() {
+        while (!Thread.currentThread().isInterrupted()) {
+            synchronized (this) {
+                if (!isReceiving.get()) {
+                    break;
+                }
+            }
             DecapsulatedData decapsulatedData = receiveData();
 
             if (decapsulatedData.dataType == DataType.IMG.type) {
@@ -45,17 +76,7 @@ public class DataReceiver {
 
     private DecapsulatedData receiveData() {
 
-        DecapsulatedData decapsulatedData = null;
-        try {
-            decapsulatedData = readData(readHeader());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return decapsulatedData;
-    }
-
-    private DecapsulatedData readData(Map<HeaderItem, Integer> header) throws IOException {
-
+        Map<HeaderItem, Integer> header = readHeader();
         int dataSize = header.get(HeaderItem.DATA_SIZE);
         int srcID = header.get(HeaderItem.SRC_ID);
 
@@ -75,20 +96,20 @@ public class DataReceiver {
         return new DecapsulatedData(unwrappedData);
     }
 
-    private Map<HeaderItem, Integer> readHeader() throws IOException {
+    private Map<HeaderItem, Integer> readHeader() {
 
-        Map<HeaderItem, Integer> headers = new EnumMap<>(HeaderItem.class);
-        ByteBuffer header = ByteBuffer.allocate(14);
-        readSocket.accept(header);
+        Map<HeaderItem, Integer> header = new EnumMap<>(HeaderItem.class);
+        ByteBuffer headerBuffer = ByteBuffer.allocate(14);
+        readSocket.accept(headerBuffer);
 
-        header.flip();
+        headerBuffer.flip();
 
-        headers.put(HeaderItem.TYPE, (int) header.getChar());
-        headers.put(HeaderItem.SRC_ID, header.getInt());
-        headers.put(HeaderItem.DST_ID, header.getInt());
-        headers.put(HeaderItem.DATA_SIZE, header.getInt());
+        header.put(HeaderItem.TYPE, (int) headerBuffer.getChar());
+        header.put(HeaderItem.SRC_ID, headerBuffer.getInt());
+        header.put(HeaderItem.DST_ID, headerBuffer.getInt());
+        header.put(HeaderItem.DATA_SIZE, headerBuffer.getInt());
 
-        return headers;
+        return header;
     }
 
     /**

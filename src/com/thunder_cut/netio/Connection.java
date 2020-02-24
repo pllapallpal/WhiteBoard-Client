@@ -11,8 +11,6 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.Objects;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.BiConsumer;
 
@@ -26,7 +24,6 @@ public class Connection {
     private SocketChannel socketChannel;
 
     private DataReceiver receiver;
-    private ExecutorService receivingExecutorService;
 
     private static String nickname;
 
@@ -39,7 +36,7 @@ public class Connection {
      * Initializes connectionModule instance, and sets temporary nickname
      */
     public static void initialize() {
-        if (connectionModule == null) {
+        if (Objects.isNull(connectionModule)) {
             connectionModule = new Connection();
             setNickname("user" + Integer.toString(ThreadLocalRandom.current().nextInt(65536)));
         }
@@ -54,7 +51,7 @@ public class Connection {
      */
     public static void createConnection(String address, int port) {
 
-        if (connectionModule == null) {
+        if (Objects.isNull(connectionModule)) {
             initialize();
         }
 
@@ -66,8 +63,7 @@ public class Connection {
         }
 
         connectionModule.receiver.addReadSocket(Connection::readSocket);
-        connectionModule.receivingExecutorService = Executors.newSingleThreadExecutor();
-        startReceiving();
+        connectionModule.receiver.start();
 
         send(ChatCommands.SET_NAME.command + getNickname());
     }
@@ -76,12 +72,13 @@ public class Connection {
      * Stop receiving data and close a socketChannel.
      */
     public static void destroyConnection() {
+
         if (Objects.isNull(connectionModule)) {
             return;
         }
 
-        if (Objects.nonNull(connectionModule.receivingExecutorService)) {
-            stopReceiving();
+        if (connectionModule.receiver.getIsReceiving()) {
+            connectionModule.receiver.stop();
         }
         if (Objects.nonNull(connectionModule.socketChannel) && connectionModule.socketChannel.isOpen()) {
             try {
@@ -152,20 +149,6 @@ public class Connection {
      */
     public static void addReceiveMessage(BiConsumer<Integer, byte[]> receiveMessage) {
         connectionModule.receiver.addReceiveMessage(receiveMessage);
-    }
-
-    /**
-     * Starts to receive data from the server.
-     */
-    public static void startReceiving() {
-        connectionModule.receivingExecutorService.submit(connectionModule.receiver::startReceiving);
-    }
-
-    /**
-     * Stops receiving data from the server.
-     */
-    public static void stopReceiving() {
-        connectionModule.receivingExecutorService.shutdown();
     }
 
     /**
