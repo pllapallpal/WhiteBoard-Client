@@ -6,7 +6,7 @@
 package com.thunder_cut.graphics.ui.frame.chat;
 
 import com.thunder_cut.graphics.ui.theme.Theme;
-import com.thunder_cut.netio.Connection;
+import com.thunder_cut.netio.DataHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,7 +38,7 @@ public class ChatFrame {
         textArea.setEditable(false);
         textArea.setBackground(Theme.CURRENT.secondary);
         textArea.setForeground(Theme.CURRENT.onSecondary);
-        Connection.addReceiveMessage((_unused,data)->{
+        DataHandler.addReceiveMessage((_unused, data) -> {
             textArea.append(new String(data));
         });
 
@@ -46,7 +46,7 @@ public class ChatFrame {
         textField.setBackground(Theme.CURRENT.secondary);
         textField.setForeground(Theme.CURRENT.onSecondary);
         textField.addActionListener( _unused -> {
-            Connection.send(textField.getText()+"\n");
+            DataHandler.send(textField.getText()+"\n");
             textField.setText("");
         });
 

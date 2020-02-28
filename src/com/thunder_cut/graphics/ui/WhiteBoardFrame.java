@@ -9,7 +9,8 @@ import com.thunder_cut.graphics.ui.drawing.DrawingPanel;
 import com.thunder_cut.graphics.ui.frame.chat.ChatFrame;
 import com.thunder_cut.graphics.ui.frame.participants.ParticipantsFrame;
 import com.thunder_cut.graphics.ui.keys.HotKeyExecutor;
-import com.thunder_cut.netio.Connection;
+import com.thunder_cut.netio.DataHandler;
+import com.thunder_cut.netio.NetIO;
 
 import javax.swing.*;
 import java.awt.*;
@@ -128,7 +129,7 @@ public class WhiteBoardFrame {
         JMenuItem destroyConnectionMenuItem = new JMenuItem("연결 해제");
         destroyConnectionMenuItem.addActionListener(e -> {
             if (JOptionPane.showConfirmDialog(mainFrame, "연결을 해제하시겠습니까?", mainFrame.getTitle(), JOptionPane.YES_NO_OPTION) == 0) {
-                Connection.destroyConnection();
+                NetIO.destroyConnection();
             }
         });
 
@@ -138,7 +139,7 @@ public class WhiteBoardFrame {
                     "Nickname",JOptionPane.PLAIN_MESSAGE);
             if(!(Objects.isNull(nickname) || nickname.equals(""))) {
 
-                Connection.setNickname(nickname);
+                DataHandler.send("/set_name " + nickname);
             }
         });
 
@@ -199,7 +200,7 @@ public class WhiteBoardFrame {
                 return;
             }
 
-            Connection.createConnection(serverIP, serverPort);
+            NetIO.createConnection(serverIP, serverPort);
         }
 
     }

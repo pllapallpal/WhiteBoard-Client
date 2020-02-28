@@ -1,8 +1,5 @@
 package com.thunder_cut.netio;
 
-/**
- * Enum class for identify type of data used in net i/o
- */
 public enum DataType {
 
     IMG('I'),
